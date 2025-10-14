@@ -1,1 +1,1079 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a5276;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #f8f9fa;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        .hero-logo {
+            max-width: 150px;
+            margin: 0 auto 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            min-width: 80px;
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .city-image {
+            width: 100%;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+
+        .map-container {
+            height: 300px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+
+        .alert-success {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .alert-warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            border: 1px solid var(--warning-color);
+            color: var(--warning-color);
+        }
+
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .admin-panel {
+            display: none;
+            background-color: var(--light-color);
+            padding: 40px 0;
+        }
+
+        .admin-section {
+            margin-bottom: 40px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .certificate-preview {
+            border: 2px solid #d4af37;
+            padding: 40px;
+            background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+            margin: 20px 0;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            position: relative;
+        }
+
+        .certificate-preview::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 1px solid #d4af37;
+            pointer-events: none;
+        }
+
+        .certificate-title {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .certificate-name {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin: 30px 0;
+            padding: 10px 30px;
+            border-bottom: 2px solid var(--primary-color);
+            font-weight: bold;
+        }
+
+        .certificate-details {
+            font-size: 1.2rem;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .certificate-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .attendance-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .attendance-present {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .attendance-absent {
+            background-color: #ddd;
+            color: #666;
+        }
+
+        .cupos-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+            }
+            
+            .admin-actions, .certificate-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header y Hero Section -->
+    <header class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <img src="https://via.placeholder.com/150x150/ffffff/1a5276?text=HMHA" alt="Logo del Congreso" class="hero-logo">
+            <h1>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</h1>
+            <h2>Hospital Miguel H. Alcívar</h2>
+            <div class="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Días</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+            <a href="#inscripcion" class="btn btn-accent">Inscríbete Ahora</a>
+        </div>
+    </header>
+
+    <!-- Sección de Información -->
+    <section class="info-section">
+        <div class="container">
+            <div class="info-grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Bahía de Caráquez" class="city-image">
+                    <h3>Bahía de Caráquez, destino único en Manabí</h3>
+                    <p>Un entorno espectacular para nuestro congreso internacional.</p>
+                </div>
+                <div class="card">
+                    <h3>Ubicación</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Auditorio de la ULEAM - Extensión Sucre</p>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.238293478772!2d-80.425841685245!3d-0.5978355994103796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902b3d6b6d8b3b3b%3A0x9c8d2b2b2b2b2b2b!2sULEAM%20Extensi%C3%B3n%20Sucre!5e0!3m2!1ses!2sec!4v1620000000000!5m2!1ses!2sec" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Fecha del Evento</h3>
+                    <p><i class="far fa-calendar-alt"></i> Del 23 al 25 de octubre de 2025</p>
+                    <p><i class="far fa-clock"></i> Inicio: Jueves 23 de octubre a las 08:00 AM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Agenda -->
+    <section class="agenda-section">
+        <div class="container">
+            <h2>Agenda del Congreso</h2>
+            <p>Descarga la agenda completa del evento para conocer todos los detalles de las ponencias y actividades programadas.</p>
+            <a href="#" class="btn" id="download-agenda">Descargar Agenda</a>
+            <div class="card" style="margin-top: 20px;">
+                <h3>Programa General</h3>
+                <p><strong>Jueves 23 de octubre:</strong> Inauguración, Conferencias Magistrales, Talleres</p>
+                <p><strong>Viernes 24 de octubre:</strong> Mesas Redondas, Presentación de Casos, Simposios</p>
+                <p><strong>Sábado 25 de octubre:</strong> Conferencias de Clausura, Entrega de Certificados</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Inscripción -->
+    <section class="registration-section" id="inscripcion">
+        <div class="container">
+            <h2>Inscripción de Participantes</h2>
+            <p>Total de <strong>220 cupos</strong> disponibles:</p>
+            <ul>
+                <li>190 cupos pre-asignados</li>
+                <li>30 cupos disponibles para inscripción en línea (solo DR/DRA)</li>
+            </ul>
+            
+            <div class="cupos-info">
+                <h4><i class="fas fa-info-circle"></i> Información de Cupos</h4>
+                <p><strong>Disponibles para inscripción en línea:</strong> 30 cupos para DR/DRA</p>
+                <p><strong>Otros perfiles:</strong> Solo mediante asignación previa</p>
+                <p id="cupos-restantes">Cupos restantes para DR/DRA: <span id="cupos-count">30</span></p>
+            </div>
+            
+            <div class="card">
+                <h3>Formulario de Inscripción</h3>
+                <div id="registration-message"></div>
+                <form id="registration-form">
+                    <div class="form-group">
+                        <label for="cargo">Cargo *</label>
+                        <select id="cargo" class="form-control" required>
+                            <option value="">Seleccione su cargo</option>
+                            <option value="DR">DR</option>
+                            <option value="DRA">DRA</option>
+                            <option value="LCDO">LCDO</option>
+                            <option value="LCDA">LCDA</option>
+                            <option value="IRM">IRM</option>
+                            <option value="IRE">IRE</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido *</label>
+                        <input type="text" id="apellido" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cedula">Cédula *</label>
+                        <input type="text" id="cedula" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="correo">Correo Electrónico *</label>
+                        <input type="email" id="correo" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono *</label>
+                        <input type="tel" id="telefono" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="perfil-medico" required>
+                            <label for="perfil-medico">Confirmo que soy profesional de la salud</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" id="submit-btn">Enviar Inscripción</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Certificados (Pública) -->
+    <section class="certificate-section" id="certificados">
+        <div class="container">
+            <h2>Certificados de Participación</h2>
+            <p>Los certificados estarán disponibles para descarga a partir del 25 de octubre de 2025 a las 13:00, para los participantes que cumplan con la asistencia mínima requerida (2 de 3 días).</p>
+            
+            <div class="card">
+                <h3>Verificar y Descargar Certificado</h3>
+                <p>Ingrese su número de cédula para verificar su elegibilidad y descargar su certificado.</p>
+                
+                <div class="certificate-form">
+                    <div class="form-group">
+                        <label for="certificate-cedula">Número de Cédula *</label>
+                        <input type="text" id="certificate-cedula" class="form-control" placeholder="Ingrese su cédula">
+                    </div>
+                    <button class="btn" id="verify-certificate-btn">Verificar Elegibilidad</button>
+                </div>
+                
+                <div id="certificate-result" style="margin-top: 20px;"></div>
+                
+                <div id="certificate-download-section" style="display: none; margin-top: 20px;">
+                    <div class="certificate-preview" id="certificate-preview-public">
+                        <div class="certificate-title">CERTIFICADO DE PARTICIPACIÓN</div>
+                        <p>Se otorga el presente certificado a:</p>
+                        <div class="certificate-name" id="certificate-name-public">[NOMBRE COMPLETO]</div>
+                        <p>Por su participación en el</p>
+                        <h3>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</h3>
+                        <p class="certificate-details">Hospital Miguel H. Alcívar</p>
+                        <p class="certificate-details">23 al 25 de octubre de 2025</p>
+                        <p class="certificate-details">Bahía de Caráquez, Manabí - Ecuador</p>
+                    </div>
+                    
+                    <div class="certificate-controls">
+                        <button class="btn btn-accent" id="download-certificate-public-btn">Descargar Certificado</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section class="info-section">
+        <div class="container">
+            <div class="info-grid">
+                <div class="card">
+                    <h3>Información de Contacto</h3>
+                    <p><i class="fas fa-phone"></i> 0991708712 – Dr. Julio Feijoo</p>
+                    <p>(Analista de Docencia HMHA)</p>
+                </div>
+                <div class="card">
+                    <h3>Organiza</h3>
+                    <p>Unidad de Docencia e Investigación - Hospital Miguel H. Alcívar</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</p>
+            <p>Hospital Miguel H. Alcívar</p>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-home"></i> Inicio</a>
+                <a href="#inscripcion"><i class="fas fa-user-plus"></i> Inscripción</a>
+                <a href="#certificados"><i class="fas fa-certificate"></i> Certificados</a>
+                <a href="#" id="admin-login-link"><i class="fas fa-cog"></i> Acceso Administrador</a>
+            </div>
+            <p>&copy; 2025 - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <!-- Panel de Administrador -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="container">
+            <h2>Panel de Administrador</h2>
+            
+            <div class="admin-section">
+                <h3>Gestión de Participantes</h3>
+                <div class="admin-actions">
+                    <button class="btn" id="upload-list-btn">Cargar Lista de Invitados</button>
+                    <button class="btn btn-secondary" id="add-participant-btn">Agregar Participante</button>
+                    <button class="btn btn-accent" id="download-list-btn">Descargar Lista Completa</button>
+                </div>
+                
+                <div class="card">
+                    <h4>Lista de Participantes</h4>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Cargo</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Cédula</th>
+                                <th>Asistencia</th>
+                                <th>Certificado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participants-table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h3>Control de Asistencia</h3>
+                <div class="card">
+                    <p>Enlaces para registrar asistencia:</p>
+                    <ul>
+                        <li><a href="https://docs.google.com/forms/d/1nihA_9JrKg1KOJCy4ypah4wtS5wXN3ETaKDgxNjTj70/edit" target="_blank">Día 1 (jueves 23)</a></li>
+                        <li><a href="https://docs.google.com/forms/d/18n4OUSB3iGBlBTBH6k4d-Tvma1rSXSS0Yv_vdq7bLVY/edit" target="_blank">Día 2 (viernes 24)</a></li>
+                        <li><a href="https://docs.google.com/forms/d/11PXiisbAVSnWc74sRQJntSvnbSFk53um0CQikR0QHww/edit" target="_blank">Día 3 (sábado 25)</a></li>
+                    </ul>
+                    <div class="admin-actions">
+                        <button class="btn" id="process-attendance-btn">Procesar Datos de Asistencia</button>
+                        <button class="btn btn-secondary" id="manual-attendance-btn">Registro Manual</button>
+                    </div>
+                    <div id="attendance-results" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h3>Generación de Certificados</h3>
+                <div class="card">
+                    <p>Los certificados estarán disponibles automáticamente desde el 25 de octubre, 13:00, para participantes que cumplan con la asistencia mínima (2 de 3 días).</p>
+                    
+                    <div class="certificate-preview" id="certificate-preview-admin">
+                        <div class="certificate-title">CERTIFICADO DE PARTICIPACIÓN</div>
+                        <p>Se otorga el presente certificado a:</p>
+                        <div class="certificate-name" id="certificate-name-admin">[NOMBRE COMPLETO]</div>
+                        <p>Por su participación en el</p>
+                        <h3>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</h3>
+                        <p class="certificate-details">Hospital Miguel H. Alcívar</p>
+                        <p class="certificate-details">23 al 25 de octubre de 2025</p>
+                        <p class="certificate-details">Bahía de Caráquez, Manabí - Ecuador</p>
+                    </div>
+                    
+                    <div class="certificate-controls">
+                        <button class="btn" id="preview-certificate-btn">Vista Previa</button>
+                        <button class="btn btn-secondary" id="generate-certificate-btn">Generar Certificado</button>
+                        <button class="btn btn-accent" id="download-certificate-admin-btn">Descargar Certificado</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-actions">
+                <button class="btn btn-accent" id="logout-btn">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login para Administrador -->
+    <div id="login-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="login-form">
+            <h3>Acceso Administrador</h3>
+            <div class="form-group">
+                <label for="admin-user">Usuario</label>
+                <input type="text" id="admin-user" class="form-control" value="DOCENCIA">
+            </div>
+            <div class="form-group">
+                <label for="admin-password">Contraseña</label>
+                <input type="password" id="admin-password" class="form-control" value="DOCENCIA">
+            </div>
+            <button class="btn" id="login-btn">Iniciar Sesión</button>
+            <button class="btn btn-secondary" id="cancel-login-btn">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar jsPDF
+        const { jsPDF } = window.jspdf;
+
+        // Variables globales
+        let currentParticipant = null;
+        const MAX_ONLINE_CUPOS = 30;
+
+        // Contador regresivo
+        function updateCountdown() {
+            const eventDate = new Date('October 23, 2025 08:00:00').getTime();
+            const now = new Date().getTime();
+            const timeLeft = eventDate - now;
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Actualizar contador de cupos
+        function updateCuposCount() {
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const onlineDRDRA = participants.filter(p => p.tipo === 'online' && (p.cargo === 'DR' || p.cargo === 'DRA'));
+            const cuposRestantes = MAX_ONLINE_CUPOS - onlineDRDRA.length;
+            
+            document.getElementById('cupos-count').textContent = cuposRestantes;
+            
+            if (cuposRestantes <= 0) {
+                document.getElementById('cupos-restantes').innerHTML = '<strong style="color: var(--danger-color);">CUPOS AGOTADOS para DR/DRA</strong>';
+            }
+        }
+        
+        // Gestión del formulario de inscripción
+        document.getElementById('registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const cargo = document.getElementById('cargo').value;
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const cedula = document.getElementById('cedula').value;
+            const correo = document.getElementById('correo').value;
+            const telefono = document.getElementById('telefono').value;
+            const perfilMedico = document.getElementById('perfil-medico').checked;
+            
+            // Validaciones básicas
+            if (!perfilMedico) {
+                showRegistrationMessage('Debe confirmar que es profesional de la salud para inscribirse.', 'danger');
+                return;
+            }
+            
+            // Verificar si es DR/DRA para cupos en línea
+            const existingParticipants = JSON.parse(localStorage.getItem('participants') || '[]');
+            
+            if (cargo !== 'DR' && cargo !== 'DRA') {
+                showRegistrationMessage('Actualmente no hay disponibilidad para otras categorías de participantes. Solo se permiten DR y DRA para inscripción en línea.', 'danger');
+                return;
+            }
+            
+            // Verificar cupos disponibles para DR/DRA
+            const onlineDRDRA = existingParticipants.filter(p => p.tipo === 'online' && (p.cargo === 'DR' || p.cargo === 'DRA'));
+            
+            if (onlineDRDRA.length >= MAX_ONLINE_CUPOS) {
+                showRegistrationMessage('Cupos agotados para inscripciones en línea de DR/DRA.', 'danger');
+                return;
+            }
+            
+            // Verificar duplicados
+            const duplicate = existingParticipants.find(p => 
+                p.nombre.toLowerCase() === nombre.toLowerCase() && 
+                p.apellido.toLowerCase() === apellido.toLowerCase()
+            );
+            
+            if (duplicate) {
+                showRegistrationMessage('Ya existe un participante registrado con ese nombre y apellido.', 'danger');
+                return;
+            }
+            
+            // Guardar participante
+            const newParticipant = {
+                cargo,
+                nombre,
+                apellido,
+                cedula,
+                correo,
+                telefono,
+                perfilMedico,
+                tipo: 'online',
+                fechaInscripcion: new Date().toISOString(),
+                asistencias: [false, false, false] // Día 1, 2, 3
+            };
+            
+            existingParticipants.push(newParticipant);
+            localStorage.setItem('participants', JSON.stringify(existingParticipants));
+            
+            showRegistrationMessage('¡Inscripción exitosa! Su registro ha sido procesado correctamente.', 'success');
+            document.getElementById('registration-form').reset();
+            updateCuposCount();
+        });
+        
+        function showRegistrationMessage(message, type) {
+            const messageDiv = document.getElementById('registration-message');
+            messageDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
+        
+        // Gestión del panel de administrador
+        document.getElementById('admin-login-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('login-modal').style.display = 'flex';
+        });
+        
+        document.getElementById('cancel-login-btn').addEventListener('click', function() {
+            document.getElementById('login-modal').style.display = 'none';
+        });
+        
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const user = document.getElementById('admin-user').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if (user === 'DOCENCIA' && password === 'DOCENCIA') {
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                loadParticipantsTable();
+            } else {
+                alert('Credenciales incorrectas. Intente nuevamente.');
+            }
+        });
+        
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            document.getElementById('admin-panel').style.display = 'none';
+        });
+        
+        // Cargar tabla de participantes
+        function loadParticipantsTable() {
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const tableBody = document.getElementById('participants-table');
+            tableBody.innerHTML = '';
+            
+            participants.forEach((participant, index) => {
+                const asistencias = participant.asistencias || [false, false, false];
+                const diasAsistidos = asistencias.filter(a => a).length;
+                const puedeCertificado = diasAsistidos >= 2;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${participant.cargo}</td>
+                    <td>${participant.nombre}</td>
+                    <td>${participant.apellido}</td>
+                    <td>${participant.cedula}</td>
+                    <td>
+                        <span class="attendance-status ${asistencias[0] ? 'attendance-present' : 'attendance-absent'}">D1</span>
+                        <span class="attendance-status ${asistencias[1] ? 'attendance-present' : 'attendance-absent'}">D2</span>
+                        <span class="attendance-status ${asistencias[2] ? 'attendance-present' : 'attendance-absent'}">D3</span>
+                    </td>
+                    <td>${puedeCertificado ? '<span style="color: green">✓ Elegible</span>' : '<span style="color: red">✗ No elegible</span>'}</td>
+                    <td>
+                        <button class="btn btn-accent" onclick="deleteParticipant(${index})">Eliminar</button>
+                        <button class="btn btn-secondary" onclick="editParticipant(${index})">Editar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Eliminar participante
+        function deleteParticipant(index) {
+            if (confirm('¿Está seguro de que desea eliminar este participante?')) {
+                const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+                participants.splice(index, 1);
+                localStorage.setItem('participants', JSON.stringify(participants));
+                loadParticipantsTable();
+                updateCuposCount();
+            }
+        }
+        
+        // Editar participante
+        function editParticipant(index) {
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const participant = participants[index];
+            
+            // Aquí implementarías la lógica para editar
+            alert(`Editar participante: ${participant.cargo}. ${participant.nombre} ${participant.apellido}`);
+        }
+        
+        // Procesar datos de asistencia
+        document.getElementById('process-attendance-btn').addEventListener('click', function() {
+            const resultsDiv = document.getElementById('attendance-results');
+            resultsDiv.innerHTML = '<div class="alert alert-warning">Procesando datos de asistencia...</div>';
+            
+            // Simulación de procesamiento de datos de Google Forms
+            setTimeout(() => {
+                const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+                
+                // Simular datos de asistencia
+                participants.forEach(participant => {
+                    // Asignar aleatoriamente asistencias para la demo
+                    participant.asistencias = [
+                        Math.random() > 0.3, // 70% de asistencia día 1
+                        Math.random() > 0.4, // 60% de asistencia día 2
+                        Math.random() > 0.2  // 80% de asistencia día 3
+                    ];
+                });
+                
+                localStorage.setItem('participants', JSON.stringify(participants));
+                loadParticipantsTable();
+                
+                // Calcular estadísticas
+                const totalParticipants = participants.length;
+                const eligibleForCertificate = participants.filter(p => {
+                    const diasAsistidos = (p.asistencias || [false, false, false]).filter(a => a).length;
+                    return diasAsistidos >= 2;
+                }).length;
+                
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>Procesamiento completado</strong><br>
+                        Total de participantes: ${totalParticipants}<br>
+                        Elegibles para certificado: ${eligibleForCertificate}<br>
+                        Porcentaje de elegibilidad: ${((eligibleForCertificate / totalParticipants) * 100).toFixed(1)}%
+                    </div>
+                `;
+            }, 2000);
+        });
+        
+        // Verificar certificado (público)
+        document.getElementById('verify-certificate-btn').addEventListener('click', function() {
+            const cedula = document.getElementById('certificate-cedula').value;
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const participant = participants.find(p => p.cedula === cedula);
+            
+            const resultDiv = document.getElementById('certificate-result');
+            const downloadSection = document.getElementById('certificate-download-section');
+            
+            if (!participant) {
+                resultDiv.innerHTML = '<div class="alert alert-danger">No se encontró un participante con esa cédula.</div>';
+                downloadSection.style.display = 'none';
+                return;
+            }
+            
+            // Simular verificación de asistencia
+            const today = new Date();
+            const eventEndDate = new Date('October 25, 2025 13:00:00');
+            
+            if (today < eventEndDate) {
+                resultDiv.innerHTML = '<div class="alert alert-warning">Los certificados estarán disponibles a partir del 25 de octubre de 2025 a las 13:00.</div>';
+                downloadSection.style.display = 'none';
+                return;
+            }
+            
+            // Verificar asistencia mínima
+            const asistencias = participant.asistencias || [false, false, false];
+            const diasAsistidos = asistencias.filter(a => a).length;
+            
+            if (diasAsistidos < 2) {
+                resultDiv.innerHTML = `<div class="alert alert-danger">No cumple con la asistencia mínima requerida (asistió a ${diasAsistidos} de 3 días).</div>`;
+                downloadSection.style.display = 'none';
+                return;
+            }
+            
+            // Mostrar certificado
+            currentParticipant = participant;
+            document.getElementById('certificate-name-public').textContent = `${participant.cargo}. ${participant.nombre} ${participant.apellido}`;
+            resultDiv.innerHTML = '<div class="alert alert-success">¡Felicidades! Cumple con los requisitos para obtener el certificado.</div>';
+            downloadSection.style.display = 'block';
+        });
+        
+        // Descargar certificado (público)
+        document.getElementById('download-certificate-public-btn').addEventListener('click', function() {
+            if (!currentParticipant) {
+                alert('Primero debe verificar su elegibilidad');
+                return;
+            }
+            
+            const certificateElement = document.getElementById('certificate-preview-public');
+            
+            html2canvas(certificateElement).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = (pdfHeight - imgHeight * ratio) / 2;
+                
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                pdf.save(`certificado-${currentParticipant.cedula}.pdf`);
+            });
+        });
+        
+        // Descargar certificado (admin)
+        document.getElementById('download-certificate-admin-btn').addEventListener('click', function() {
+            const certificateElement = document.getElementById('certificate-preview-admin');
+            
+            html2canvas(certificateElement).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = (pdfHeight - imgHeight * ratio) / 2;
+                
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                pdf.save('certificado-admin-ejemplo.pdf');
+            });
+        });
+        
+        // Vista previa de certificado (admin)
+        document.getElementById('preview-certificate-btn').addEventListener('click', function() {
+            document.getElementById('certificate-name-admin').textContent = 'DR. EJEMPLO ADMINISTRADOR';
+        });
+        
+        // Inicializar datos de ejemplo si no existen
+        if (!localStorage.getItem('participants')) {
+            const exampleParticipants = [
+                {
+                    cargo: 'DR',
+                    nombre: 'Juan',
+                    apellido: 'Pérez',
+                    cedula: '1234567890',
+                    correo: 'juan@example.com',
+                    telefono: '0999999999',
+                    perfilMedico: true,
+                    tipo: 'pre-asignado',
+                    fechaInscripcion: new Date().toISOString(),
+                    asistencias: [true, true, true]
+                },
+                {
+                    cargo: 'DRA',
+                    nombre: 'María',
+                    apellido: 'González',
+                    cedula: '0987654321',
+                    correo: 'maria@example.com',
+                    telefono: '0988888888',
+                    perfilMedico: true,
+                    tipo: 'pre-asignado',
+                    fechaInscripcion: new Date().toISOString(),
+                    asistencias: [true, false, true]
+                }
+            ];
+            localStorage.setItem('participants', JSON.stringify(exampleParticipants));
+        }
+        
+        // Cargar la tabla y actualizar cupos al iniciar
+        loadParticipantsTable();
+        updateCuposCount();
+    </script>
+</body>
+</html>
