@@ -1,824 +1,599 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I Congreso Internacional de Especialidades Clínicas Quirúrgicas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+    <title>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             --primary-color: #1a5276;
             --secondary-color: #3498db;
             --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
+            --light-color: #f8f9fa;
             --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
-        
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
             color: #333;
-            background-color: #f8f9fa;
-            scroll-behavior: smooth;
+            background-color: #f5f5f5;
         }
-        
-        .hero-section {
-            background: linear-gradient(rgba(26, 82, 118, 0.85), rgba(26, 82, 118, 0.85)), url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover;
-            background-position: center;
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
             color: white;
-            padding: 100px 0;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
             text-align: center;
         }
-        
-        .logo-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            display: inline-block;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
         }
-        
-        .logo-text {
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin: 0;
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
         }
-        
-        .section-title {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 10px;
-            margin-bottom: 30px;
+
+        .btn-accent {
+            background-color: var(--accent-color);
         }
-        
+
         .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-            margin-bottom: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: var(--transition);
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-        
-        .btn-success {
-            background-color: #27ae60;
-            border-color: #27ae60;
-        }
-        
-        .qr-container {
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        .hero-logo {
+            max-width: 150px;
+            margin: 0 auto 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            min-width: 80px;
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .city-image {
+            width: 100%;
+            border-radius: var(--border-radius);
             margin-bottom: 20px;
         }
-        
-        .participant-list {
-            max-height: 400px;
-            overflow-y: auto;
+
+        .map-container {
+            height: 300px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-top: 20px;
         }
-        
-        .participant-item {
-            padding: 10px 15px;
-            border-bottom: 1px solid #eee;
+
+        .form-group {
+            margin-bottom: 20px;
         }
-        
-        .participant-item:nth-child(even) {
-            background-color: #f9f9f9;
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
-        
-        .admin-section {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
         }
-        
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+
+        .alert-success {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .alert-warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            border: 1px solid var(--warning-color);
+            color: var(--warning-color);
+        }
+
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
         footer {
             background-color: var(--dark-color);
             color: white;
             padding: 40px 0;
-            margin-top: 50px;
+            text-align: center;
         }
-        
-        .countdown {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent-color);
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
         }
-        
-        .nav-tabs .nav-link.active {
-            background-color: var(--primary-color);
+
+        .footer-links a {
             color: white;
-            border: none;
+            text-decoration: none;
+            transition: var(--transition);
         }
-        
-        .nav-tabs .nav-link {
-            color: var(--primary-color);
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
         }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
+
+        .admin-panel {
+            display: none;
+            background-color: var(--light-color);
+            padding: 40px 0;
         }
-        
-        .location-card {
-            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9));
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .attendance-form {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .admin-qr-section {
-            background-color: #f0f8ff;
-            border-left: 4px solid var(--primary-color);
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .agenda-day {
+
+        .admin-section {
             margin-bottom: 40px;
         }
-        
-        .agenda-item {
-            padding: 15px;
-            border-left: 4px solid var(--primary-color);
-            margin-bottom: 10px;
-            background-color: white;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .agenda-time {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        .agenda-break {
-            background-color: #fff3cd;
-            border-left-color: #ffc107;
-        }
-        
-        .agenda-special {
-            background-color: #d1ecf1;
-            border-left-color: var(--secondary-color);
-        }
-        
-        .hospital-image {
-            height: 300px;
-            object-fit: cover;
+
+        .admin-table {
             width: 100%;
-            border-radius: 10px;
-        }
-        
-        .bahia-image {
-            height: 250px;
-            object-fit: cover;
-            width: 100%;
-            border-radius: 10px;
-        }
-        
-        .sponsor-logo {
-            max-height: 80px;
-            margin: 10px 20px;
-        }
-        
-        .gala-section {
-            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 60px 0;
-            text-align: center;
-            border-radius: 10px;
-            margin: 30px 0;
-        }
-        
-        .capacity-badge {
-            font-size: 1rem;
-            padding: 8px 15px;
-        }
-        
-        .certificate-preview {
-            border: 2px solid #ccc;
-            padding: 30px;
-            background-color: #f9f9f9;
+            border-collapse: collapse;
             margin-top: 20px;
-            text-align: center;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
             background: white;
-            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
         }
-        
-        .certificate-name {
-            font-size: 1.8rem;
-            font-weight: bold;
+
+        .certificate-preview {
+            border: 2px solid #d4af37;
+            padding: 40px;
+            background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
             margin: 20px 0;
-            text-decoration: underline;
-        }
-        
-        .certificate-border {
-            border: 3px double #1a5276;
-            padding: 20px;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
             position: relative;
         }
-        
-        .admin-only {
-            display: none;
+
+        .certificate-preview::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 1px solid #d4af37;
+            pointer-events: none;
         }
-        
-        .admin-visible {
-            display: block;
+
+        .certificate-title {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: bold;
         }
-        
-        .delete-btn {
-            color: #dc3545;
-            cursor: pointer;
-            margin-left: 10px;
+
+        .certificate-name {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin: 30px 0;
+            padding: 10px 30px;
+            border-bottom: 2px solid var(--primary-color);
+            font-weight: bold;
         }
-        
-        .delete-btn:hover {
-            color: #bd2130;
+
+        .certificate-details {
+            font-size: 1.2rem;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .certificate-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .attendance-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .attendance-present {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .attendance-absent {
+            background-color: #ddd;
+            color: #666;
+        }
+
+        .cupos-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+            }
+            
+            .admin-actions, .certificate-controls {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container">
-            <div class="logo-container">
-                <h1 class="logo-text">OCTUBRE 2025</h1>
-                <h2 class="logo-text">CONGRESO INTERNACIONAL DE</h2>
-                <h2 class="logo-text">ESPECIALIDADES CLÍNICAS-QUIRÚRGICAS</h2>
-                <h3 class="logo-text">BAHÍA DE CARÁQUEZ</h3>
-                <p class="logo-text">DESTINO ÚNICO EN MANABÍ</p>
+    <!-- Header y Hero Section -->
+    <header class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <img src="https://via.placeholder.com/150x150/ffffff/1a5276?text=HMHA" alt="Logo del Congreso" class="hero-logo">
+            <h1>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</h1>
+            <h2>Hospital Miguel H. Alcívar</h2>
+            <div class="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Días</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
             </div>
-            <h1 class="display-4 fw-bold">I Congreso Internacional de Especialidades Clínicas Quirúrgicas</h1>
-            <h2 class="mb-4">"Hospital Miguel H. Alcivar"</h2>
-            <p class="lead mb-4">23 al 25 de Octubre de 2025 | Bahía de Caráquez, Manabí</p>
-            <div class="countdown mb-4" id="countdown"></div>
-            <p class="badge bg-success fs-6 p-2">Evento Gratuito</p>
-            <p class="badge bg-warning capacity-badge mt-2">Cupos disponibles: <span id="availableSpots">75</span>/200</p>
+            <a href="#inscripcion" class="btn btn-accent">Inscríbete Ahora</a>
         </div>
-    </section>
+    </header>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <!-- Sección de Información -->
+    <section class="info-section">
         <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">Acerca del Evento</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#agenda">Agenda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#registration">Inscripción</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#certificate">Certificado</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#participants">Participantes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#location">Ubicación</a>
-                    </li>
-                </ul>
-                <button class="btn btn-outline-light" id="adminAccessBtn">
-                    <i class="fas fa-cog me-2"></i>Administración
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- About Section -->
-    <section id="about" class="py-5">
-        <div class="container">
-            <h2 class="section-title text-center">Acerca del Congreso</h2>
-            <div class="row">
-                <div class="col-md-8 mx-auto text-center">
-                    <p class="lead">No te pierdas la oportunidad de participar en un evento académico único, donde se abordarán los temas más relevantes de las especialidades clínicas quirúrgicas.</p>
-                    <p>Este evento se llevará a cabo en <strong>Bahía de Caráquez</strong>, un destino único en <strong>Manabí</strong>.</p>
+            <div class="info-grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Bahía de Caráquez" class="city-image">
+                    <h3>Bahía de Caráquez, destino único en Manabí</h3>
+                    <p>Un entorno espectacular para nuestro congreso internacional.</p>
                 </div>
-            </div>
-            
-            <div class="row mt-5">
-                <div class="col-md-4 text-center mb-4">
-                    <div class="feature-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <h4>Fecha</h4>
-                    <p>23 al 25 de Octubre de 2025</p>
-                </div>
-                <div class="col-md-4 text-center mb-4">
-                    <div class="feature-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h4>Ubicación</h4>
-                    <p>Bahía de Caráquez<br>Manabí, Ecuador</p>
-                </div>
-                <div class="col-md-4 text-center mb-4">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h4>Capacidad</h4>
-                    <p>200 Participantes<br>Evento Gratuito</p>
-                </div>
-            </div>
-            
-            <div class="row mt-4">
-                <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <img src="6652a99add07a.jpeg" alt="Hospital Miguel H. Alcivar" class="hospital-image">
-                        </div>
-                    </div>
-                    <div class="card mt-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Hospital Miguel H. Alcivar</h5>
-                            <p class="card-text">Institución de salud pública comprometida con la excelencia médica y la formación de profesionales de la salud.</p>
-                        </div>
+                <div class="card">
+                    <h3>Ubicación</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Auditorio de la ULEAM - Extensión Sucre</p>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.238293478772!2d-80.425841685245!3d-0.5978355994103796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902b3d6b6d8b3b3b%3A0x9c8d2b2b2b2b2b2b!2sULEAM%20Extensi%C3%B3n%20Sucre!5e0!3m2!1ses!2sec!4v1620000000000!5m2!1ses!2sec" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
                 </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <img src="539126778_1163930079102667_3679053548898091194_n.jpg" alt="Bahía de Caráquez" class="hospital-image">
-                        </div>
-                    </div>
-                    <div class="card mt-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Bahía de Caráquez</h5>
-                            <p class="card-text">Hermosa ciudad costera de Manabí, conocida por sus playas, gastronomía y paisajes únicos.</p>
-                        </div>
-                    </div>
+                <div class="card">
+                    <h3>Fecha del Evento</h3>
+                    <p><i class="far fa-calendar-alt"></i> Del 23 al 25 de octubre de 2025</p>
+                    <p><i class="far fa-clock"></i> Inicio: Jueves 23 de octubre a las 08:00 AM</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Agenda Section -->
-    <section id="agenda" class="py-5 bg-light">
+    <!-- Sección de Agenda -->
+    <section class="agenda-section">
         <div class="container">
-            <h2 class="section-title text-center">Agenda del Congreso</h2>
-            
-            <div class="text-center mb-4">
-                <button class="btn btn-primary" onclick="downloadAgenda()">
-                    <i class="fas fa-download me-2"></i>Descargar Agenda Completa
-                </button>
-            </div>
-            
-            <!-- Jueves 23 de Octubre -->
-            <div class="agenda-day">
-                <h3 class="text-center mb-4">Jueves 23 de Octubre</h3>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">8:00-8:30</div>
-                    <div class="agenda-title">INSCRIPCIÓN</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">8:30-9:00</div>
-                    <div class="agenda-title">APERTURA - PALABRAS DE BIENVENIDA</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">9:00-9:30</div>
-                    <div class="agenda-title">ENFERMEDAD HEPÁTICA ESTEATOSICA ASOCIADA A DISFUNCIÓN METABÓLICA</div>
-                    <div class="agenda-speaker">DR. JONATHAN SALMON - GASTROENTEROLOGO - HEPATOLOGO</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">9:30-10:00</div>
-                    <div class="agenda-title">CPRE: HERRAMIENTA CLAVE EN GASTROENTEROLOGÍA MODERNA</div>
-                    <div class="agenda-speaker">DR. XAVIER VERA ARTEAGA - GASTROENTEROLOGIA</div>
-                </div>
-                
-                <div class="agenda-item agenda-break">
-                    <div class="agenda-time">10:00-10:30</div>
-                    <div class="agenda-title">COFFEE BREAK</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">10:30-11:00</div>
-                    <div class="agenda-title">ACTUALIZACIÓN EN INSUFICIENCIA RENAL AGUDA: CRITERIOS, MANEJO Y PRONÓSTICO</div>
-                    <div class="agenda-speaker">DR. GUSTAVO AGUIERE - NEFRÓLOGO</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">11:00-11:30</div>
-                    <div class="agenda-title">ABORDAJE DE LA ENFERMEDAD RENAL DIABÉTICA: GUÍAS ACTUALES</div>
-                    <div class="agenda-speaker">DR. JUAN RUBIO - NEFRÓLOGO</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">11:30-12:00</div>
-                    <div class="agenda-title">ABORDAJE CARDIORENOMETABÓLICO</div>
-                    <div class="agenda-speaker">DR. ROBERT DELGADO - CARDIÓLOGO</div>
-                </div>
-                
-                <div class="agenda-item agenda-break">
-                    <div class="agenda-time">12:00-13:00</div>
-                    <div class="agenda-title">BOX-LUNCH</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">13:00-13:30</div>
-                    <div class="agenda-title">MANEJO DEL ASMA SEGÚN LAS GUÍAS GINA 2025</div>
-                    <div class="agenda-speaker">DR. JORGE EDEÑO - NEUMÓLOGO</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">13:30-14:00</div>
-                    <div class="agenda-title">REACCIONES DE HIPERSENSIBILIDAD POR IODO</div>
-                    <div class="agenda-speaker">DRA. JOHANNA MACIAS ZAMORA - ALERGÓLOGA</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">14:00-14:30</div>
-                    <div class="agenda-title">PATOLOGIA UNGUEAL EN ATENCIÓN PRIMARIA</div>
-                    <div class="agenda-speaker">DRA. CINTHYA GUERRERO - DERMATOLÓLOGA</div>
-                </div>
-                
-                <div class="agenda-item agenda-break">
-                    <div class="agenda-time">14:30-15:00</div>
-                    <div class="agenda-title">COFFEE BREAK</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">15:00-15:30</div>
-                    <div class="agenda-title">FIBROMIALGIA: ACTUALIZACIONES EN SU MANEJO</div>
-                    <div class="agenda-speaker">DR. JUAN CARLOS VELEZ - REUMATÓLOGO</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">15:30-16:00</div>
-                    <div class="agenda-title">MANEJO DE LA AGITACIÓN EN ATENCIÓN PRIMARIA</div>
-                    <div class="agenda-speaker">DR. HAMILTON CEDEÑO - PSIQUIATRA</div>
-                </div>
-            </div>
-            
-            <!-- Viernes 24 de Octubre -->
-            <div class="agenda-day">
-                <h3 class="text-center mb-4">Viernes 24 de Octubre</h3>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">9:00-9:30</div>
-                    <div class="agenda-title">ABORDANDO LA RESISTENCIA BACTERIANA: UN DESAFÍO GLOBAL</div>
-                    <div class="agenda-speaker">DR. RODRIGO MOLINA - INFECTÓLOGO</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">9:30-10:00</div>
-                    <div class="agenda-title">HIPERTENSION ARTERIAL EN EL ADULTO MAYOR</div>
-                    <div class="agenda-speaker">DR. JAIME GARCIA DEJO - CARDIÓLOGO</div>
-                </div>
-                
-                <div class="agenda-item agenda-break">
-                    <div class="agenda-time">10:00-10:30</div>
-                    <div class="agenda-title">COFFEE BREAK</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">11:00-11:30</div>
-                    <div class="agenda-title">MANEJO DE LA DIABETES TIPO 2 EN ATENCION PRIMARIA</div>
-                    <div class="agenda-speaker">DRA. MARIA JOSE SOLIS - ENDOCRINÓLOGA - SEEM/AE-PUCEM</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">11:30-12:00</div>
-                    <div class="agenda-title">TALLER DE INSULINIZACIÓN EN EL PACIENTE CON DIABETES TIPO 2</div>
-                    <div class="agenda-speaker">DR. GABRIEL SANTANA - ENDOCRINOLOGIA-SEEM</div>
-                </div>
-                
-                <div class="agenda-item agenda-break">
-                    <div class="agenda-time">12:00-13:00</div>
-                    <div class="agenda-title">BOX-LUNCH</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">13:00-13:30</div>
-                    <div class="agenda-title">CIRUGÍA DE CONTORNO CORPORAL ASISTIDA CON NUEVAS TECNOLOGÍAS</div>
-                    <div class="agenda-speaker">DR. MIGUEL LOOR VIDAL - CIRUJANO PLASTICO - AE-PUCEM</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">13:30-14:00</div>
-                    <div class="agenda-title">TRATAMIENTO INTEGRAL DEL PIE DIABETICO</div>
-                    <div class="agenda-speaker">DR. ANGEL ZAMBRANO - CIRUJANO VASCULAR</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">14:00-14:30</div>
-                    <div class="agenda-title">TRAUMA CRANEOENCEFÁLICO: ABORDAJE RÁPIDO Y EFECTIVO EN LA URGENCIA</div>
-                    <div class="agenda-speaker">DR. MARIO LAPAZ - NEUROCIRUJANO</div>
-                </div>
-                
-                <div class="agenda-item agenda-break">
-                    <div class="agenda-time">14:30-15:00</div>
-                    <div class="agenda-title">COFFEE BREAK</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">15:00-15:30</div>
-                    <div class="agenda-title">FRACTURA DE CADERA OSTEOSINTESIS VS ARTROPLASTIA</div>
-                    <div class="agenda-speaker">DR. FRANCISCO MERO - TRAUMATÓLOGO</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">15:30-16:00</div>
-                    <div class="agenda-title">MANEJO MÍNIMAMENTE INVASIVO DEL ABDOMEN AGUDO</div>
-                    <div class="agenda-speaker">DR. JOHN CALLE - CIRUJANO GENERAL</div>
-                </div>
-                
-                <div class="gala-section">
-                    <h3>NOCHE DE GALA: BAHÍA BAJO LAS ESTRELLAS</h3>
-                    <p class="lead">19:30 | Una noche especial para compartir con colegas y ponentes</p>
-                </div>
-            </div>
-            
-            <!-- Sábado 25 de Octubre -->
-            <div class="agenda-day">
-                <h3 class="text-center mb-4">Sábado 25 de Octubre</h3>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">9:00-9:15</div>
-                    <div class="agenda-title">PRESENTACION DE CASO CLINICO</div>
-                    <div class="agenda-speaker">DR. JONATHAN COBEÑA - POSTGRADISTA CIRUGIA</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">9:15-9:30</div>
-                    <div class="agenda-title">PRESENTACION DE CASO CLINICO</div>
-                    <div class="agenda-speaker">DRA. CINTHYA GOMEZ - POSTGRADISTA CIRUGIA</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">9:30-10:00</div>
-                    <div class="agenda-title">DETECCION Y MANEJO INICIAL DE LAS ARRITMIAS</div>
-                    <div class="agenda-speaker">DR. JOSE LLORENTE - CARDIOLOGO ELECTROFISIOLOGO</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">10:00-10:30</div>
-                    <div class="agenda-title">NUEVAS TERAPEUTICAS EN DEMENCIA TIPO ALZHEIMER</div>
-                    <div class="agenda-speaker">DRA. KATYA ALVIA - NEUROLOGIA</div>
-                </div>
-                
-                <div class="agenda-item agenda-break">
-                    <div class="agenda-time">10:30-11:00</div>
-                    <div class="agenda-title">COFFEE BREAK</div>
-                </div>
-                
-                <div class="agenda-item">
-                    <div class="agenda-time">11:00-11:30</div>
-                    <div class="agenda-title">INTELIGENCIA ARTIFICIAL APLICADA A LA MEDICINA</div>
-                    <div class="agenda-speaker">DR. ANDRES MORENO - MAG. EN DOCENCIA EN SALUD</div>
-                </div>
-                
-                <div class="agenda-item agenda-special">
-                    <div class="agenda-time">11:30-12:00</div>
-                    <div class="agenda-title">CLAUSURA DEL EVENTO</div>
-                </div>
+            <h2>Agenda del Congreso</h2>
+            <p>Descarga la agenda completa del evento para conocer todos los detalles de las ponencias y actividades programadas.</p>
+            <a href="#" class="btn" id="download-agenda">Descargar Agenda</a>
+            <div class="card" style="margin-top: 20px;">
+                <h3>Programa General</h3>
+                <p><strong>Jueves 23 de octubre:</strong> Inauguración, Conferencias Magistrales, Talleres</p>
+                <p><strong>Viernes 24 de octubre:</strong> Mesas Redondas, Presentación de Casos, Simposios</p>
+                <p><strong>Sábado 25 de octubre:</strong> Conferencias de Clausura, Entrega de Certificados</p>
             </div>
         </div>
     </section>
 
-    <!-- Registration Section -->
-    <section id="registration" class="py-5">
+    <!-- Sección de Inscripción -->
+    <section class="registration-section" id="inscripcion">
         <div class="container">
-            <h2 class="section-title text-center">Inscripción</h2>
-            <div class="row">
-                <div class="col-md-8 mx-auto">
-                    <div class="card">
-                        <div class="card-body p-4">
-                            <div class="alert alert-info">
-                                <h5><i class="fas fa-info-circle me-2"></i>Cupo Limitado: 200 Participantes</h5>
-                                <p class="mb-0">¡Asegura tu lugar ahora! El evento es gratuito, pero los cupos son limitados.</p>
-                                <p class="mt-2"><strong>Cupos disponibles: <span id="availableSpotsForm">75</span>/200</strong></p>
-                            </div>
-                            
-                            <form id="registrationForm">
-                                <div class="mb-3">
-                                    <label for="firstName" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="firstName" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="lastName" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" id="lastName" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="idNumber" class="form-label">Cédula</label>
-                                    <input type="text" class="form-control" id="idNumber" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" id="email" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-lg w-100" id="submitButton">
-                                    <i class="fas fa-user-plus me-2"></i>Registrarse
-                                </button>
-                            </form>
-                            
-                            <div class="alert alert-warning mt-3">
-                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                Una vez enviada tu inscripción, recibirás un correo confirmando tu participación. ¡No olvides que las inscripciones duplicadas no serán permitidas!
-                            </div>
+            <h2>Inscripción de Participantes</h2>
+            <p>Total de <strong>220 cupos</strong> disponibles:</p>
+            <ul>
+                <li>190 cupos pre-asignados</li>
+                <li>30 cupos disponibles para inscripción en línea (solo DR/DRA)</li>
+            </ul>
+            
+            <div class="cupos-info">
+                <h4><i class="fas fa-info-circle"></i> Información de Cupos</h4>
+                <p><strong>Disponibles para inscripción en línea:</strong> 30 cupos para DR/DRA</p>
+                <p><strong>Otros perfiles:</strong> Solo mediante asignación previa</p>
+                <p id="cupos-restantes">Cupos restantes para DR/DRA: <span id="cupos-count">30</span></p>
+            </div>
+            
+            <div class="card">
+                <h3>Formulario de Inscripción</h3>
+                <div id="registration-message"></div>
+                <form id="registration-form">
+                    <div class="form-group">
+                        <label for="cargo">Cargo *</label>
+                        <select id="cargo" class="form-control" required>
+                            <option value="">Seleccione su cargo</option>
+                            <option value="DR">DR</option>
+                            <option value="DRA">DRA</option>
+                            <option value="LCDO">LCDO</option>
+                            <option value="LCDA">LCDA</option>
+                            <option value="IRM">IRM</option>
+                            <option value="IRE">IRE</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido *</label>
+                        <input type="text" id="apellido" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cedula">Cédula *</label>
+                        <input type="text" id="cedula" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="correo">Correo Electrónico *</label>
+                        <input type="email" id="correo" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono *</label>
+                        <input type="tel" id="telefono" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="perfil-medico" required>
+                            <label for="perfil-medico">Confirmo que soy profesional de la salud</label>
                         </div>
+                    </div>
+                    <button type="submit" class="btn" id="submit-btn">Enviar Inscripción</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Certificados (Pública) -->
+    <section class="certificate-section" id="certificados">
+        <div class="container">
+            <h2>Certificados de Participación</h2>
+            <p>Los certificados estarán disponibles para descarga a partir del 25 de octubre de 2025 a las 13:00, para los participantes que cumplan con la asistencia mínima requerida (2 de 3 días).</p>
+            
+            <div class="card">
+                <h3>Verificar y Descargar Certificado</h3>
+                <p>Ingrese su número de cédula para verificar su elegibilidad y descargar su certificado.</p>
+                
+                <div class="certificate-form">
+                    <div class="form-group">
+                        <label for="certificate-cedula">Número de Cédula *</label>
+                        <input type="text" id="certificate-cedula" class="form-control" placeholder="Ingrese su cédula">
+                    </div>
+                    <button class="btn" id="verify-certificate-btn">Verificar Elegibilidad</button>
+                </div>
+                
+                <div id="certificate-result" style="margin-top: 20px;"></div>
+                
+                <div id="certificate-download-section" style="display: none; margin-top: 20px;">
+                    <div class="certificate-preview" id="certificate-preview-public">
+                        <div class="certificate-title">CERTIFICADO DE PARTICIPACIÓN</div>
+                        <p>Se otorga el presente certificado a:</p>
+                        <div class="certificate-name" id="certificate-name-public">[NOMBRE COMPLETO]</div>
+                        <p>Por su participación en el</p>
+                        <h3>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</h3>
+                        <p class="certificate-details">Hospital Miguel H. Alcívar</p>
+                        <p class="certificate-details">23 al 25 de octubre de 2025</p>
+                        <p class="certificate-details">Bahía de Caráquez, Manabí - Ecuador</p>
+                    </div>
+                    
+                    <div class="certificate-controls">
+                        <button class="btn btn-accent" id="download-certificate-public-btn">Descargar Certificado</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Certificate Section -->
-    <section id="certificate" class="py-5 bg-light">
+    <!-- Sección de Contacto -->
+    <section class="info-section">
         <div class="container">
-            <h2 class="section-title text-center">Descargar Certificado</h2>
-            <div class="row">
-                <div class="col-md-8 mx-auto text-center">
-                    <div class="card">
-                        <div class="card-body p-5">
-                            <i class="fas fa-award display-1 text-primary mb-4"></i>
-                            <h3>Certificado de Asistencia</h3>
-                            <p class="mb-4">Los asistentes que hayan cumplido con las <strong>asistencias mínimas</strong> (2 de 3 días) podrán descargar su <strong>certificado de aprobación</strong> a partir del <strong>sábado 25 de octubre después de las 13:00 hrs.</strong></p>
-                            
-                            <div class="mb-4">
-                                <label for="certificateFirstName" class="form-label">Ingresa tu nombre:</label>
-                                <input type="text" class="form-control w-50 mx-auto" id="certificateFirstName" placeholder="Nombre">
-                            </div>
-                            <div class="mb-4">
-                                <label for="certificateLastName" class="form-label">Ingresa tu apellido:</label>
-                                <input type="text" class="form-control w-50 mx-auto" id="certificateLastName" placeholder="Apellido">
-                            </div>
-                            
-                            <button class="btn btn-success btn-lg" onclick="checkCertificateEligibility()">
-                                <i class="fas fa-download me-2"></i>Verificar y Descargar Certificado
-                            </button>
-                            
-                            <div id="certificateMessage" class="mt-3"></div>
-                            
-                            <!-- Vista previa del certificado -->
-                            <div id="certificatePreview" class="certificate-preview" style="display: none;">
-                                <div class="certificate-border">
-                                    <h4>Certificado de Asistencia</h4>
-                                    <p>Bahía de Caráquez, 25 de Octubre de 2025</p>
-                                    <p>Se otorga el presente certificado a:</p>
-                                    <div class="certificate-name" id="certificateName"></div>
-                                    <p>Por su participación como asistente en "1 Congreso Internacional de Especialidades Clínicas – Quirurgicas" Hospital Miguel H. Alcivar 2025". Con el Aval académico del Hospital General Miguel H. Alcivar y la Pontificia Universidad Católica del Ecuador Sede Manabí. Duración de 20 horas.</p>
-                                    <div class="row mt-4">
-                                        <div class="col-md-4">
-                                            <p>_________________________</p>
-                                            <p><strong>Dr. Carlos Cevallos V.</strong><br>Gerente<br>Hospital Miguel H. Alcivar</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <p>_________________________</p>
-                                            <p><strong>Dr. Francisco Mero.</strong><br>Director Asistencial<br>Hospital Miguel H. Alcivar</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <p>_________________________</p>
-                                            <p><strong>Dr. Ronald Mera P</strong><br>Responsable de Docencia<br>Hospital Miguel H. Alcivar</p>
-                                        </div>
-                                    </div>
-                                    <p class="mt-4">Ministerio de Salud Pública<br>Hospital Miguel H. Alcivar</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="info-grid">
+                <div class="card">
+                    <h3>Información de Contacto</h3>
+                    <p><i class="fas fa-phone"></i> 0991708712 – Dr. Julio Feijoo</p>
+                    <p>(Analista de Docencia HMHA)</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Participants Section -->
-    <section id="participants" class="py-5">
-        <div class="container">
-            <h2 class="section-title text-center">Nómina de Participantes</h2>
-            <div class="row">
-                <div class="col-md-10 mx-auto">
-                    <div class="card">
-                        <div class="card-header">
-                            <ul class="nav nav-tabs card-header-tabs" id="participantTabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="registered-tab" data-bs-toggle="tab" data-bs-target="#registered" type="button" role="tab">
-                                        Inscritos (<span id="registeredCount">125</span>)
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="attended-tab" data-bs-toggle="tab" data-bs-target="#attended" type="button" role="tab">
-                                        Con Certificado (<span id="certifiedCount">0</span>)
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active participant-list" id="registered" role="tabpanel">
-                                    <!-- Registered participants will be populated here -->
-                                </div>
-                                <div class="tab-pane fade participant-list" id="attended" role="tabpanel">
-                                    <!-- Participants eligible for certificates will be populated here -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Location Section -->
-    <section id="location" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="section-title text-center">Bahía de Caráquez</h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card location-card h-100">
-                        <div class="card-body p-4">
-                            <h3 class="card-title">Destino Único en Manabí</h3>
-                            <p class="card-text">Bahía de Caráquez es el lugar perfecto para combinar aprendizaje y esparcimiento. Ubicada en <strong>Manabí</strong>, ofrece hermosos paisajes, playas tranquilas y una deliciosa gastronomía.</p>
-                            <p class="card-text">No solo disfrutarás de un evento académico de primer nivel, sino también de un destino turístico único.</p>
-                            <ul>
-                                <li>Playas hermosas y tranquilas</li>
-                                <li>Gastronomía manabita única</li>
-                                <li>Paisajes naturales impresionantes</li>
-                                <li>Clima agradable durante todo el año</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card h-100">
-                        <div class="card-body p-0">
-                            <div class="ratio ratio-16x9">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.297612729022!2d-80.43245692473216!3d-0.5958994352422227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902b77d61c54eac7%3A0x9a9a7e83b8c5b0f5!2sBah%C3%ADa%20de%20Car%C3%A1quez%2C%20Ecuador!5e0!3m2!1ses!2sus!4v1690834567890!5m2!1ses!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row mt-4">
-                <div class="col-md-4 mb-3">
-                    <img src="539126778_1163930079102667_3679053548898091194_n.jpg" alt="Bahía de Caráquez" class="bahia-image">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <img src="https://images.unsplash.com/photo-1589561454227-68b20c24d23e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Playa de Bahía" class="bahia-image">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <img src="https://images.unsplash.com/photo-1597078532324-79b0e5f8c614?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Vista de Bahía" class="bahia-image">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sponsors Section -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="section-title text-center">Organizan</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-3 text-center">
-                    <img src="6652a99add07a.jpeg" alt="Ministerio de Salud Pública" class="sponsor-logo">
-                    <p class="mt-2">Ministerio de Salud Pública</p>
-                </div>
-                <div class="col-md-3 text-center">
-                    <div class="sponsor-logo-placeholder bg-primary text-white d-flex align-items-center justify-content-center rounded" style="height: 80px; width: 200px;">
-                        <h5>PUCE MANABÍ</h5>
-                    </div>
-                    <p class="mt-2">Pontificia Universidad Católica del Ecuador Sede Manabí</p>
-                </div>
-                <div class="col-md-3 text-center">
-                    <div class="sponsor-logo-placeholder bg-warning text-dark d-flex align-items-center justify-content-center rounded" style="height: 80px; width: 200px;">
-                        <h5>ULVR</h5>
-                    </div>
-                    <p class="mt-2">Universidad Laica "Eloy Alfaro" de Manabí</p>
+                <div class="card">
+                    <h3>Organiza</h3>
+                    <p>Unidad de Docencia e Investigación - Hospital Miguel H. Alcívar</p>
                 </div>
             </div>
         </div>
@@ -827,922 +602,477 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>I Congreso Internacional</h5>
-                    <p>Especialidades Clínicas Quirúrgicas<br>Hospital Miguel H. Alcivar</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contacto</h5>
-                    <p><i class="fas fa-map-marker-alt me-2"></i>Bahía de Caráquez, Manabí</p>
-                    <p><i class="fas fa-calendar-alt me-2"></i>23-25 Octubre, 2025</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Organizan</h5>
-                    <p>Hospital General Miguel H. Alcívar</p>
-                    <p>Pontificia Universidad Católica del Ecuador Sede Manabí</p>
-                </div>
+            <p>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</p>
+            <p>Hospital Miguel H. Alcívar</p>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-home"></i> Inicio</a>
+                <a href="#inscripcion"><i class="fas fa-user-plus"></i> Inscripción</a>
+                <a href="#certificados"><i class="fas fa-certificate"></i> Certificados</a>
+                <a href="#" id="admin-login-link"><i class="fas fa-cog"></i> Acceso Administrador</a>
             </div>
-            <hr class="my-4">
-            <div class="text-center">
-                <p>&copy; 2025 I Congreso Internacional de Especialidades Clínicas Quirúrgicas. Todos los derechos reservados.</p>
-            </div>
+            <p>&copy; 2025 - Todos los derechos reservados</p>
         </div>
     </footer>
 
-    <!-- Admin Login Modal -->
-    <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adminLoginModalLabel">Acceso de Administración</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Panel de Administrador -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="container">
+            <h2>Panel de Administrador</h2>
+            
+            <div class="admin-section">
+                <h3>Gestión de Participantes</h3>
+                <div class="admin-actions">
+                    <button class="btn" id="upload-list-btn">Cargar Lista de Invitados</button>
+                    <button class="btn btn-secondary" id="add-participant-btn">Agregar Participante</button>
+                    <button class="btn btn-accent" id="download-list-btn">Descargar Lista Completa</button>
                 </div>
-                <div class="modal-body">
-                    <form id="adminLoginForm">
-                        <div class="mb-3">
-                            <label for="adminUsername" class="form-label">Usuario</label>
-                            <input type="text" class="form-control" id="adminUsername" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="adminPassword" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="adminPassword" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-                    </form>
-                    <div id="adminLoginMessage" class="mt-3"></div>
+                
+                <div class="card">
+                    <h4>Lista de Participantes</h4>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Cargo</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Cédula</th>
+                                <th>Asistencia</th>
+                                <th>Certificado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participants-table">
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Admin Modal -->
-    <div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adminModalLabel">Panel de Administración</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+            <div class="admin-section">
+                <h3>Control de Asistencia</h3>
+                <div class="card">
+                    <p>Enlaces para registrar asistencia:</p>
+                    <ul>
+                        <li><a href="https://docs.google.com/forms/d/1nihA_9JrKg1KOJCy4ypah4wtS5wXN3ETaKDgxNjTj70/edit" target="_blank">Día 1 (jueves 23)</a></li>
+                        <li><a href="https://docs.google.com/forms/d/18n4OUSB3iGBlBTBH6k4d-Tvma1rSXSS0Yv_vdq7bLVY/edit" target="_blank">Día 2 (viernes 24)</a></li>
+                        <li><a href="https://docs.google.com/forms/d/11PXiisbAVSnWc74sRQJntSvnbSFk53um0CQikR0QHww/edit" target="_blank">Día 3 (sábado 25)</a></li>
+                    </ul>
+                    <div class="admin-actions">
+                        <button class="btn" id="process-attendance-btn">Procesar Datos de Asistencia</button>
+                        <button class="btn btn-secondary" id="manual-attendance-btn">Registro Manual</button>
+                    </div>
+                    <div id="attendance-results" style="margin-top: 20px;"></div>
                 </div>
-                <div class="modal-body">
-                    <div class="admin-qr-section">
-                        <h6><i class="fas fa-qrcode me-2"></i>Códigos QR para Asistencia</h6>
-                        <p class="text-muted">Estos códigos QR deben ser proyectados durante el congreso para que los asistentes puedan escanearlos y registrar su asistencia.</p>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="qr-container">
-                                    <div id="qrDay1"></div>
-                                    <p class="mt-2">Día 1 - 23 Octubre</p>
-                                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="downloadQR('qrDay1', 'QR_Dia1_Congreso')">
-                                        <i class="fas fa-download me-1"></i>Descargar
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="qr-container">
-                                    <div id="qrDay2"></div>
-                                    <p class="mt-2">Día 2 - 24 Octubre</p>
-                                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="downloadQR('qrDay2', 'QR_Dia2_Congreso')">
-                                        <i class="fas fa-download me-1"></i>Descargar
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="qr-container">
-                                    <div id="qrDay3"></div>
-                                    <p class="mt-2">Día 3 - 25 Octubre</p>
-                                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="downloadQR('qrDay3', 'QR_Dia3_Congreso')">
-                                        <i class="fas fa-download me-1"></i>Descargar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+            
+            <div class="admin-section">
+                <h3>Generación de Certificados</h3>
+                <div class="card">
+                    <p>Los certificados estarán disponibles automáticamente desde el 25 de octubre, 13:00, para participantes que cumplan con la asistencia mínima (2 de 3 días).</p>
+                    
+                    <div class="certificate-preview" id="certificate-preview-admin">
+                        <div class="certificate-title">CERTIFICADO DE PARTICIPACIÓN</div>
+                        <p>Se otorga el presente certificado a:</p>
+                        <div class="certificate-name" id="certificate-name-admin">[NOMBRE COMPLETO]</div>
+                        <p>Por su participación en el</p>
+                        <h3>I er Congreso Internacional de Especialidades Clínicas - Quirúrgicas</h3>
+                        <p class="certificate-details">Hospital Miguel H. Alcívar</p>
+                        <p class="certificate-details">23 al 25 de octubre de 2025</p>
+                        <p class="certificate-details">Bahía de Caráquez, Manabí - Ecuador</p>
                     </div>
                     
-                    <div class="admin-section">
-                        <h6><i class="fas fa-download me-2"></i>Descargar Reportes</h6>
-                        <div class="d-grid gap-2 d-md-block mb-3">
-                            <button class="btn btn-outline-primary me-md-2" onclick="downloadReport('registered')">
-                                <i class="fas fa-users me-2"></i>Lista de Inscritos
-                            </button>
-                            <button class="btn btn-outline-primary me-md-2" onclick="downloadReport('attendance')">
-                                <i class="fas fa-clipboard-check me-2"></i>Registro de Asistencias
-                            </button>
-                            <button class="btn btn-outline-success" onclick="downloadReport('certificates')">
-                                <i class="fas fa-award me-2"></i>Lista para Certificados
-                            </button>
-                        </div>
-                        
-                        <h6><i class="fas fa-user-cog me-2"></i>Gestión de Participantes</h6>
-                        <div class="mb-3">
-                            <button class="btn btn-outline-info" onclick="showAddParticipantForm()">
-                                <i class="fas fa-user-plus me-2"></i>Agregar Participante
-                            </button>
-                            <button class="btn btn-outline-warning" onclick="showDeleteParticipantForm()">
-                                <i class="fas fa-user-minus me-2"></i>Eliminar Participante
-                            </button>
-                        </div>
-                        
-                        <!-- Formulario para agregar participante -->
-                        <div id="addParticipantForm" class="admin-only mt-3 p-3 border rounded">
-                            <h6>Agregar Nuevo Participante</h6>
-                            <form id="newParticipantForm">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-2">
-                                            <label class="form-label">Nombre</label>
-                                            <input type="text" class="form-control" id="newFirstName" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-2">
-                                            <label class="form-label">Apellido</label>
-                                            <input type="text" class="form-control" id="newLastName" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-2">
-                                            <label class="form-label">Cédula</label>
-                                            <input type="text" class="form-control" id="newIdNumber" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-2">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="newEmail" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-sm">Agregar Participante</button>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="hideAddParticipantForm()">Cancelar</button>
-                            </form>
-                        </div>
-                        
-                        <!-- Formulario para eliminar participante -->
-                        <div id="deleteParticipantForm" class="admin-only mt-3 p-3 border rounded">
-                            <h6>Eliminar Participante</h6>
-                            <div class="mb-2">
-                                <label class="form-label">Selecciona participante a eliminar:</label>
-                                <select class="form-control" id="participantToDelete">
-                                    <option value="">-- Selecciona un participante --</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-danger btn-sm" onclick="deleteParticipant()">Eliminar Participante</button>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="hideDeleteParticipantForm()">Cancelar</button>
-                        </div>
-                        
-                        <!-- Vista previa de certificado de prueba -->
-                        <div class="mt-4">
-                            <h6><i class="fas fa-certificate me-2"></i>Vista Previa de Certificado</h6>
-                            <div class="mb-2">
-                                <label class="form-label">Nombre para certificado de prueba:</label>
-                                <input type="text" class="form-control w-50 d-inline" id="testCertificateName" placeholder="Ej: Juan Pérez">
-                                <button class="btn btn-outline-info btn-sm ms-2" onclick="showTestCertificate()">Generar Vista Previa</button>
-                            </div>
-                            <div id="testCertificatePreview" class="certificate-preview mt-2" style="display: none;">
-                                <div class="certificate-border">
-                                    <h4>Certificado de Asistencia</h4>
-                                    <p>Bahía de Caráquez, 25 de Octubre de 2025</p>
-                                    <p>Se otorga el presente certificado a:</p>
-                                    <div class="certificate-name" id="testCertificateNameDisplay"></div>
-                                    <p>Por su participación como asistente en "1 Congreso Internacional de Especialidades Clínicas – Quirurgicas" Hospital Miguel H. Alcivar 2025". Con el Aval académico del Hospital General Miguel H. Alcivar y la Pontificia Universidad Católica del Ecuador Sede Manabí. Duración de 20 horas.</p>
-                                    <div class="row mt-4">
-                                        <div class="col-md-4">
-                                            <p>_________________________</p>
-                                            <p><strong>Dr. Carlos Cevallos V.</strong><br>Gerente<br>Hospital Miguel H. Alcivar</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <p>_________________________</p>
-                                            <p><strong>Dr. Francisco Mero.</strong><br>Director Asistencial<br>Hospital Miguel H. Alcivar</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <p>_________________________</p>
-                                            <p><strong>Dr. Ronald Mera P</strong><br>Responsable de Docencia<br>Hospital Miguel H. Alcivar</p>
-                                        </div>
-                                    </div>
-                                    <p class="mt-4">Ministerio de Salud Pública<br>Hospital Miguel H. Alcivar</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="certificate-controls">
+                        <button class="btn" id="preview-certificate-btn">Vista Previa</button>
+                        <button class="btn btn-secondary" id="generate-certificate-btn">Generar Certificado</button>
+                        <button class="btn btn-accent" id="download-certificate-admin-btn">Descargar Certificado</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
+            </div>
+            
+            <div class="admin-actions">
+                <button class="btn btn-accent" id="logout-btn">Cerrar Sesión</button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Modal de Login para Administrador -->
+    <div id="login-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="login-form">
+            <h3>Acceso Administrador</h3>
+            <div class="form-group">
+                <label for="admin-user">Usuario</label>
+                <input type="text" id="admin-user" class="form-control" value="DOCENCIA">
+            </div>
+            <div class="form-group">
+                <label for="admin-password">Contraseña</label>
+                <input type="password" id="admin-password" class="form-control" value="DOCENCIA">
+            </div>
+            <button class="btn" id="login-btn">Iniciar Sesión</button>
+            <button class="btn btn-secondary" id="cancel-login-btn">Cancelar</button>
+        </div>
+    </div>
+
     <script>
-        // Datos iniciales basados en la nómina proporcionada
-        let participants = JSON.parse(localStorage.getItem('congressParticipants')) || [];
-        let attendance = JSON.parse(localStorage.getItem('congressAttendance')) || {};
-        let isAdminLoggedIn = false;
-        
-        // Inicializar datos si es la primera vez
-        if (participants.length === 0) {
-            // Agregar participantes de la nómina proporcionada
-            const initialParticipants = [
-                // Gerencia (10)
-                { id: 1, firstName: "Leonardo", lastName: "Viteri", idNumber: "G001", email: "gerencia1@ejemplo.com" },
-                { id: 2, firstName: "Leonel", lastName: "Kounqui", idNumber: "G002", email: "gerencia2@ejemplo.com" },
-                { id: 3, firstName: "Carlos", lastName: "Cevallos R.", idNumber: "G003", email: "gerencia3@ejemplo.com" },
-                { id: 4, firstName: "José", lastName: "Intriago", idNumber: "G004", email: "gerencia4@ejemplo.com" },
-                { id: 5, firstName: "Alberto", lastName: "Quintero", idNumber: "G005", email: "gerencia5@ejemplo.com" },
-                { id: 6, firstName: "Patricio", lastName: "Calderón", idNumber: "G006", email: "gerencia6@ejemplo.com" },
-                { id: 7, firstName: "Ricardo", lastName: "Mejía", idNumber: "G007", email: "gerencia7@ejemplo.com" },
-                { id: 8, firstName: "Jorge", lastName: "Quijano", idNumber: "G008", email: "gerencia8@ejemplo.com" },
-                { id: 9, firstName: "Sergio", lastName: "Arcentales", idNumber: "G009", email: "gerencia9@ejemplo.com" },
-                { id: 10, firstName: "Carlos", lastName: "Cevallos V.", idNumber: "G010", email: "gerencia10@ejemplo.com" },
-                
-                // Comisión Científica (7)
-                { id: 11, firstName: "Bosco", lastName: "Mendoza", idNumber: "CC001", email: "cc1@ejemplo.com" },
-                { id: 12, firstName: "Vladimir", lastName: "Moreno", idNumber: "CC002", email: "cc2@ejemplo.com" },
-                { id: 13, firstName: "Ronald", lastName: "Mera", idNumber: "CC003", email: "cc3@ejemplo.com" },
-                { id: 14, firstName: "Julio", lastName: "Feijoo", idNumber: "CC004", email: "cc4@ejemplo.com" },
-                { id: 15, firstName: "Clímaco", lastName: "García", idNumber: "CC005", email: "cc5@ejemplo.com" },
-                { id: 16, firstName: "Jenefer", lastName: "Ponce", idNumber: "CC006", email: "cc6@ejemplo.com" },
-                { id: 17, firstName: "Hugo", lastName: "Naranjo", idNumber: "CC007", email: "cc7@ejemplo.com" },
-                
-                // Protocolo (6)
-                { id: 18, firstName: "Viviana", lastName: "Meza Rodríguez", idNumber: "P001", email: "protocolo1@ejemplo.com" },
-                { id: 19, firstName: "Maholi", lastName: "Giler Montes", idNumber: "P002", email: "protocolo2@ejemplo.com" },
-                { id: 20, firstName: "Josseline", lastName: "Sandoval Bernard", idNumber: "P003", email: "protocolo3@ejemplo.com" },
-                { id: 21, firstName: "Anita", lastName: "Cedeño Loor", idNumber: "P004", email: "protocolo4@ejemplo.com" },
-                { id: 22, firstName: "Ximena", lastName: "Mera Mantong", idNumber: "P005", email: "protocolo5@ejemplo.com" },
-                { id: 23, firstName: "Gabriel", lastName: "Solórzano Bravo", idNumber: "P006", email: "protocolo6@ejemplo.com" },
-                
-                // Médicos IESS (5)
-                { id: 24, firstName: "Cindy Ximena", lastName: "Loor Arcentales", idNumber: "MI001", email: "iess1@ejemplo.com" },
-                { id: 25, firstName: "Erick Orlando", lastName: "Toro Villagómez", idNumber: "MI002", email: "iess2@ejemplo.com" },
-                { id: 26, firstName: "Mónica Ariana", lastName: "Ortega Ponce", idNumber: "MI003", email: "iess3@ejemplo.com" },
-                { id: 27, firstName: "Misleidy", lastName: "Hernández Benítez", idNumber: "MI004", email: "iess4@ejemplo.com" },
-                { id: 28, firstName: "Víctor Manuel", lastName: "Moreira Bravo", idNumber: "MI005", email: "iess5@ejemplo.com" },
-                
-                // Pedernales (3)
-                { id: 29, firstName: "Mariuxi", lastName: "Cedeño Macías", idNumber: "PE001", email: "pedernales1@ejemplo.com" },
-                { id: 30, firstName: "José Pablo", lastName: "Ángulo Macías", idNumber: "PE002", email: "pedernales2@ejemplo.com" },
-                { id: 31, firstName: "Claudia Elizabeth", lastName: "Pascuales Zambrano", idNumber: "PE003", email: "pedernales3@ejemplo.com" },
-                
-                // Distrito (12)
-                { id: 32, firstName: "Karina Antonia", lastName: "Figueroa Vera", idNumber: "D001", email: "distrito1@ejemplo.com" },
-                { id: 33, firstName: "Marcelo", lastName: "Cuellar Zambrano", idNumber: "D002", email: "distrito2@ejemplo.com" },
-                { id: 34, firstName: "Miguel Ángel", lastName: "Briones Cedeño", idNumber: "D003", email: "distrito3@ejemplo.com" },
-                { id: 35, firstName: "Katya Pierina", lastName: "Barrera Vera", idNumber: "D004", email: "distrito4@ejemplo.com" },
-                { id: 36, firstName: "José Andrés", lastName: "Loor Villaprado", idNumber: "D005", email: "distrito5@ejemplo.com" },
-                { id: 37, firstName: "Juan Andrés", lastName: "Castro Loor", idNumber: "D006", email: "distrito6@ejemplo.com" },
-                { id: 38, firstName: "Emiliano Javier", lastName: "Basurto Loor", idNumber: "D007", email: "distrito7@ejemplo.com" },
-                { id: 39, firstName: "Rodrigo Byron", lastName: "Macías Párraga", idNumber: "D008", email: "distrito8@ejemplo.com" },
-                { id: 40, firstName: "Vielka Monserrate", lastName: "Mendoza Briones", idNumber: "D009", email: "distrito9@ejemplo.com" },
-                { id: 41, firstName: "Elsa", lastName: "Evora Luis", idNumber: "D010", email: "distrito10@ejemplo.com" },
-                { id: 42, firstName: "Jessica Carolina", lastName: "Robalino Torres", idNumber: "D011", email: "distrito11@ejemplo.com" },
-                { id: 43, firstName: "María de Lourdes", lastName: "Ricaurte Chávez", idNumber: "D012", email: "distrito12@ejemplo.com" },
-                
-                // Internos Medicina (10)
-                { id: 106, firstName: "Antonella", lastName: "Solórzano", idNumber: "IM001", email: "interno1@ejemplo.com" },
-                { id: 107, firstName: "Samuel", lastName: "Cusme", idNumber: "IM002", email: "interno2@ejemplo.com" },
-                { id: 108, firstName: "Mikaela", lastName: "Enrique", idNumber: "IM003", email: "interno3@ejemplo.com" },
-                { id: 109, firstName: "Cinthya", lastName: "Zambrano", idNumber: "IM004", email: "interno4@ejemplo.com" },
-                
-                // Médicos Residentes (10)
-                { id: 116, firstName: "Pedro", lastName: "Reyna", idNumber: "MR001", email: "residente1@ejemplo.com" },
-                { id: 117, firstName: "Michelle", lastName: "Molina", idNumber: "MR002", email: "residente2@ejemplo.com" },
-                { id: 118, firstName: "Juan", lastName: "Loor", idNumber: "MR003", email: "residente3@ejemplo.com" },
-                { id: 119, firstName: "José", lastName: "Chica", idNumber: "MR004", email: "residente4@ejemplo.com" },
-                { id: 120, firstName: "Darwin", lastName: "Pachacama", idNumber: "MR005", email: "residente5@ejemplo.com" },
-                { id: 121, firstName: "Celin", lastName: "Cerón", idNumber: "MR006", email: "residente6@ejemplo.com" },
-                { id: 122, firstName: "Daniela", lastName: "Cedeño", idNumber: "MR007", email: "residente7@ejemplo.com" },
-                
-                // General
-                { id: 198, firstName: "Arianna", lastName: "Espinoza", idNumber: "GEN001", email: "general1@ejemplo.com" },
-                { id: 199, firstName: "", lastName: "Rendón", idNumber: "GEN002", email: "general2@ejemplo.com" },
-                { id: 200, firstName: "Gabriela", lastName: "Tubay", idNumber: "GEN003", email: "general3@ejemplo.com" }
-            ];
-            
-            participants = initialParticipants;
-            localStorage.setItem('congressParticipants', JSON.stringify(participants));
-        }
-        
-        // Inicializar contador de días
-        if (!attendance.day1) attendance.day1 = [];
-        if (!attendance.day2) attendance.day2 = [];
-        if (!attendance.day3) attendance.day3 = [];
-        
+        // Inicializar jsPDF
+        const { jsPDF } = window.jspdf;
+
+        // Variables globales
+        let currentParticipant = null;
+        const MAX_ONLINE_CUPOS = 30;
+
         // Contador regresivo
         function updateCountdown() {
             const eventDate = new Date('October 23, 2025 08:00:00').getTime();
             const now = new Date().getTime();
-            const distance = eventDate - now;
+            const timeLeft = eventDate - now;
             
-            if (distance < 0) {
-                document.getElementById('countdown').innerHTML = "¡El congreso ha comenzado!";
-                return;
-            }
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
             
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-            document.getElementById('countdown').innerHTML = 
-                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
         
         setInterval(updateCountdown, 1000);
         updateCountdown();
-        
-        // Actualizar cupos disponibles
-        function updateAvailableSpots() {
-            const available = 200 - participants.length;
-            document.getElementById('availableSpots').textContent = available;
-            document.getElementById('availableSpotsForm').textContent = available;
+
+        // Actualizar contador de cupos
+        function updateCuposCount() {
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const onlineDRDRA = participants.filter(p => p.tipo === 'online' && (p.cargo === 'DR' || p.cargo === 'DRA'));
+            const cuposRestantes = MAX_ONLINE_CUPOS - onlineDRDRA.length;
             
-            // Deshabilitar el formulario si no hay cupos
-            const submitButton = document.getElementById('submitButton');
-            if (available <= 0) {
-                submitButton.disabled = true;
-                submitButton.textContent = 'Cupos Agotados';
+            document.getElementById('cupos-count').textContent = cuposRestantes;
+            
+            if (cuposRestantes <= 0) {
+                document.getElementById('cupos-restantes').innerHTML = '<strong style="color: var(--danger-color);">CUPOS AGOTADOS para DR/DRA</strong>';
             }
         }
         
-        // Formulario de inscripción
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        // Gestión del formulario de inscripción
+        document.getElementById('registration-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const idNumber = document.getElementById('idNumber').value;
-            const email = document.getElementById('email').value;
+            const cargo = document.getElementById('cargo').value;
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const cedula = document.getElementById('cedula').value;
+            const correo = document.getElementById('correo').value;
+            const telefono = document.getElementById('telefono').value;
+            const perfilMedico = document.getElementById('perfil-medico').checked;
             
-            // Verificar si ya está registrado
-            const existingParticipant = participants.find(p => 
-                p.idNumber === idNumber || (p.firstName === firstName && p.lastName === lastName)
+            // Validaciones básicas
+            if (!perfilMedico) {
+                showRegistrationMessage('Debe confirmar que es profesional de la salud para inscribirse.', 'danger');
+                return;
+            }
+            
+            // Verificar si es DR/DRA para cupos en línea
+            const existingParticipants = JSON.parse(localStorage.getItem('participants') || '[]');
+            
+            if (cargo !== 'DR' && cargo !== 'DRA') {
+                showRegistrationMessage('Actualmente no hay disponibilidad para otras categorías de participantes. Solo se permiten DR y DRA para inscripción en línea.', 'danger');
+                return;
+            }
+            
+            // Verificar cupos disponibles para DR/DRA
+            const onlineDRDRA = existingParticipants.filter(p => p.tipo === 'online' && (p.cargo === 'DR' || p.cargo === 'DRA'));
+            
+            if (onlineDRDRA.length >= MAX_ONLINE_CUPOS) {
+                showRegistrationMessage('Cupos agotados para inscripciones en línea de DR/DRA.', 'danger');
+                return;
+            }
+            
+            // Verificar duplicados
+            const duplicate = existingParticipants.find(p => 
+                p.nombre.toLowerCase() === nombre.toLowerCase() && 
+                p.apellido.toLowerCase() === apellido.toLowerCase()
             );
             
-            if (existingParticipant) {
-                alert('Ya estás registrado en el congreso. No se permiten inscripciones duplicadas.');
+            if (duplicate) {
+                showRegistrationMessage('Ya existe un participante registrado con ese nombre y apellido.', 'danger');
                 return;
             }
             
-            // Verificar capacidad
-            if (participants.length >= 200) {
-                alert('Lo sentimos, el cupo para el congreso está completo.');
-                return;
-            }
-            
-            // Agregar participante
+            // Guardar participante
             const newParticipant = {
-                id: Date.now(),
-                firstName,
-                lastName,
-                idNumber,
-                email,
-                registrationDate: new Date().toLocaleDateString()
+                cargo,
+                nombre,
+                apellido,
+                cedula,
+                correo,
+                telefono,
+                perfilMedico,
+                tipo: 'online',
+                fechaInscripcion: new Date().toISOString(),
+                asistencias: [false, false, false] // Día 1, 2, 3
             };
             
-            participants.push(newParticipant);
-            localStorage.setItem('congressParticipants', JSON.stringify(participants));
+            existingParticipants.push(newParticipant);
+            localStorage.setItem('participants', JSON.stringify(existingParticipants));
             
-            alert(`¡Inscripción exitosa! Has sido registrado en el congreso. Recibirás un correo de confirmación en ${email}`);
-            document.getElementById('registrationForm').reset();
-            updateParticipantLists();
-            updateAvailableSpots();
+            showRegistrationMessage('¡Inscripción exitosa! Su registro ha sido procesado correctamente.', 'success');
+            document.getElementById('registration-form').reset();
+            updateCuposCount();
         });
         
-        // Verificar elegibilidad para certificado
-        function checkCertificateEligibility() {
-            const firstName = document.getElementById('certificateFirstName').value.trim();
-            const lastName = document.getElementById('certificateLastName').value.trim();
+        function showRegistrationMessage(message, type) {
+            const messageDiv = document.getElementById('registration-message');
+            messageDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
             
-            if (!firstName || !lastName) {
-                document.getElementById('certificateMessage').innerHTML = 
-                    '<div class="alert alert-danger">Por favor, ingresa tu nombre y apellido.</div>';
-                return;
-            }
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
+        
+        // Gestión del panel de administrador
+        document.getElementById('admin-login-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('login-modal').style.display = 'flex';
+        });
+        
+        document.getElementById('cancel-login-btn').addEventListener('click', function() {
+            document.getElementById('login-modal').style.display = 'none';
+        });
+        
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const user = document.getElementById('admin-user').value;
+            const password = document.getElementById('admin-password').value;
             
-            // Buscar participante
-            const participant = participants.find(p => 
-                p.firstName.toLowerCase() === firstName.toLowerCase() && 
-                p.lastName.toLowerCase() === lastName.toLowerCase()
-            );
-            
-            if (!participant) {
-                document.getElementById('certificateMessage').innerHTML = 
-                    '<div class="alert alert-danger">No se encontró un participante con ese nombre y apellido.</div>';
-                return;
-            }
-            
-            // Verificar asistencias
-            const day1Attended = attendance.day1.some(a => a.id === participant.id);
-            const day2Attended = attendance.day2.some(a => a.id === participant.id);
-            const day3Attended = attendance.day3.some(a => a.id === participant.id);
-            
-            const totalDays = [day1Attended, day2Attended, day3Attended].filter(Boolean).length;
-            
-            // Verificar fecha (después del 25 de octubre a las 13:00)
-            const now = new Date();
-            const certificateAvailableDate = new Date('October 25, 2025 13:00:00');
-            
-            if (now < certificateAvailableDate) {
-                document.getElementById('certificateMessage').innerHTML = 
-                    `<div class="alert alert-info">
-                        Los certificados estarán disponibles a partir del sábado 25 de octubre después de las 13:00 hrs.
-                        Hasta ahora has asistido a ${totalDays} de 3 días.
-                    </div>`;
-                return;
-            }
-            
-            if (totalDays >= 2) {
-                document.getElementById('certificateName').textContent = `${participant.firstName} ${participant.lastName}`;
-                document.getElementById('certificatePreview').style.display = 'block';
-                
-                document.getElementById('certificateMessage').innerHTML = 
-                    `<div class="alert alert-success">
-                        ¡Felicidades! Cumples con los requisitos para obtener tu certificado.
-                        <button class="btn btn-success mt-2" onclick="generateCertificate('${participant.id}')">
-                            <i class="fas fa-download me-2"></i>Descargar Certificado
-                        </button>
-                    </div>`;
+            if (user === 'DOCENCIA' && password === 'DOCENCIA') {
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                loadParticipantsTable();
             } else {
-                document.getElementById('certificatePreview').style.display = 'none';
-                document.getElementById('certificateMessage').innerHTML = 
-                    `<div class="alert alert-warning">
-                        No cumples con los requisitos mínimos para obtener el certificado. 
-                        Has asistido a ${totalDays} de 3 días (se requieren al menos 2 días).
-                    </div>`;
+                alert('Credenciales incorrectas. Intente nuevamente.');
             }
-        }
+        });
         
-        // Generar certificado (simulado)
-        function generateCertificate(participantId) {
-            const participant = participants.find(p => p.id == participantId);
-            alert(`Generando certificado para ${participant.firstName} ${participant.lastName}...\n\n(En una implementación real, esto generaría un PDF descargable con el formato proporcionado)`);
-        }
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            document.getElementById('admin-panel').style.display = 'none';
+        });
         
-        // Actualizar listas de participantes
-        function updateParticipantLists() {
-            const registeredList = document.getElementById('registered');
-            const certifiedList = document.getElementById('attended');
+        // Cargar tabla de participantes
+        function loadParticipantsTable() {
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const tableBody = document.getElementById('participants-table');
+            tableBody.innerHTML = '';
             
-            // Limpiar listas
-            registeredList.innerHTML = '';
-            certifiedList.innerHTML = '';
-            
-            // Actualizar contadores
-            document.getElementById('registeredCount').textContent = participants.length;
-            
-            // Calcular participantes con certificado
-            const certifiedParticipants = participants.filter(p => {
-                const day1Attended = attendance.day1.some(a => a.id === p.id);
-                const day2Attended = attendance.day2.some(a => a.id === p.id);
-                const day3Attended = attendance.day3.some(a => a.id === p.id);
-                return [day1Attended, day2Attended, day3Attended].filter(Boolean).length >= 2;
-            });
-            
-            document.getElementById('certifiedCount').textContent = certifiedParticipants.length;
-            
-            // Llenar lista de inscritos
-            participants.forEach(participant => {
-                const item = document.createElement('div');
-                item.className = 'participant-item';
-                item.innerHTML = `<strong>${participant.firstName} ${participant.lastName}</strong>`;
-                registeredList.appendChild(item);
-            });
-            
-            // Llenar lista con certificado
-            certifiedParticipants.forEach(participant => {
-                const item = document.createElement('div');
-                item.className = 'participant-item';
-                item.innerHTML = `
-                    <strong>${participant.firstName} ${participant.lastName}</strong>
-                    <span class="badge bg-success float-end">Certificado</span>
+            participants.forEach((participant, index) => {
+                const asistencias = participant.asistencias || [false, false, false];
+                const diasAsistidos = asistencias.filter(a => a).length;
+                const puedeCertificado = diasAsistidos >= 2;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${participant.cargo}</td>
+                    <td>${participant.nombre}</td>
+                    <td>${participant.apellido}</td>
+                    <td>${participant.cedula}</td>
+                    <td>
+                        <span class="attendance-status ${asistencias[0] ? 'attendance-present' : 'attendance-absent'}">D1</span>
+                        <span class="attendance-status ${asistencias[1] ? 'attendance-present' : 'attendance-absent'}">D2</span>
+                        <span class="attendance-status ${asistencias[2] ? 'attendance-present' : 'attendance-absent'}">D3</span>
+                    </td>
+                    <td>${puedeCertificado ? '<span style="color: green">✓ Elegible</span>' : '<span style="color: red">✗ No elegible</span>'}</td>
+                    <td>
+                        <button class="btn btn-accent" onclick="deleteParticipant(${index})">Eliminar</button>
+                        <button class="btn btn-secondary" onclick="editParticipant(${index})">Editar</button>
+                    </td>
                 `;
-                certifiedList.appendChild(item);
-            });
-            
-            // Actualizar lista para eliminar participantes (solo admin)
-            if (isAdminLoggedIn) {
-                updateDeleteParticipantList();
-            }
-        }
-        
-        // Descargar agenda
-        function downloadAgenda() {
-            // Crear contenido para el PDF
-            const agendaContent = `
-                CONGRESO INTERNACIONAL DE ESPECIALIDADES CLINICO-QUIRURGICAS
-                HOSPITAL MIGUEL H. ALCIVAR
-                23, 24 Y 25 DE OCTUBRE - BAHIA DE CARAQUEZ 2025
-                
-                JUEVES 23 DE OCTUBRE
-                8:00-8:30 INSCRIPCION
-                8:30-9:00 APERTURA - PALABRAS DE BIENVENIDA
-                9:00-9:30 ENFERMEDAD HEPÁTICA ESTEATOSICA ASOCIADA A DISFUNCIÓN METABÓLICA - DR. JONATHAN SALMON
-                9:30-10:00 CPRE:HERRAMIENTA CLAVE EN GASTROENTEROLOGÍA MODERNA - DR. XAVIER VERA ARTEAGA
-                10:00-10:30 COFFEE BREAK
-                10:30-11:00 ACTUALIZACIÓN EN INSUFICIENCIA RENAL AGUDA - DR. GUSTAVO AGUIERE
-                11:00-11:30 ABORDAJE DE LA ENFERMEDAD RENAL DIABÉTICA - DR. JUAN RUBIO
-                11:30-12:00 ABORDAJE CARDIORENOMETABÓLICO - DR. ROBERT DELGADO
-                12:00-13:00 BOX-LUNCH
-                13:00-13:30 MANEJO DEL ASMA SEGÚN LAS GUÍAS GINA 2025 - DR. JORGE EDEÑO
-                13:30-14:00 REACCIONES DE HIPERSENSIBILIDAD POR IODO - DRA. JOHANNA MACIAS ZAMORA
-                14:00-14:30 PATOLOGIA UNGUEAL EN ATENCIÓN PRIMARIA - DRA. CINTHYA GUERRERO
-                14:30-15:00 COFFEE BREAK
-                15:00-15:30 FIBROMIALGIA: ACTUALIZACIONES EN SU MANEJO - DR. JUAN CARLOS VELEZ
-                15:30-16:00 MANEJO DE LA AGITACIÓN EN ATENCIÓN PRIMARIA - DR. HAMILTON CEDEÑO
-                
-                VIERNES 24 DE OCTUBRE
-                9:00-9:30 ABORDANDO LA RESISTENCIA BACTERIANA - DR. RODRIGO MOLINA
-                9:30-10:00 HIPERTENSION ARTERIAL EN EL ADULTO MAYOR - DR. JAIME GARCIA DEJO
-                10:00-10:30 COFFEE BREAK
-                11:00-11:30 MANEJO DE LA DIABETES TIPO 2 EN ATENCION PRIMARIA - DRA. MARIA JOSE SOLIS
-                11:30-12:00 TALLER DE INSULINIZACIÓN - DR GABRIEL SANTANA
-                12:00-13:00 BOX-LUNCH
-                13:00-13:30 CIRUGÍA DE CONTORNO CORPORAL - DR. MIGUEL LOOR VIDAL
-                13:30-14:00 TRATAMIENTO INTEGRAL DEL PIE DIABETICO - DR. ANGEL ZAMBRANO
-                14:00-14:30 TRAUMA CRANEOENCEFÁLICO - DR MARIO LAPAZ
-                14:30-15:00 COFFEE BREAK
-                15:00-15:30 FRACTURA DE CADERA OSTEOSINTESIS VS ARTROPLASTIA - DR FRANCISCO MERO
-                15:30-16:00 MANEJO MÍNIMAMENTE INVASIVO DEL ABDOMEN AGUDO - DR JOHN CALLE
-                19:30 NOCHE DE GALA: BAHÍA BAJO LAS ESTRELLAS
-                
-                SABADO 25 DE OCTUBRE
-                9:00-9:15 PRESENTACION DE CASO CLINICO - DR JONATHAN COBEÑA
-                9:15-9:30 PRESENTACION DE CASO CLINICO - DRA CINTHYA GOMEZ
-                9:30-10:00 DETECCION Y MANEJO INICIAL DE LAS ARRITMIAS - DR. JOSE LLORENTE
-                10:00-10:30 NUEVAS TERAPEUTICAS EN DEMENCIA TIPO ALZHEIMER - DRA KATYA ALVIA
-                10:30-11:00 COFFEE BREAK
-                11:00-11:30 INTELIGENCIA ARTIFICIAL APLICADA A LA MEDICINA - DR ANDRES MORENO
-                11:30-12:00 CLAUSURA DEL EVENTO
-            `;
-            
-            // Crear y descargar archivo
-            const blob = new Blob([agendaContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'agenda_congreso.txt';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert('Agenda descargada exitosamente');
-        }
-        
-        // Sistema de autenticación para administración
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
-            
-            if (username === 'DOCENCIA' && password === 'DOCENCIA') {
-                isAdminLoggedIn = true;
-                document.getElementById('adminLoginMessage').innerHTML = '<div class="alert alert-success">Acceso concedido</div>';
-                setTimeout(function() {
-                    const adminLoginModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
-                    adminLoginModal.hide();
-                    
-                    const adminModal = new bootstrap.Modal(document.getElementById('adminModal'));
-                    adminModal.show();
-                    
-                    generateAdminQR();
-                    updateDeleteParticipantList();
-                }, 1000);
-            } else {
-                document.getElementById('adminLoginMessage').innerHTML = '<div class="alert alert-danger">Usuario o contraseña incorrectos</div>';
-            }
-        });
-        
-        // Generar códigos QR para administración
-        function generateAdminQR() {
-            // QR para día 1 - URL que apunta a la página de asistencia
-            const qrDay1 = document.getElementById('qrDay1');
-            qrDay1.innerHTML = '';
-            QRCode.toCanvas(qrDay1, `${window.location.origin}${window.location.pathname}?day=1`, {
-                width: 150,
-                margin: 1
-            }, function(error) {
-                if (error) console.error(error);
-            });
-            
-            // QR para día 2
-            const qrDay2 = document.getElementById('qrDay2');
-            qrDay2.innerHTML = '';
-            QRCode.toCanvas(qrDay2, `${window.location.origin}${window.location.pathname}?day=2`, {
-                width: 150,
-                margin: 1
-            }, function(error) {
-                if (error) console.error(error);
-            });
-            
-            // QR para día 3
-            const qrDay3 = document.getElementById('qrDay3');
-            qrDay3.innerHTML = '';
-            QRCode.toCanvas(qrDay3, `${window.location.origin}${window.location.pathname}?day=3`, {
-                width: 150,
-                margin: 1
-            }, function(error) {
-                if (error) console.error(error);
+                tableBody.appendChild(row);
             });
         }
-        
-        // Descargar QR individual
-        function downloadQR(qrElementId, filename) {
-            const qrElement = document.getElementById(qrElementId);
-            const canvas = qrElement.querySelector('canvas');
-            
-            if (canvas) {
-                const link = document.createElement('a');
-                link.download = `${filename}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            }
-        }
-        
-        // Descargar reportes (simulado)
-        function downloadReport(type) {
-            let reportData = '';
-            let filename = '';
-            
-            switch(type) {
-                case 'registered':
-                    reportData = participants.map(p => 
-                        `${p.firstName},${p.lastName},${p.idNumber},${p.email}`
-                    ).join('\n');
-                    filename = 'inscritos_congreso.csv';
-                    break;
-                case 'attendance':
-                    reportData = 'Día,Participante,Cédula,Timestamp\n';
-                    Object.keys(attendance).forEach(day => {
-                        attendance[day].forEach(record => {
-                            const participant = participants.find(p => p.id === record.id);
-                            reportData += `${getDayName(day)},${participant.firstName} ${participant.lastName},${participant.idNumber},${record.timestamp}\n`;
-                        });
-                    });
-                    filename = 'asistencias_congreso.csv';
-                    break;
-                case 'certificates':
-                    const certified = participants.filter(p => {
-                        const day1Attended = attendance.day1.some(a => a.id === p.id);
-                        const day2Attended = attendance.day2.some(a => a.id === p.id);
-                        const day3Attended = attendance.day3.some(a => a.id === p.id);
-                        return [day1Attended, day2Attended, day3Attended].filter(Boolean).length >= 2;
-                    });
-                    
-                    reportData = certified.map(p => 
-                        `${p.firstName},${p.lastName},${p.idNumber},${p.email}`
-                    ).join('\n');
-                    filename = 'certificados_congreso.csv';
-                    break;
-            }
-            
-            // Crear y descargar archivo
-            const blob = new Blob([reportData], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert(`Reporte ${filename} descargado exitosamente`);
-        }
-        
-        function getDayName(day) {
-            const days = {
-                'day1': 'Día 1 - 23 de Octubre',
-                'day2': 'Día 2 - 24 de Octubre',
-                'day3': 'Día 3 - 25 de Octubre'
-            };
-            return days[day];
-        }
-        
-        // Mostrar modal de login al hacer clic en administración
-        document.getElementById('adminAccessBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            const adminLoginModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
-            adminLoginModal.show();
-        });
-        
-        // Gestión de participantes (solo admin)
-        function showAddParticipantForm() {
-            document.getElementById('addParticipantForm').classList.add('admin-visible');
-            document.getElementById('deleteParticipantForm').classList.remove('admin-visible');
-        }
-        
-        function hideAddParticipantForm() {
-            document.getElementById('addParticipantForm').classList.remove('admin-visible');
-        }
-        
-        function showDeleteParticipantForm() {
-            document.getElementById('deleteParticipantForm').classList.add('admin-visible');
-            document.getElementById('addParticipantForm').classList.remove('admin-visible');
-            updateDeleteParticipantList();
-        }
-        
-        function hideDeleteParticipantForm() {
-            document.getElementById('deleteParticipantForm').classList.remove('admin-visible');
-        }
-        
-        function updateDeleteParticipantList() {
-            const select = document.getElementById('participantToDelete');
-            select.innerHTML = '<option value="">-- Selecciona un participante --</option>';
-            
-            participants.forEach(participant => {
-                const option = document.createElement('option');
-                option.value = participant.id;
-                option.textContent = `${participant.firstName} ${participant.lastName} (${participant.idNumber})`;
-                select.appendChild(option);
-            });
-        }
-        
-        // Formulario para agregar participante
-        document.getElementById('newParticipantForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const firstName = document.getElementById('newFirstName').value;
-            const lastName = document.getElementById('newLastName').value;
-            const idNumber = document.getElementById('newIdNumber').value;
-            const email = document.getElementById('newEmail').value;
-            
-            // Verificar si ya está registrado
-            const existingParticipant = participants.find(p => 
-                p.idNumber === idNumber || (p.firstName === firstName && p.lastName === lastName)
-            );
-            
-            if (existingParticipant) {
-                alert('Este participante ya está registrado en el congreso.');
-                return;
-            }
-            
-            // Verificar capacidad
-            if (participants.length >= 200) {
-                alert('Lo sentimos, el cupo para el congreso está completo.');
-                return;
-            }
-            
-            // Agregar participante
-            const newParticipant = {
-                id: Date.now(),
-                firstName,
-                lastName,
-                idNumber,
-                email,
-                registrationDate: new Date().toLocaleDateString()
-            };
-            
-            participants.push(newParticipant);
-            localStorage.setItem('congressParticipants', JSON.stringify(participants));
-            
-            alert(`¡Participante agregado exitosamente!`);
-            document.getElementById('newParticipantForm').reset();
-            updateParticipantLists();
-            updateAvailableSpots();
-            hideAddParticipantForm();
-        });
         
         // Eliminar participante
-        function deleteParticipant() {
-            const participantId = document.getElementById('participantToDelete').value;
-            
-            if (!participantId) {
-                alert('Por favor, selecciona un participante para eliminar.');
-                return;
+        function deleteParticipant(index) {
+            if (confirm('¿Está seguro de que desea eliminar este participante?')) {
+                const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+                participants.splice(index, 1);
+                localStorage.setItem('participants', JSON.stringify(participants));
+                loadParticipantsTable();
+                updateCuposCount();
             }
+        }
+        
+        // Editar participante
+        function editParticipant(index) {
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const participant = participants[index];
             
-            if (confirm('¿Estás seguro de que deseas eliminar este participante?')) {
-                participants = participants.filter(p => p.id != participantId);
-                localStorage.setItem('congressParticipants', JSON.stringify(participants));
+            // Aquí implementarías la lógica para editar
+            alert(`Editar participante: ${participant.cargo}. ${participant.nombre} ${participant.apellido}`);
+        }
+        
+        // Procesar datos de asistencia
+        document.getElementById('process-attendance-btn').addEventListener('click', function() {
+            const resultsDiv = document.getElementById('attendance-results');
+            resultsDiv.innerHTML = '<div class="alert alert-warning">Procesando datos de asistencia...</div>';
+            
+            // Simulación de procesamiento de datos de Google Forms
+            setTimeout(() => {
+                const participants = JSON.parse(localStorage.getItem('participants') || '[]');
                 
-                alert('Participante eliminado exitosamente.');
-                updateParticipantLists();
-                updateAvailableSpots();
-                hideDeleteParticipantForm();
-            }
-        }
-        
-        // Vista previa de certificado de prueba
-        function showTestCertificate() {
-            const testName = document.getElementById('testCertificateName').value.trim();
-            
-            if (!testName) {
-                alert('Por favor, ingresa un nombre para la vista previa.');
-                return;
-            }
-            
-            document.getElementById('testCertificateNameDisplay').textContent = testName;
-            document.getElementById('testCertificatePreview').style.display = 'block';
-        }
-        
-        // Procesar parámetros de URL para asistencia por QR
-        function processURLParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const day = urlParams.get('day');
-            
-            if (day && (day === '1' || day === '2' || day === '3')) {
-                // Mostrar interfaz de asistencia
-                showAttendanceInterface(day);
-            }
-        }
-        
-        function showAttendanceInterface(day) {
-            // Crear interfaz de asistencia
-            document.body.innerHTML = `
-                <div class="container mt-5">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body text-center p-5">
-                                    <h2 class="mb-4">Registro de Asistencia</h2>
-                                    <p class="mb-4">Día ${day} - ${getDayName('day' + day)}</p>
-                                    
-                                    <div class="mb-3">
-                                        <label for="qrFirstName" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="qrFirstName" placeholder="Ingresa tu nombre">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="qrLastName" class="form-label">Apellido</label>
-                                        <input type="text" class="form-control" id="qrLastName" placeholder="Ingresa tu apellido">
-                                    </div>
-                                    
-                                    <button class="btn btn-primary btn-lg w-100" onclick="registerAttendanceFromQR(${day})">
-                                        <i class="fas fa-check-circle me-2"></i>Registrar Asistencia
-                                    </button>
-                                    
-                                    <div id="qrAttendanceMessage" class="mt-3"></div>
-                                    
-                                    <a href="${window.location.pathname}" class="btn btn-link mt-3">Volver al sitio principal</a>
-                                </div>
-                            </div>
-                        </div>
+                // Simular datos de asistencia
+                participants.forEach(participant => {
+                    // Asignar aleatoriamente asistencias para la demo
+                    participant.asistencias = [
+                        Math.random() > 0.3, // 70% de asistencia día 1
+                        Math.random() > 0.4, // 60% de asistencia día 2
+                        Math.random() > 0.2  // 80% de asistencia día 3
+                    ];
+                });
+                
+                localStorage.setItem('participants', JSON.stringify(participants));
+                loadParticipantsTable();
+                
+                // Calcular estadísticas
+                const totalParticipants = participants.length;
+                const eligibleForCertificate = participants.filter(p => {
+                    const diasAsistidos = (p.asistencias || [false, false, false]).filter(a => a).length;
+                    return diasAsistidos >= 2;
+                }).length;
+                
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>Procesamiento completado</strong><br>
+                        Total de participantes: ${totalParticipants}<br>
+                        Elegibles para certificado: ${eligibleForCertificate}<br>
+                        Porcentaje de elegibilidad: ${((eligibleForCertificate / totalParticipants) * 100).toFixed(1)}%
                     </div>
-                </div>
-            `;
-        }
+                `;
+            }, 2000);
+        });
         
-        function registerAttendanceFromQR(day) {
-            const firstName = document.getElementById('qrFirstName').value.trim();
-            const lastName = document.getElementById('qrLastName').value.trim();
+        // Verificar certificado (público)
+        document.getElementById('verify-certificate-btn').addEventListener('click', function() {
+            const cedula = document.getElementById('certificate-cedula').value;
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const participant = participants.find(p => p.cedula === cedula);
             
-            if (!firstName || !lastName) {
-                document.getElementById('qrAttendanceMessage').innerHTML = 
-                    '<div class="alert alert-danger">Por favor, ingresa tu nombre y apellido.</div>';
-                return;
-            }
-            
-            // Buscar participante
-            const participant = participants.find(p => 
-                p.firstName.toLowerCase() === firstName.toLowerCase() && 
-                p.lastName.toLowerCase() === lastName.toLowerCase()
-            );
+            const resultDiv = document.getElementById('certificate-result');
+            const downloadSection = document.getElementById('certificate-download-section');
             
             if (!participant) {
-                document.getElementById('qrAttendanceMessage').innerHTML = 
-                    '<div class="alert alert-danger">No se encontró un participante con ese nombre y apellido. Verifica que estés inscrito.</div>';
+                resultDiv.innerHTML = '<div class="alert alert-danger">No se encontró un participante con esa cédula.</div>';
+                downloadSection.style.display = 'none';
                 return;
             }
             
-            // Verificar si ya registró asistencia para este día
-            const dayKey = 'day' + day;
-            const dayAttendance = attendance[dayKey];
-            const alreadyAttended = dayAttendance.some(a => a.id === participant.id);
+            // Simular verificación de asistencia
+            const today = new Date();
+            const eventEndDate = new Date('October 25, 2025 13:00:00');
             
-            if (alreadyAttended) {
-                document.getElementById('qrAttendanceMessage').innerHTML = 
-                    `<div class="alert alert-warning">Ya has registrado tu asistencia para este día.</div>`;
+            if (today < eventEndDate) {
+                resultDiv.innerHTML = '<div class="alert alert-warning">Los certificados estarán disponibles a partir del 25 de octubre de 2025 a las 13:00.</div>';
+                downloadSection.style.display = 'none';
                 return;
             }
             
-            // Registrar asistencia
-            dayAttendance.push({
-                id: participant.id,
-                firstName: participant.firstName,
-                lastName: participant.lastName,
-                timestamp: new Date().toLocaleString()
+            // Verificar asistencia mínima
+            const asistencias = participant.asistencias || [false, false, false];
+            const diasAsistidos = asistencias.filter(a => a).length;
+            
+            if (diasAsistidos < 2) {
+                resultDiv.innerHTML = `<div class="alert alert-danger">No cumple con la asistencia mínima requerida (asistió a ${diasAsistidos} de 3 días).</div>`;
+                downloadSection.style.display = 'none';
+                return;
+            }
+            
+            // Mostrar certificado
+            currentParticipant = participant;
+            document.getElementById('certificate-name-public').textContent = `${participant.cargo}. ${participant.nombre} ${participant.apellido}`;
+            resultDiv.innerHTML = '<div class="alert alert-success">¡Felicidades! Cumple con los requisitos para obtener el certificado.</div>';
+            downloadSection.style.display = 'block';
+        });
+        
+        // Descargar certificado (público)
+        document.getElementById('download-certificate-public-btn').addEventListener('click', function() {
+            if (!currentParticipant) {
+                alert('Primero debe verificar su elegibilidad');
+                return;
+            }
+            
+            const certificateElement = document.getElementById('certificate-preview-public');
+            
+            html2canvas(certificateElement).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = (pdfHeight - imgHeight * ratio) / 2;
+                
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                pdf.save(`certificado-${currentParticipant.cedula}.pdf`);
             });
+        });
+        
+        // Descargar certificado (admin)
+        document.getElementById('download-certificate-admin-btn').addEventListener('click', function() {
+            const certificateElement = document.getElementById('certificate-preview-admin');
             
-            localStorage.setItem('congressAttendance', JSON.stringify(attendance));
-            
-            document.getElementById('qrAttendanceMessage').innerHTML = 
-                `<div class="alert alert-success">¡Asistencia registrada exitosamente para ${getDayName(dayKey)}!</div>`;
-            
-            document.getElementById('qrFirstName').value = '';
-            document.getElementById('qrLastName').value = '';
+            html2canvas(certificateElement).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = (pdfHeight - imgHeight * ratio) / 2;
+                
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                pdf.save('certificado-admin-ejemplo.pdf');
+            });
+        });
+        
+        // Vista previa de certificado (admin)
+        document.getElementById('preview-certificate-btn').addEventListener('click', function() {
+            document.getElementById('certificate-name-admin').textContent = 'DR. EJEMPLO ADMINISTRADOR';
+        });
+        
+        // Inicializar datos de ejemplo si no existen
+        if (!localStorage.getItem('participants')) {
+            const exampleParticipants = [
+                {
+                    cargo: 'DR',
+                    nombre: 'Juan',
+                    apellido: 'Pérez',
+                    cedula: '1234567890',
+                    correo: 'juan@example.com',
+                    telefono: '0999999999',
+                    perfilMedico: true,
+                    tipo: 'pre-asignado',
+                    fechaInscripcion: new Date().toISOString(),
+                    asistencias: [true, true, true]
+                },
+                {
+                    cargo: 'DRA',
+                    nombre: 'María',
+                    apellido: 'González',
+                    cedula: '0987654321',
+                    correo: 'maria@example.com',
+                    telefono: '0988888888',
+                    perfilMedico: true,
+                    tipo: 'pre-asignado',
+                    fechaInscripcion: new Date().toISOString(),
+                    asistencias: [true, false, true]
+                }
+            ];
+            localStorage.setItem('participants', JSON.stringify(exampleParticipants));
         }
         
-        // Inicializar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            updateParticipantLists();
-            updateAvailableSpots();
-            processURLParams();
-        });
+        // Cargar la tabla y actualizar cupos al iniciar
+        loadParticipantsTable();
+        updateCuposCount();
     </script>
 </body>
-</html
+</html>
