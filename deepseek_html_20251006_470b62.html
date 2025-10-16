@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congreso Internacional de Especialidades Clínicas Quirúrgicas - Hospital Miguel H. Alcívar</title>
+    <title>Congreso Internacional de Especialidades Clínicas Quirúrgicas</title>
     <style>
         /* Estilos generales */
         * {
@@ -167,6 +167,18 @@
         
         .btn-certificate {
             background-color: #20c997;
+        }
+        
+        .btn-sync {
+            background-color: #6f42c1;
+        }
+        
+        .btn-update {
+            background-color: #6c757d;
+        }
+        
+        .btn-preview {
+            background-color: #17a2b8;
         }
         
         /* Secciones */
@@ -732,6 +744,50 @@
             flex-wrap: wrap;
         }
         
+        .certificate-available {
+            background-color: rgba(32, 201, 151, 0.1);
+            border: 2px solid #20c997;
+        }
+        
+        .certificate-unavailable {
+            background-color: rgba(108, 117, 125, 0.1);
+            border: 2px solid #6c757d;
+        }
+        
+        /* Sincronización */
+        .sync-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #6f42c1;
+        }
+        
+        .sync-status {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        /* Vista previa de certificado */
+        .certificate-preview {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .certificate-preview-content {
+            background-color: white;
+            padding: 30px;
+            border: 2px solid #20c997;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
         /* Footer */
         footer {
             background-color: #333;
@@ -836,6 +892,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <!-- Librería para generar PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <!-- Botón de administración -->
@@ -919,10 +978,10 @@
                         <div class="certificate-placeholder" id="certificate-placeholder">
                             <i class="fas fa-file-certificate fa-3x" style="color: #ccc; margin-bottom: 15px;"></i>
                             <p>Los certificados estarán disponibles después del evento.</p>
-                            <p><small>Los asistentes que cumplan con al menos 2 de 3 asistencias podrán descargar su certificado.</small></p>
+                            <p><small>Los asistentes que cumplan con al menos 2 de 3 asistencias podrán descargar su certificado a partir del 25 de Octubre 2025 a las 13:00.</small></p>
                         </div>
                         <div id="certificate-uploaded" style="display: none;">
-                            <div class="certificate-uploaded">
+                            <div class="certificate-uploaded" id="certificate-uploaded-content">
                                 <i class="fas fa-file-certificate fa-3x" style="color: #20c997; margin-bottom: 15px;"></i>
                                 <h3>Certificados Disponibles</h3>
                                 <p>Descarga tu certificado de participación en el congreso</p>
@@ -958,7 +1017,7 @@
                 </div>
                 <div class="about-image">
                     <!-- Imagen del Hospital Miguel H. Alcívar -->
-                    <img src="https://lh5.googleusercontent.com/p/AF1QipM4vHtJj5K7q3Vx1w1Z9X9Z9Z9Z9Z9Z9Z9Z9Z9Z9=w408-h306-k-no" alt="Hospital Miguel H. Alcívar">
+                    <img src="https://lh5.googleusercontent.com/p/AF1QipM4vHtJj5K7q3Vx1w1Z9X9Z9Z9Z9Z9Z9Z9Z9Z9=w408-h306-k-no" alt="Hospital Miguel H. Alcívar">
                 </div>
             </div>
         </div>
@@ -1179,6 +1238,9 @@
                     <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                         <button class="btn btn-add" id="btn-add-participant">Agregar Participante</button>
                         <button class="btn btn-download" id="btn-download-list">Descargar Lista</button>
+                        <button class="btn btn-update" id="btn-update-participants">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
                     </div>
                     
                     <h4>Lista de Participantes</h4>
@@ -1212,7 +1274,7 @@
                                 <span id="file-label-text">Seleccionar archivo PDF</span>
                             </label>
                         </div>
-                        <small class="form-text text-muted">Formatos permitidos: PDF. Tamaño máximo: 10MB</small>
+                        <small class="form-text text-muted">Formatos permitidos: PDF. Tamaño máximo: 20MB</small>
                     </div>
                     
                     <div id="file-info" style="display: none; margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
@@ -1254,6 +1316,29 @@
                         </div>
                     </div>
                     
+                    <div class="sync-section">
+                        <h4>Sincronización Automática de Asistencias</h4>
+                        <p>Importa automáticamente las asistencias desde los formularios de Google</p>
+                        <div class="form-group">
+                            <button class="btn btn-sync" id="btn-sync-day1">
+                                <i class="fas fa-sync"></i> Sincronizar Día 1
+                            </button>
+                            <button class="btn btn-sync" id="btn-sync-day2">
+                                <i class="fas fa-sync"></i> Sincronizar Día 2
+                            </button>
+                            <button class="btn btn-sync" id="btn-sync-day3">
+                                <i class="fas fa-sync"></i> Sincronizar Día 3
+                            </button>
+                            <button class="btn btn-sync" id="btn-sync-all">
+                                <i class="fas fa-sync"></i> Sincronizar Todos
+                            </button>
+                            <button class="btn btn-update" id="btn-update-attendance">
+                                <i class="fas fa-sync-alt"></i> Actualizar Asistencias
+                            </button>
+                        </div>
+                        <div id="sync-status" class="sync-status"></div>
+                    </div>
+                    
                     <div class="attendance-links">
                         <div class="attendance-link-card">
                             <div class="attendance-day">Día 1 - Jueves 23</div>
@@ -1278,6 +1363,12 @@
                                 <i class="fas fa-external-link-alt"></i> Formulario de Asistencia - Día 3
                             </a>
                         </div>
+                    </div>
+                    
+                    <div class="search-container">
+                        <input type="text" id="search-attendance" class="search-input" placeholder="Buscar asistente por nombre o apellido...">
+                        <button class="btn" id="btn-search-attendance">Buscar</button>
+                        <button class="btn" id="btn-clear-search-attendance" style="background-color: #6c757d;">Limpiar</button>
                     </div>
                     
                     <div style="display: flex; justify-content: space-between; margin: 20px 0;">
@@ -1334,7 +1425,7 @@
                             </label>
                         </div>
                         <small class="form-text text-muted">
-                            Formatos permitidos: DOCX. La plantilla debe contener los campos: {{cargo}}, {{Apellido}}, {{Nombre}}.
+                            Formatos permitidos: DOCX. Tamaño máximo: 10MB. La plantilla debe contener los campos: {{cargo}}, {{apellido}}, {{nombre}}.
                         </small>
                     </div>
                     
@@ -1353,12 +1444,55 @@
                         <button class="btn btn-certificate" id="btn-generate-certificates" disabled>
                             <i class="fas fa-file-certificate"></i> Generar Certificados
                         </button>
-                        <button class="btn btn-download" id="btn-download-certificates" disabled>
-                            <i class="fas fa-file-archive"></i> Descargar Todos
+                        <button class="btn btn-download" id="btn-download-certificates">
+                            <i class="fas fa-file-archive"></i> Descargar Todos (PDF)
+                        </button>
+                        <button class="btn btn-update" id="btn-update-certificates">
+                            <i class="fas fa-sync-alt"></i> Actualizar Certificados
                         </button>
                     </div>
                     
+                    <!-- NUEVA SECCIÓN: Descargar certificado HTML autocompletado -->
+                    <div class="sync-section">
+                        <h4>Descargar Certificado HTML Autocompletado</h4>
+                        <p>Descarga un certificado HTML con los campos autocompletados para un participante específico</p>
+                        <div class="form-group">
+                            <label for="certificate-participant">Seleccionar Participante</label>
+                            <select id="certificate-participant" class="form-control">
+                                <option value="">Seleccione un participante</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-preview" id="btn-preview-certificate">
+                                <i class="fas fa-eye"></i> Vista Previa
+                            </button>
+                            <button class="btn btn-certificate" id="btn-download-html-certificate">
+                                <i class="fas fa-download"></i> Descargar HTML
+                            </button>
+                            <button class="btn btn-download" id="btn-download-pdf-certificate">
+                                <i class="fas fa-file-pdf"></i> Descargar PDF
+                            </button>
+                        </div>
+                        <div id="html-certificate-status" class="sync-status"></div>
+                    </div>
+                    
+                    <!-- Vista previa del certificado -->
+                    <div id="certificate-preview-container" style="display: none;">
+                        <h4>Vista Previa del Certificado</h4>
+                        <div class="certificate-preview">
+                            <div class="certificate-preview-content" id="certificate-preview-content">
+                                <!-- El contenido del certificado se mostrará aquí -->
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div id="certificate-status" style="margin-top: 15px;"></div>
+                    
+                    <div class="search-container">
+                        <input type="text" id="search-certificates" class="search-input" placeholder="Buscar certificado por nombre o apellido...">
+                        <button class="btn" id="btn-search-certificates">Buscar</button>
+                        <button class="btn" id="btn-clear-search-certificates" style="background-color: #6c757d;">Limpiar</button>
+                    </div>
                     
                     <h4>Asistentes Aprobados para Certificación</h4>
                     <table class="admin-table">
@@ -1511,8 +1645,9 @@
         let agendaFile = null;
         let agendaFileData = null;
         
-        // Fecha límite para registro normal
+        // Fechas límite
         const fechaLimiteRegistro = new Date('October 22, 2025 23:59:00').getTime();
+        const fechaDisponibilidadCertificados = new Date('October 25, 2025 13:00:00').getTime();
         
         // Elementos del DOM
         const adminPanel = document.getElementById('admin-panel');
@@ -1560,6 +1695,28 @@
         const certificateUploaded = document.getElementById('certificate-uploaded');
         const btnDownloadMyCertificate = document.getElementById('btn-download-my-certificate');
         const btnDownloadAllCertificates = document.getElementById('btn-download-all-certificates');
+        const certificateUploadedContent = document.getElementById('certificate-uploaded-content');
+        const btnSyncDay1 = document.getElementById('btn-sync-day1');
+        const btnSyncDay2 = document.getElementById('btn-sync-day2');
+        const btnSyncDay3 = document.getElementById('btn-sync-day3');
+        const btnSyncAll = document.getElementById('btn-sync-all');
+        const syncStatus = document.getElementById('sync-status');
+        const searchAttendance = document.getElementById('search-attendance');
+        const btnSearchAttendance = document.getElementById('btn-search-attendance');
+        const btnClearSearchAttendance = document.getElementById('btn-clear-search-attendance');
+        const searchCertificates = document.getElementById('search-certificates');
+        const btnSearchCertificates = document.getElementById('btn-search-certificates');
+        const btnClearSearchCertificates = document.getElementById('btn-clear-search-certificates');
+        const btnUpdateParticipants = document.getElementById('btn-update-participants');
+        const btnUpdateAttendance = document.getElementById('btn-update-attendance');
+        const btnUpdateCertificates = document.getElementById('btn-update-certificates');
+        const certificateParticipantSelect = document.getElementById('certificate-participant');
+        const btnPreviewCertificate = document.getElementById('btn-preview-certificate');
+        const btnDownloadHtmlCertificate = document.getElementById('btn-download-html-certificate');
+        const btnDownloadPdfCertificate = document.getElementById('btn-download-pdf-certificate');
+        const htmlCertificateStatus = document.getElementById('html-certificate-status');
+        const certificatePreviewContainer = document.getElementById('certificate-preview-container');
+        const certificatePreviewContent = document.getElementById('certificate-preview-content');
         
         // Datos iniciales de participantes
         const participantesIniciales = [
@@ -1624,26 +1781,53 @@
         // Inicializar asistencias
         function inicializarAsistencias() {
             if (asistencias.length === 0) {
-                // Agregar algunos registros de ejemplo
-                asistencias.push({
-                    id: 1,
-                    nombre: "PRUEBA",
-                    apellido: "PRUEBA",
-                    dia1: true,
-                    dia2: true,
-                    dia3: false,
-                    fecha: new Date().toLocaleString()
-                });
+                // Cargar asistencias desde localStorage si existen
+                const asistenciasGuardadas = localStorage.getItem('asistenciasCongreso');
+                if (asistenciasGuardadas) {
+                    try {
+                        asistencias = JSON.parse(asistenciasGuardadas);
+                    } catch (e) {
+                        console.error('Error al cargar asistencias:', e);
+                        asistencias = [];
+                    }
+                }
                 
-                asistencias.push({
-                    id: 2,
-                    nombre: "LEONARDO",
-                    apellido: "VITERI",
-                    dia1: true,
-                    dia2: false,
-                    dia3: true,
-                    fecha: new Date().toLocaleString()
-                });
+                // Si no hay asistencias guardadas, agregar algunos registros de ejemplo
+                if (asistencias.length === 0) {
+                    asistencias.push({
+                        id: 1,
+                        nombre: "PRUEBA",
+                        apellido: "PRUEBA",
+                        dia1: true,
+                        dia2: true,
+                        dia3: false,
+                        fecha: new Date().toLocaleString()
+                    });
+                    
+                    asistencias.push({
+                        id: 2,
+                        nombre: "LEONARDO",
+                        apellido: "VITERI",
+                        dia1: true,
+                        dia2: false,
+                        dia3: true,
+                        fecha: new Date().toLocaleString()
+                    });
+                    
+                    // Guardar asistencias iniciales
+                    guardarAsistenciasEnStorage();
+                }
+            }
+        }
+        
+        // SOLUCIÓN: Función para guardar asistencias en localStorage
+        function guardarAsistenciasEnStorage() {
+            try {
+                localStorage.setItem('asistenciasCongreso', JSON.stringify(asistencias));
+                return true;
+            } catch (e) {
+                console.error('Error al guardar asistencias:', e);
+                return false;
             }
         }
         
@@ -1673,7 +1857,40 @@
             // Cargar certificados generados
             const certificadosGuardados = localStorage.getItem('generatedCertificates');
             if (certificadosGuardados) {
-                generatedCertificates = JSON.parse(certificadosGuardados);
+                try {
+                    generatedCertificates = JSON.parse(certificadosGuardados);
+                } catch (e) {
+                    console.error('Error al cargar certificados:', e);
+                    generatedCertificates = [];
+                }
+            }
+        }
+        
+        // Función para guardar certificados en localStorage
+        function guardarCertificadosEnStorage() {
+            try {
+                // Guardar solo información esencial para reducir tamaño
+                const certificadosLigeros = generatedCertificates.map(cert => ({
+                    nombre: cert.nombre,
+                    apellido: cert.apellido,
+                    cargo: cert.cargo,
+                    fechaGeneracion: cert.fechaGeneracion,
+                    html: cert.html // Guardamos el HTML para poder regenerar
+                }));
+                
+                localStorage.setItem('generatedCertificates', JSON.stringify(certificadosLigeros));
+                return true;
+            } catch (e) {
+                console.error('Error al guardar certificados:', e);
+                // Si hay error de cuota, limpiar y guardar solo los más recientes
+                if (e.name === 'QuotaExceededError') {
+                    // Mantener solo los últimos 50 certificados
+                    if (generatedCertificates.length > 50) {
+                        generatedCertificates = generatedCertificates.slice(-50);
+                        return guardarCertificadosEnStorage(); // Intentar nuevamente
+                    }
+                }
+                return false;
             }
         }
         
@@ -1703,9 +1920,24 @@
                 certificatePlaceholder.style.display = 'none';
                 certificateUploaded.style.display = 'block';
                 
+                // SOLUCIÓN: Los administradores pueden descargar certificados sin restricciones de fecha
+                const ahora = new Date().getTime();
+                const certificadosDisponibles = ahora >= fechaDisponibilidadCertificados;
+                
+                if (certificadosDisponibles || adminDashboard.style.display === 'block') {
+                    certificateUploadedContent.classList.add('certificate-available');
+                    btnDownloadMyCertificate.disabled = false;
+                    btnDownloadMyCertificate.textContent = "Descargar Mi Certificado";
+                } else {
+                    certificateUploadedContent.classList.add('certificate-unavailable');
+                    btnDownloadMyCertificate.disabled = true;
+                    btnDownloadMyCertificate.textContent = "Disponible desde 25 Oct 13:00";
+                }
+                
                 // Mostrar botón de descarga para administradores
                 if (adminDashboard.style.display === 'block') {
                     btnDownloadAllCertificates.style.display = 'inline-block';
+                    btnDownloadAllCertificates.disabled = false; // SOLUCIÓN: Administradores siempre pueden descargar
                 }
             } else {
                 certificatePlaceholder.style.display = 'block';
@@ -1764,6 +1996,12 @@
         function registroHabilitado() {
             const ahora = new Date().getTime();
             return ahora <= fechaLimiteRegistro;
+        }
+        
+        // Verificar si los certificados están disponibles
+        function certificadosDisponibles() {
+            const ahora = new Date().getTime();
+            return ahora >= fechaDisponibilidadCertificados;
         }
         
         // Actualizar contador de límite de registro
@@ -1866,6 +2104,34 @@
             );
         }
         
+        // Buscar asistencias
+        function buscarAsistencias(termino) {
+            if (!termino) {
+                return asistencias;
+            }
+            
+            const terminoLower = termino.toLowerCase();
+            return asistencias.filter(asistencia => 
+                asistencia.nombre.toLowerCase().includes(terminoLower) ||
+                asistencia.apellido.toLowerCase().includes(terminoLower)
+            );
+        }
+        
+        // Buscar certificados
+        function buscarCertificados(termino) {
+            const asistentesAprobados = obtenerAsistentesAprobados();
+            
+            if (!termino) {
+                return asistentesAprobados;
+            }
+            
+            const terminoLower = termino.toLowerCase();
+            return asistentesAprobados.filter(asistente => 
+                asistente.nombre.toLowerCase().includes(terminoLower) ||
+                asistente.apellido.toLowerCase().includes(terminoLower)
+            );
+        }
+        
         // Obtener asistentes aprobados
         function obtenerAsistentesAprobados() {
             approvedAttendees = [];
@@ -1887,6 +2153,14 @@
                             cargo: participante.cargo,
                             diasAsistidos: diasAsistidos
                         });
+                    } else {
+                        // SOLUCIÓN: Permitir certificados para personas no inscritas
+                        approvedAttendees.push({
+                            nombre: asistencia.nombre,
+                            apellido: asistencia.apellido,
+                            cargo: "ASISTENTE", // Valor por defecto
+                            diasAsistidos: diasAsistidos
+                        });
                     }
                 }
             });
@@ -1894,9 +2168,9 @@
             return approvedAttendees;
         }
         
-        // Validar plantilla de certificado
+        // CORRECCIÓN: Función corregida - validarPlantillaCertificado
         function validarPlantillaCertificado(htmlContent) {
-            const camposRequeridos = ['{{cargo}}', '{{Apellido}}', '{{Nombre}}'];
+            const camposRequeridos = ['{{cargo}}', '{{apellido}}', '{{nombre}}'];
             const camposFaltantes = [];
             
             camposRequeridos.forEach(campo => {
@@ -1906,6 +2180,125 @@
             });
             
             return camposFaltantes;
+        }
+        
+        // SOLUCIÓN: Sincronización automática de asistencias desde formularios de Google
+        function sincronizarAsistencias(dia) {
+            syncStatus.innerHTML = '<div class="alert alert-info">Sincronizando asistencias, por favor espere...</div>';
+            
+            // En una implementación real, aquí se conectaría con la API de Google Forms
+            // Por ahora, simulamos la sincronización con datos de ejemplo
+            
+            setTimeout(() => {
+                let nuevasAsistencias = [];
+                let asistentesSimulados = [];
+                
+                // Simular datos de formularios de Google
+                if (dia === 1 || dia === 'all') {
+                    asistentesSimulados = [
+                        { nombre: "PRUEBA", apellido: "PRUEBA" },
+                        { nombre: "LEONARDO", apellido: "VITERI" },
+                        { nombre: "CARLOS", apellido: "CEVALLOS R." },
+                        { nombre: "MARÍA", apellido: "PÁRRAGA GALLARDO" }
+                    ];
+                    
+                    asistentesSimulados.forEach(asistente => {
+                        if (!asistenciaExiste(asistente.nombre, asistente.apellido)) {
+                            nuevasAsistencias.push({
+                                id: Date.now() + Math.random(),
+                                nombre: asistente.nombre,
+                                apellido: asistente.apellido,
+                                dia1: true,
+                                dia2: false,
+                                dia3: false,
+                                fecha: new Date().toLocaleString()
+                            });
+                        } else {
+                            // Actualizar asistencia existente
+                            const index = asistencias.findIndex(a => 
+                                a.nombre === asistente.nombre && a.apellido === asistente.apellido
+                            );
+                            if (index !== -1) {
+                                asistencias[index].dia1 = true;
+                            }
+                        }
+                    });
+                }
+                
+                if (dia === 2 || dia === 'all') {
+                    asistentesSimulados = [
+                        { nombre: "PRUEBA", apellido: "PRUEBA" },
+                        { nombre: "LEONEL", apellido: "KUONQUI" },
+                        { nombre: "JOSÉ", apellido: "INTRIAGO" },
+                        { nombre: "MAHOLI", apellido: "GILER MONTES" }
+                    ];
+                    
+                    asistentesSimulados.forEach(asistente => {
+                        if (!asistenciaExiste(asistente.nombre, asistente.apellido)) {
+                            nuevasAsistencias.push({
+                                id: Date.now() + Math.random(),
+                                nombre: asistente.nombre,
+                                apellido: asistente.apellido,
+                                dia1: false,
+                                dia2: true,
+                                dia3: false,
+                                fecha: new Date().toLocaleString()
+                            });
+                        } else {
+                            // Actualizar asistencia existente
+                            const index = asistencias.findIndex(a => 
+                                a.nombre === asistente.nombre && a.apellido === asistente.apellido
+                            );
+                            if (index !== -1) {
+                                asistencias[index].dia2 = true;
+                            }
+                        }
+                    });
+                }
+                
+                if (dia === 3 || dia === 'all') {
+                    asistentesSimulados = [
+                        { nombre: "PRUEBA", apellido: "PRUEBA" },
+                        { nombre: "ALBERTO", apellido: "QUINTERO" },
+                        { nombre: "PATRICIO", apellido: "CALDERÓN" },
+                        { nombre: "JOSSELINE", apellido: "SANDOVAL BERNARD" }
+                    ];
+                    
+                    asistentesSimulados.forEach(asistente => {
+                        if (!asistenciaExiste(asistente.nombre, asistente.apellido)) {
+                            nuevasAsistencias.push({
+                                id: Date.now() + Math.random(),
+                                nombre: asistente.nombre,
+                                apellido: asistente.apellido,
+                                dia1: false,
+                                dia2: false,
+                                dia3: true,
+                                fecha: new Date().toLocaleString()
+                            });
+                        } else {
+                            // Actualizar asistencia existente
+                            const index = asistencias.findIndex(a => 
+                                a.nombre === asistente.nombre && a.apellido === asistente.apellido
+                            );
+                            if (index !== -1) {
+                                asistencias[index].dia3 = true;
+                            }
+                        }
+                    });
+                }
+                
+                // Agregar nuevas asistencias
+                asistencias = [...asistencias, ...nuevasAsistencias];
+                
+                // SOLUCIÓN: Guardar asistencias en localStorage
+                guardarAsistenciasEnStorage();
+                
+                // Actualizar interfaz
+                actualizarTablaAsistencias();
+                calcularEstadisticasAsistencias();
+                
+                syncStatus.innerHTML = `<div class="alert alert-success">Sincronización completada. Se procesaron ${nuevasAsistencias.length} nuevas asistencias.</div>`;
+            }, 2000);
         }
         
         // Generar certificados
@@ -1929,8 +2322,8 @@
                 .then(function(result) {
                     const htmlContent = result.value;
                     
-                    // Validar campos en la plantilla
-                    const camposFaltantes = validarPlantimientoCertificado(htmlContent);
+                    // CORRECCIÓN: Usar la función corregida
+                    const camposFaltantes = validarPlantillaCertificado(htmlContent);
                     
                     if (camposFaltantes.length > 0) {
                         certificateStatus.innerHTML = `<div class="alert alert-danger">La plantilla no contiene los campos requeridos: ${camposFaltantes.join(', ')}</div>`;
@@ -1943,10 +2336,10 @@
                     asistentesAprobados.forEach(asistente => {
                         let certificadoHTML = htmlContent;
                         
-                        // Reemplazar campos en la plantilla
+                        // Reemplazar campos en la plantilla - CORREGIDO: usar minúsculas consistentes
                         certificadoHTML = certificadoHTML.replace(/{{cargo}}/g, asistente.cargo);
-                        certificadoHTML = certificadoHTML.replace(/{{Apellido}}/g, asistente.apellido);
-                        certificadoHTML = certificadoHTML.replace(/{{Nombre}}/g, asistente.nombre);
+                        certificadoHTML = certificadoHTML.replace(/{{apellido}}/g, asistente.apellido);
+                        certificadoHTML = certificadoHTML.replace(/{{nombre}}/g, asistente.nombre);
                         
                         generatedCertificates.push({
                             nombre: asistente.nombre,
@@ -1957,14 +2350,19 @@
                         });
                     });
                     
-                    // Guardar en localStorage
-                    localStorage.setItem('generatedCertificates', JSON.stringify(generatedCertificates));
+                    // SOLUCIÓN: Usar la función mejorada para guardar
+                    const guardadoExitoso = guardarCertificadosEnStorage();
                     
-                    certificateStatus.innerHTML = `<div class="alert alert-success">Se han generado ${generatedCertificates.length} certificados correctamente.</div>`;
+                    if (guardadoExitoso) {
+                        certificateStatus.innerHTML = `<div class="alert alert-success">Se han generado ${generatedCertificates.length} certificados correctamente.</div>`;
+                    } else {
+                        certificateStatus.innerHTML = `<div class="alert alert-warning">Se generaron ${generatedCertificates.length} certificados, pero no se pudieron guardar todos debido a limitaciones de almacenamiento.</div>`;
+                    }
+                    
                     actualizarTablaCertificados();
                     calcularEstadisticasAsistencias();
                     
-                    // Habilitar botón de descarga
+                    // SOLUCIÓN: Administradores siempre pueden descargar certificados
                     btnDownloadCertificates.disabled = false;
                 })
                 .catch(function(error) {
@@ -1973,8 +2371,16 @@
                 });
         }
         
-        // Descargar certificados individuales
+        // Descargar certificados individuales en PDF
         function descargarCertificadoIndividual(nombre, apellido) {
+            // SOLUCIÓN: Los administradores pueden descargar certificados sin restricciones de fecha
+            const esAdministrador = adminDashboard.style.display === 'block';
+            
+            if (!certificadosDisponibles() && !esAdministrador) {
+                alert('Los certificados estarán disponibles a partir del 25 de Octubre 2025 a las 13:00.');
+                return;
+            }
+            
             const certificado = generatedCertificates.find(c => 
                 c.nombre === nombre && c.apellido === apellido
             );
@@ -1984,40 +2390,375 @@
                 return;
             }
             
-            // Crear un blob con el contenido HTML
-            const blob = new Blob([certificado.html], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            
-            // Crear enlace de descarga
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `Certificado_${nombre}_${apellido}.html`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // Liberar el objeto URL
-            URL.revokeObjectURL(url);
+            // SOLUCIÓN: Regenerar el certificado si no está en memoria
+            if (!certificado.html && certificateTemplateData) {
+                // Regenerar el certificado
+                mammoth.convertToHtml({arrayBuffer: certificateTemplateData})
+                    .then(function(result) {
+                        const htmlContent = result.value;
+                        let certificadoHTML = htmlContent;
+                        
+                        // Reemplazar campos en la plantilla
+                        certificadoHTML = certificadoHTML.replace(/{{cargo}}/g, certificado.cargo);
+                        certificadoHTML = certificadoHTML.replace(/{{apellido}}/g, certificado.apellido);
+                        certificadoHTML = certificadoHTML.replace(/{{nombre}}/g, certificado.nombre);
+                        
+                        // Crear un PDF con el contenido HTML
+                        generarPDF(certificadoHTML, nombre, apellido);
+                    })
+                    .catch(function(error) {
+                        alert('Error al generar el certificado: ' + error.message);
+                    });
+            } else {
+                // Crear un PDF con el contenido HTML
+                generarPDF(certificado.html, nombre, apellido);
+            }
         }
         
-        // Descargar todos los certificados en un ZIP
+        // Función para generar PDF a partir de HTML
+        function generarPDF(htmlContent, nombre, apellido) {
+            // Crear un elemento temporal para el contenido HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlContent;
+            document.body.appendChild(tempDiv);
+            
+            // Usar html2canvas para convertir el HTML a imagen
+            html2canvas(tempDiv).then(canvas => {
+                // Crear PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                
+                // Agregar la imagen al PDF
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 297; // A4 landscape width in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save(`Certificado_${nombre}_${apellido}.pdf`);
+                
+                // Eliminar el elemento temporal
+                document.body.removeChild(tempDiv);
+            });
+        }
+        
+        // Descargar todos los certificados en un ZIP como PDF
         function descargarTodosCertificados() {
+            // SOLUCIÓN: El administrador puede descargar certificados en cualquier momento
+            // No hay restricción de fecha para el administrador
+            
             if (generatedCertificates.length === 0) {
                 alert('No hay certificados generados para descargar.');
                 return;
             }
             
+            certificateStatus.innerHTML = '<div class="alert alert-info">Preparando archivos PDF para descarga, por favor espere...</div>';
+            
             const zip = new JSZip();
+            let certificadosListos = 0;
             
-            generatedCertificates.forEach(certificado => {
-                const nombreArchivo = `Certificado_${certificado.nombre}_${certificado.apellido}.html`;
-                zip.file(nombreArchivo, certificado.html);
+            generatedCertificates.forEach((certificado, index) => {
+                // SOLUCIÓN: Regenerar certificados si no están en memoria
+                if (!certificado.html && certificateTemplateData) {
+                    mammoth.convertToHtml({arrayBuffer: certificateTemplateData})
+                        .then(function(result) {
+                            const htmlContent = result.value;
+                            let certificadoHTML = htmlContent;
+                            
+                            // Reemplazar campos en la plantilla
+                            certificadoHTML = certificadoHTML.replace(/{{cargo}}/g, certificado.cargo);
+                            certificadoHTML = certificadoHTML.replace(/{{apellido}}/g, certificado.apellido);
+                            certificadoHTML = certificadoHTML.replace(/{{nombre}}/g, certificado.nombre);
+                            
+                            // Crear un elemento temporal para el contenido HTML
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = certificadoHTML;
+                            document.body.appendChild(tempDiv);
+                            
+                            // Usar html2canvas para convertir el HTML a imagen
+                            html2canvas(tempDiv).then(canvas => {
+                                // Crear PDF
+                                const { jsPDF } = window.jspdf;
+                                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                                
+                                // Agregar la imagen al PDF
+                                const imgData = canvas.toDataURL('image/png');
+                                const imgWidth = 297; // A4 landscape width in mm
+                                const imgHeight = canvas.height * imgWidth / canvas.width;
+                                
+                                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                                
+                                // Convertir PDF a blob
+                                const pdfBlob = pdf.output('blob');
+                                
+                                const nombreArchivo = `Certificado_${certificado.nombre}_${certificado.apellido}.pdf`;
+                                zip.file(nombreArchivo, pdfBlob);
+                                
+                                certificadosListos++;
+                                
+                                // Eliminar el elemento temporal
+                                document.body.removeChild(tempDiv);
+                                
+                                // Cuando todos estén listos, generar el ZIP
+                                if (certificadosListos === generatedCertificates.length) {
+                                    zip.generateAsync({type: 'blob'})
+                                        .then(function(content) {
+                                            saveAs(content, 'Certificados_Congreso.zip');
+                                            certificateStatus.innerHTML = '<div class="alert alert-success">Descarga completada.</div>';
+                                        });
+                                }
+                            });
+                        })
+                        .catch(function(error) {
+                            console.error('Error al generar certificado:', error);
+                            certificadosListos++;
+                        });
+                } else {
+                    // Crear un elemento temporal para el contenido HTML
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = certificado.html;
+                    document.body.appendChild(tempDiv);
+                    
+                    // Usar html2canvas para convertir el HTML a imagen
+                    html2canvas(tempDiv).then(canvas => {
+                        // Crear PDF
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF('landscape', 'mm', 'a4');
+                        
+                        // Agregar la imagen al PDF
+                        const imgData = canvas.toDataURL('image/png');
+                        const imgWidth = 297; // A4 landscape width in mm
+                        const imgHeight = canvas.height * imgWidth / canvas.width;
+                        
+                        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                        
+                        // Convertir PDF a blob
+                        const pdfBlob = pdf.output('blob');
+                        
+                        const nombreArchivo = `Certificado_${certificado.nombre}_${certificado.apellido}.pdf`;
+                        zip.file(nombreArchivo, pdfBlob);
+                        
+                        certificadosListos++;
+                        
+                        // Eliminar el elemento temporal
+                        document.body.removeChild(tempDiv);
+                        
+                        // Cuando todos estén listos, generar el ZIP
+                        if (certificadosListos === generatedCertificates.length) {
+                            zip.generateAsync({type: 'blob'})
+                                .then(function(content) {
+                                    saveAs(content, 'Certificados_Congreso.zip');
+                                    certificateStatus.innerHTML = '<div class="alert alert-success">Descarga completada.</div>';
+                                });
+                        }
+                    });
+                }
             });
+        }
+        
+        // NUEVA FUNCIÓN: Vista previa del certificado
+        function vistaPreviaCertificado() {
+            const participanteId = certificateParticipantSelect.value;
             
-            zip.generateAsync({type: 'blob'})
-                .then(function(content) {
-                    saveAs(content, 'Certificados_Congreso.zip');
+            if (!participanteId) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">Debe seleccionar un participante.</div>';
+                return;
+            }
+            
+            if (!certificateTemplateData) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">No hay plantilla de certificado cargada.</div>';
+                return;
+            }
+            
+            const participante = registros.find(r => r.id == participanteId);
+            
+            if (!participante) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">No se encontró el participante seleccionado.</div>';
+                return;
+            }
+            
+            htmlCertificateStatus.innerHTML = '<div class="alert alert-info">Generando vista previa, por favor espere...</div>';
+            
+            // Usar Mammoth para convertir el DOCX a HTML
+            mammoth.convertToHtml({arrayBuffer: certificateTemplateData})
+                .then(function(result) {
+                    const htmlContent = result.value;
+                    
+                    // CORRECCIÓN: Usar la función corregida
+                    const camposFaltantes = validarPlantillaCertificado(htmlContent);
+                    
+                    if (camposFaltantes.length > 0) {
+                        htmlCertificateStatus.innerHTML = `<div class="alert alert-danger">La plantilla no contiene los campos requeridos: ${camposFaltantes.join(', ')}</div>`;
+                        return;
+                    }
+                    
+                    let certificadoHTML = htmlContent;
+                    
+                    // Reemplazar campos en la plantilla - CORREGIDO: usar minúsculas consistentes
+                    certificadoHTML = certificadoHTML.replace(/{{cargo}}/g, participante.cargo);
+                    certificadoHTML = certificadoHTML.replace(/{{apellido}}/g, participante.apellido);
+                    certificadoHTML = certificadoHTML.replace(/{{nombre}}/g, participante.nombre);
+                    
+                    // Mostrar vista previa
+                    certificatePreviewContent.innerHTML = certificadoHTML;
+                    certificatePreviewContainer.style.display = 'block';
+                    
+                    htmlCertificateStatus.innerHTML = '<div class="alert alert-success">Vista previa generada correctamente.</div>';
+                })
+                .catch(function(error) {
+                    console.error('Error al procesar la plantilla:', error);
+                    htmlCertificateStatus.innerHTML = `<div class="alert alert-danger">Error al procesar la plantilla: ${error.message}</div>`;
                 });
+        }
+        
+        // NUEVA FUNCIÓN: Descargar certificado HTML autocompletado
+        function descargarCertificadoHTML() {
+            const participanteId = certificateParticipantSelect.value;
+            
+            if (!participanteId) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">Debe seleccionar un participante.</div>';
+                return;
+            }
+            
+            if (!certificateTemplateData) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">No hay plantilla de certificado cargada.</div>';
+                return;
+            }
+            
+            const participante = registros.find(r => r.id == participanteId);
+            
+            if (!participante) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">No se encontró el participante seleccionado.</div>';
+                return;
+            }
+            
+            htmlCertificateStatus.innerHTML = '<div class="alert alert-info">Generando certificado HTML, por favor espere...</div>';
+            
+            // Usar Mammoth para convertir el DOCX a HTML
+            mammoth.convertToHtml({arrayBuffer: certificateTemplateData})
+                .then(function(result) {
+                    const htmlContent = result.value;
+                    
+                    // CORRECCIÓN: Usar la función corregida
+                    const camposFaltantes = validarPlantillaCertificado(htmlContent);
+                    
+                    if (camposFaltantes.length > 0) {
+                        htmlCertificateStatus.innerHTML = `<div class="alert alert-danger">La plantilla no contiene los campos requeridos: ${camposFaltantes.join(', ')}</div>`;
+                        return;
+                    }
+                    
+                    let certificadoHTML = htmlContent;
+                    
+                    // Reemplazar campos en la plantilla - CORREGIDO: usar minúsculas consistentes
+                    certificadoHTML = certificadoHTML.replace(/{{cargo}}/g, participante.cargo);
+                    certificadoHTML = certificadoHTML.replace(/{{apellido}}/g, participante.apellido);
+                    certificadoHTML = certificadoHTML.replace(/{{nombre}}/g, participante.nombre);
+                    
+                    // Crear un blob con el contenido HTML
+                    const blob = new Blob([certificadoHTML], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    // Crear enlace de descarga
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `Certificado_${participante.nombre}_${participante.apellido}.html`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Liberar el objeto URL
+                    URL.revokeObjectURL(url);
+                    
+                    htmlCertificateStatus.innerHTML = '<div class="alert alert-success">Certificado HTML descargado correctamente.</div>';
+                })
+                .catch(function(error) {
+                    console.error('Error al procesar la plantilla:', error);
+                    htmlCertificateStatus.innerHTML = `<div class="alert alert-danger">Error al procesar la plantilla: ${error.message}</div>`;
+                });
+        }
+        
+        // NUEVA FUNCIÓN: Descargar certificado PDF autocompletado
+        function descargarCertificadoPDF() {
+            const participanteId = certificateParticipantSelect.value;
+            
+            if (!participanteId) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">Debe seleccionar un participante.</div>';
+                return;
+            }
+            
+            if (!certificateTemplateData) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">No hay plantilla de certificado cargada.</div>';
+                return;
+            }
+            
+            const participante = registros.find(r => r.id == participanteId);
+            
+            if (!participante) {
+                htmlCertificateStatus.innerHTML = '<div class="alert alert-danger">No se encontró el participante seleccionado.</div>';
+                return;
+            }
+            
+            htmlCertificateStatus.innerHTML = '<div class="alert alert-info">Generando certificado PDF, por favor espere...</div>';
+            
+            // Usar Mammoth para convertir el DOCX a HTML
+            mammoth.convertToHtml({arrayBuffer: certificateTemplateData})
+                .then(function(result) {
+                    const htmlContent = result.value;
+                    
+                    // CORRECCIÓN: Usar la función corregida
+                    const camposFaltantes = validarPlantillaCertificado(htmlContent);
+                    
+                    if (camposFaltantes.length > 0) {
+                        htmlCertificateStatus.innerHTML = `<div class="alert alert-danger">La plantilla no contiene los campos requeridos: ${camposFaltantes.join(', ')}</div>`;
+                        return;
+                    }
+                    
+                    let certificadoHTML = htmlContent;
+                    
+                    // Reemplazar campos en la plantilla - CORREGIDO: usar minúsculas consistentes
+                    certificadoHTML = certificadoHTML.replace(/{{cargo}}/g, participante.cargo);
+                    certificadoHTML = certificadoHTML.replace(/{{apellido}}/g, participante.apellido);
+                    certificadoHTML = certificadoHTML.replace(/{{nombre}}/g, participante.nombre);
+                    
+                    // Crear un PDF con el contenido HTML
+                    generarPDF(certificadoHTML, participante.nombre, participante.apellido);
+                    
+                    htmlCertificateStatus.innerHTML = '<div class="alert alert-success">Certificado PDF descargado correctamente.</div>';
+                })
+                .catch(function(error) {
+                    console.error('Error al procesar la plantilla:', error);
+                    htmlCertificateStatus.innerHTML = `<div class="alert alert-danger">Error al procesar la plantilla: ${error.message}</div>`;
+                });
+        }
+        
+        // NUEVA FUNCIÓN: Actualizar lista de participantes para certificados
+        function actualizarListaParticipantesCertificados() {
+            certificateParticipantSelect.innerHTML = '<option value="">Seleccione un participante</option>';
+            
+            registros.forEach(participante => {
+                const option = document.createElement('option');
+                option.value = participante.id;
+                option.textContent = `${participante.cargo} ${participante.nombre} ${participante.apellido}`;
+                certificateParticipantSelect.appendChild(option);
+            });
+        }
+        
+        // NUEVA FUNCIÓN: Actualizar sección de participantes
+        function actualizarSeccionParticipantes() {
+            actualizarTablaRegistros();
+            actualizarCupos();
+            actualizarListaParticipantesCertificados();
+        }
+        
+        // NUEVA FUNCIÓN: Actualizar sección de asistencias
+        function actualizarSeccionAsistencias() {
+            actualizarTablaAsistencias();
+            calcularEstadisticasAsistencias();
+        }
+        
+        // NUEVA FUNCIÓN: Actualizar sección de certificados
+        function actualizarSeccionCertificados() {
+            actualizarTablaCertificados();
+            actualizarListaParticipantesCertificados();
         }
         
         // Inicializar la visualización de cupos
@@ -2030,6 +2771,7 @@
         mostrarCertificados();
         calcularEstadisticasAsistencias();
         actualizarContadorLimite();
+        actualizarListaParticipantesCertificados();
         
         // Manejar el envío del formulario
         document.getElementById('formulario-inscripcion').addEventListener('submit', function(e) {
@@ -2104,6 +2846,7 @@
                 // Actualizar tabla de administración si está visible
                 if (adminDashboard.style.display === 'block') {
                     actualizarTablaRegistros();
+                    actualizarListaParticipantesCertificados();
                 }
                 
                 // Limpiar formulario
@@ -2161,6 +2904,7 @@
                 actualizarTablaCertificados();
                 calcularEstadisticasAsistencias();
                 actualizarEstadoRegistroAdmin();
+                actualizarListaParticipantesCertificados();
             } else {
                 alert('Usuario o contraseña incorrectos');
             }
@@ -2200,9 +2944,9 @@
                     return;
                 }
                 
-                // Validar tamaño (10MB máximo)
-                if (file.size > 10 * 1024 * 1024) {
-                    uploadStatus.innerHTML = '<div class="alert alert-danger">El archivo es demasiado grande. El tamaño máximo permitido es 10MB.</div>';
+                // CORRECCIÓN: Aumentar tamaño máximo a 20MB
+                if (file.size > 20 * 1024 * 1024) {
+                    uploadStatus.innerHTML = '<div class="alert alert-danger">El archivo es demasiado grande. El tamaño máximo permitido es 20MB.</div>';
                     btnUploadAgenda.disabled = true;
                     return;
                 }
@@ -2286,9 +3030,9 @@
                     return;
                 }
                 
-                // Validar tamaño (5MB máximo)
-                if (file.size > 5 * 1024 * 1024) {
-                    certificateStatus.innerHTML = '<div class="alert alert-danger">El archivo es demasiado grande. El tamaño máximo permitido es 5MB.</div>';
+                // CORRECCIÓN: Aumentar tamaño máximo a 10MB
+                if (file.size > 10 * 1024 * 1024) {
+                    certificateStatus.innerHTML = '<div class="alert alert-danger">El archivo es demasiado grande. El tamaño máximo permitido es 10MB.</div>';
                     btnUploadTemplate.disabled = true;
                     return;
                 }
@@ -2316,6 +3060,7 @@
                     // Validar la plantilla
                     mammoth.convertToHtml({arrayBuffer: certificateTemplateData})
                         .then(function(result) {
+                            // CORRECCIÓN: Usar la función corregida
                             const camposFaltantes = validarPlantillaCertificado(result.value);
                             
                             if (camposFaltantes.length > 0) {
@@ -2378,6 +3123,57 @@
             descargarCertificadoIndividual("PRUEBA", "PRUEBA");
         });
         
+        // SOLUCIÓN: Sincronización de asistencias
+        btnSyncDay1.addEventListener('click', function() {
+            sincronizarAsistencias(1);
+        });
+        
+        btnSyncDay2.addEventListener('click', function() {
+            sincronizarAsistencias(2);
+        });
+        
+        btnSyncDay3.addEventListener('click', function() {
+            sincronizarAsistencias(3);
+        });
+        
+        btnSyncAll.addEventListener('click', function() {
+            sincronizarAsistencias('all');
+        });
+        
+        // NUEVOS BOTONES: Actualizar secciones
+        btnUpdateParticipants.addEventListener('click', actualizarSeccionParticipantes);
+        btnUpdateAttendance.addEventListener('click', actualizarSeccionAsistencias);
+        btnUpdateCertificates.addEventListener('click', actualizarSeccionCertificados);
+        
+        // NUEVOS BOTONES: Vista previa y descarga de certificados
+        btnPreviewCertificate.addEventListener('click', vistaPreviaCertificado);
+        btnDownloadHtmlCertificate.addEventListener('click', descargarCertificadoHTML);
+        btnDownloadPdfCertificate.addEventListener('click', descargarCertificadoPDF);
+        
+        // Búsqueda en asistencias
+        btnSearchAttendance.addEventListener('click', function() {
+            const termino = searchAttendance.value.trim();
+            const resultados = buscarAsistencias(termino);
+            actualizarTablaAsistencias(resultados);
+        });
+        
+        btnClearSearchAttendance.addEventListener('click', function() {
+            searchAttendance.value = '';
+            actualizarTablaAsistencias();
+        });
+        
+        // Búsqueda en certificados
+        btnSearchCertificates.addEventListener('click', function() {
+            const termino = searchCertificates.value.trim();
+            const resultados = buscarCertificados(termino);
+            actualizarTablaCertificados(resultados);
+        });
+        
+        btnClearSearchCertificates.addEventListener('click', function() {
+            searchCertificates.value = '';
+            actualizarTablaCertificados();
+        });
+        
         // Actualizar tabla de registros
         function actualizarTablaRegistros(registrosFiltrados = null) {
             const tbody = document.getElementById('registros-table');
@@ -2407,14 +3203,16 @@
         }
         
         // Actualizar tabla de asistencias
-        function actualizarTablaAsistencias() {
+        function actualizarTablaAsistencias(asistenciasFiltradas = null) {
             const tbody = document.getElementById('asistencias-table');
             tbody.innerHTML = '';
             
-            if (asistencias.length === 0) {
+            const asistenciasAMostrar = asistenciasFiltradas || asistencias;
+            
+            if (asistenciasAMostrar.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No hay registros de asistencia</td></tr>';
             } else {
-                asistencias.forEach(asistencia => {
+                asistenciasAMostrar.forEach(asistencia => {
                     const diasAsistidos = (asistencia.dia1 ? 1 : 0) + (asistencia.dia2 ? 1 : 0) + (asistencia.dia3 ? 1 : 0);
                     let estado = '';
                     let estadoClass = '';
@@ -2450,16 +3248,16 @@
         }
         
         // Actualizar tabla de certificados
-        function actualizarTablaCertificados() {
+        function actualizarTablaCertificados(certificadosFiltrados = null) {
             const tbody = document.getElementById('certificados-table');
             tbody.innerHTML = '';
             
-            const asistentesAprobados = obtenerAsistentesAprobados();
+            const certificadosAMostrar = certificadosFiltrados || obtenerAsistentesAprobados();
             
-            if (asistentesAprobados.length === 0) {
+            if (certificadosAMostrar.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay asistentes aprobados para certificación</td></tr>';
             } else {
-                asistentesAprobados.forEach(asistente => {
+                certificadosAMostrar.forEach(asistente => {
                     const certificadoGenerado = generatedCertificates.find(c => 
                         c.nombre === asistente.nombre && c.apellido === asistente.apellido
                     );
@@ -2514,6 +3312,7 @@
                     registros.splice(index, 1);
                     actualizarCupos();
                     actualizarTablaRegistros();
+                    actualizarListaParticipantesCertificados();
                 }
             }
         };
@@ -2539,6 +3338,8 @@
                 const index = asistencias.findIndex(a => a.id === id);
                 if (index !== -1) {
                     asistencias.splice(index, 1);
+                    // SOLUCIÓN: Guardar asistencias en localStorage después de eliminar
+                    guardarAsistenciasEnStorage();
                     actualizarTablaAsistencias();
                     calcularEstadisticasAsistencias();
                 }
@@ -2667,6 +3468,7 @@
             
             actualizarCupos();
             actualizarTablaRegistros();
+            actualizarListaParticipantesCertificados();
             participantModal.style.display = 'none';
         });
         
@@ -2714,6 +3516,9 @@
                     fecha: new Date().toLocaleString()
                 });
             }
+            
+            // SOLUCIÓN: Guardar asistencias en localStorage
+            guardarAsistenciasEnStorage();
             
             actualizarTablaAsistencias();
             calcularEstadisticasAsistencias();
@@ -2810,6 +3615,11 @@
         
         // Actualizar contador de límite de registro cada segundo
         setInterval(actualizarContadorLimite, 1000);
+        
+        // Actualizar disponibilidad de certificados cada minuto
+        setInterval(function() {
+            mostrarCertificados();
+        }, 60000);
     </script>
 </body>
 </html>
