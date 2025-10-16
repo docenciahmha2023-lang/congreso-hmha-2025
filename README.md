@@ -1184,13 +1184,18 @@
                 <h3>Iniciar Sesión</h3>
                 <div class="form-group">
                     <label for="admin-user">Usuario</label>
-                    <input type="text" id="admin-user" class="form-control">
+                    <input type="text" id="admin-user" class="form-control" value="DOCENCIA">
                 </div>
                 <div class="form-group">
                     <label for="admin-pass">Contraseña</label>
-                    <input type="password" id="admin-pass" class="form-control">
+                    <input type="password" id="admin-pass" class="form-control" value="DOCENCIA">
                 </div>
                 <button class="btn" id="btn-login">Ingresar</button>
+                <div style="margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                    <p><strong>Credenciales predefinidas:</strong></p>
+                    <p>Usuario: DOCENCIA</p>
+                    <p>Contraseña: DOCENCIA</p>
+                </div>
             </div>
             
             <div id="admin-dashboard" style="display: none;">
