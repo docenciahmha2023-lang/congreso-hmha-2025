@@ -1452,6 +1452,41 @@
                         </button>
                     </div>
                     
+                    <!-- NUEVA SECCIÓN: Generar certificado para persona no inscrita -->
+                    <div class="sync-section">
+                        <h4>Generar Certificado para Persona No Inscrita</h4>
+                        <p>Crear certificado para una persona que no está en la lista de participantes</p>
+                        <div class="form-group">
+                            <label for="external-cargo">Cargo</label>
+                            <select id="external-cargo" class="form-control">
+                                <option value="">Seleccione cargo</option>
+                                <option value="DR.">DR.</option>
+                                <option value="DRA.">DRA.</option>
+                                <option value="LCDO.">LCDO.</option>
+                                <option value="LCDA.">LCDA.</option>
+                                <option value="IRM.">IRM.</option>
+                                <option value="IRE.">IRE.</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="external-nombre">Nombre</label>
+                            <input type="text" id="external-nombre" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="external-apellido">Apellido</label>
+                            <input type="text" id="external-apellido" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-certificate" id="btn-generate-external-certificate">
+                                <i class="fas fa-file-certificate"></i> Generar Certificado
+                            </button>
+                            <button class="btn btn-download" id="btn-download-external-certificate">
+                                <i class="fas fa-download"></i> Descargar PDF
+                            </button>
+                        </div>
+                        <div id="external-certificate-status" class="sync-status"></div>
+                    </div>
+                    
                     <!-- NUEVA SECCIÓN: Descargar certificado HTML autocompletado -->
                     <div class="sync-section">
                         <h4>Descargar Certificado HTML Autocompletado</h4>
@@ -1718,6 +1753,14 @@
         const certificatePreviewContainer = document.getElementById('certificate-preview-container');
         const certificatePreviewContent = document.getElementById('certificate-preview-content');
         
+        // NUEVOS ELEMENTOS: Certificados para personas no inscritas
+        const externalCargo = document.getElementById('external-cargo');
+        const externalNombre = document.getElementById('external-nombre');
+        const externalApellido = document.getElementById('external-apellido');
+        const btnGenerateExternalCertificate = document.getElementById('btn-generate-external-certificate');
+        const btnDownloadExternalCertificate = document.getElementById('btn-download-external-certificate');
+        const externalCertificateStatus = document.getElementById('external-certificate-status');
+        
         // Datos iniciales de participantes
         const participantesIniciales = [
             // GERENCIA (9)
@@ -1781,53 +1824,26 @@
         // Inicializar asistencias
         function inicializarAsistencias() {
             if (asistencias.length === 0) {
-                // Cargar asistencias desde localStorage si existen
-                const asistenciasGuardadas = localStorage.getItem('asistenciasCongreso');
-                if (asistenciasGuardadas) {
-                    try {
-                        asistencias = JSON.parse(asistenciasGuardadas);
-                    } catch (e) {
-                        console.error('Error al cargar asistencias:', e);
-                        asistencias = [];
-                    }
-                }
+                // Agregar algunos registros de ejemplo
+                asistencias.push({
+                    id: 1,
+                    nombre: "PRUEBA",
+                    apellido: "PRUEBA",
+                    dia1: true,
+                    dia2: true,
+                    dia3: false,
+                    fecha: new Date().toLocaleString()
+                });
                 
-                // Si no hay asistencias guardadas, agregar algunos registros de ejemplo
-                if (asistencias.length === 0) {
-                    asistencias.push({
-                        id: 1,
-                        nombre: "PRUEBA",
-                        apellido: "PRUEBA",
-                        dia1: true,
-                        dia2: true,
-                        dia3: false,
-                        fecha: new Date().toLocaleString()
-                    });
-                    
-                    asistencias.push({
-                        id: 2,
-                        nombre: "LEONARDO",
-                        apellido: "VITERI",
-                        dia1: true,
-                        dia2: false,
-                        dia3: true,
-                        fecha: new Date().toLocaleString()
-                    });
-                    
-                    // Guardar asistencias iniciales
-                    guardarAsistenciasEnStorage();
-                }
-            }
-        }
-        
-        // SOLUCIÓN: Función para guardar asistencias en localStorage
-        function guardarAsistenciasEnStorage() {
-            try {
-                localStorage.setItem('asistenciasCongreso', JSON.stringify(asistencias));
-                return true;
-            } catch (e) {
-                console.error('Error al guardar asistencias:', e);
-                return false;
+                asistencias.push({
+                    id: 2,
+                    nombre: "LEONARDO",
+                    apellido: "VITERI",
+                    dia1: true,
+                    dia2: false,
+                    dia3: true,
+                    fecha: new Date().toLocaleString()
+                });
             }
         }
         
@@ -1920,11 +1936,11 @@
                 certificatePlaceholder.style.display = 'none';
                 certificateUploaded.style.display = 'block';
                 
-                // SOLUCIÓN: Los administradores pueden descargar certificados sin restricciones de fecha
+                // Verificar si los certificados están disponibles
                 const ahora = new Date().getTime();
                 const certificadosDisponibles = ahora >= fechaDisponibilidadCertificados;
                 
-                if (certificadosDisponibles || adminDashboard.style.display === 'block') {
+                if (certificadosDisponibles) {
                     certificateUploadedContent.classList.add('certificate-available');
                     btnDownloadMyCertificate.disabled = false;
                     btnDownloadMyCertificate.textContent = "Descargar Mi Certificado";
@@ -1937,7 +1953,8 @@
                 // Mostrar botón de descarga para administradores
                 if (adminDashboard.style.display === 'block') {
                     btnDownloadAllCertificates.style.display = 'inline-block';
-                    btnDownloadAllCertificates.disabled = false; // SOLUCIÓN: Administradores siempre pueden descargar
+                    // CORRECCIÓN: Administradores pueden descargar sin restricciones de fecha
+                    btnDownloadAllCertificates.disabled = false;
                 }
             } else {
                 certificatePlaceholder.style.display = 'block';
@@ -2153,14 +2170,6 @@
                             cargo: participante.cargo,
                             diasAsistidos: diasAsistidos
                         });
-                    } else {
-                        // SOLUCIÓN: Permitir certificados para personas no inscritas
-                        approvedAttendees.push({
-                            nombre: asistencia.nombre,
-                            apellido: asistencia.apellido,
-                            cargo: "ASISTENTE", // Valor por defecto
-                            diasAsistidos: diasAsistidos
-                        });
                     }
                 }
             });
@@ -2290,9 +2299,6 @@
                 // Agregar nuevas asistencias
                 asistencias = [...asistencias, ...nuevasAsistencias];
                 
-                // SOLUCIÓN: Guardar asistencias en localStorage
-                guardarAsistenciasEnStorage();
-                
                 // Actualizar interfaz
                 actualizarTablaAsistencias();
                 calcularEstadisticasAsistencias();
@@ -2362,7 +2368,7 @@
                     actualizarTablaCertificados();
                     calcularEstadisticasAsistencias();
                     
-                    // SOLUCIÓN: Administradores siempre pueden descargar certificados
+                    // CORRECCIÓN: Habilitar botón de descarga para administradores sin restricciones
                     btnDownloadCertificates.disabled = false;
                 })
                 .catch(function(error) {
@@ -2373,10 +2379,10 @@
         
         // Descargar certificados individuales en PDF
         function descargarCertificadoIndividual(nombre, apellido) {
-            // SOLUCIÓN: Los administradores pueden descargar certificados sin restricciones de fecha
-            const esAdministrador = adminDashboard.style.display === 'block';
+            // CORRECCIÓN: Los administradores pueden descargar certificados sin restricciones de fecha
+            const esAdmin = adminDashboard.style.display === 'block';
             
-            if (!certificadosDisponibles() && !esAdministrador) {
+            if (!esAdmin && !certificadosDisponibles()) {
                 alert('Los certificados estarán disponibles a partir del 25 de Octubre 2025 a las 13:00.');
                 return;
             }
@@ -2443,7 +2449,7 @@
         
         // Descargar todos los certificados en un ZIP como PDF
         function descargarTodosCertificados() {
-            // SOLUCIÓN: El administrador puede descargar certificados en cualquier momento
+            // CORRECCIÓN: El administrador puede descargar certificados en cualquier momento
             // No hay restricción de fecha para el administrador
             
             if (generatedCertificates.length === 0) {
@@ -2553,6 +2559,111 @@
                     });
                 }
             });
+        }
+        
+        // NUEVA FUNCIÓN: Generar certificado para persona no inscrita
+        function generarCertificadoExterno() {
+            if (!certificateTemplateData) {
+                externalCertificateStatus.innerHTML = '<div class="alert alert-danger">No hay plantilla de certificado cargada.</div>';
+                return;
+            }
+            
+            const cargo = externalCargo.value;
+            const nombre = externalNombre.value;
+            const apellido = externalApellido.value;
+            
+            if (!cargo || !nombre || !apellido) {
+                externalCertificateStatus.innerHTML = '<div class="alert alert-danger">Debe completar todos los campos.</div>';
+                return;
+            }
+            
+            externalCertificateStatus.innerHTML = '<div class="alert alert-info">Generando certificado, por favor espere...</div>';
+            
+            // Usar Mammoth para convertir el DOCX a HTML
+            mammoth.convertToHtml({arrayBuffer: certificateTemplateData})
+                .then(function(result) {
+                    const htmlContent = result.value;
+                    
+                    // CORRECCIÓN: Usar la función corregida
+                    const camposFaltantes = validarPlantillaCertificado(htmlContent);
+                    
+                    if (camposFaltantes.length > 0) {
+                        externalCertificateStatus.innerHTML = `<div class="alert alert-danger">La plantilla no contiene los campos requeridos: ${camposFaltantes.join(', ')}</div>`;
+                        return;
+                    }
+                    
+                    let certificadoHTML = htmlContent;
+                    
+                    // Reemplazar campos en la plantilla - CORREGIDO: usar minúsculas consistentes
+                    certificadoHTML = certificadoHTML.replace(/{{cargo}}/g, cargo);
+                    certificadoHTML = certificadoHTML.replace(/{{apellido}}/g, apellido);
+                    certificadoHTML = certificadoHTML.replace(/{{nombre}}/g, nombre);
+                    
+                    // Agregar a la lista de certificados generados
+                    generatedCertificates.push({
+                        nombre: nombre,
+                        apellido: apellido,
+                        cargo: cargo,
+                        html: certificadoHTML,
+                        fechaGeneracion: new Date().toLocaleString()
+                    });
+                    
+                    // Guardar en localStorage
+                    guardarCertificadosEnStorage();
+                    
+                    externalCertificateStatus.innerHTML = '<div class="alert alert-success">Certificado generado correctamente.</div>';
+                    
+                    // Actualizar tabla de certificados
+                    actualizarTablaCertificados();
+                })
+                .catch(function(error) {
+                    console.error('Error al procesar la plantilla:', error);
+                    externalCertificateStatus.innerHTML = `<div class="alert alert-danger">Error al procesar la plantilla: ${error.message}</div>`;
+                });
+        }
+        
+        // NUEVA FUNCIÓN: Descargar certificado para persona no inscrita
+        function descargarCertificadoExterno() {
+            const cargo = externalCargo.value;
+            const nombre = externalNombre.value;
+            const apellido = externalApellido.value;
+            
+            if (!cargo || !nombre || !apellido) {
+                externalCertificateStatus.innerHTML = '<div class="alert alert-danger">Debe completar todos los campos.</div>';
+                return;
+            }
+            
+            externalCertificateStatus.innerHTML = '<div class="alert alert-info">Generando certificado PDF, por favor espere...</div>';
+            
+            // Usar Mammoth para convertir el DOCX a HTML
+            mammoth.convertToHtml({arrayBuffer: certificateTemplateData})
+                .then(function(result) {
+                    const htmlContent = result.value;
+                    
+                    // CORRECCIÓN: Usar la función corregida
+                    const camposFaltantes = validarPlantillaCertificado(htmlContent);
+                    
+                    if (camposFaltantes.length > 0) {
+                        externalCertificateStatus.innerHTML = `<div class="alert alert-danger">La plantilla no contiene los campos requeridos: ${camposFaltantes.join(', ')}</div>`;
+                        return;
+                    }
+                    
+                    let certificadoHTML = htmlContent;
+                    
+                    // Reemplazar campos en la plantilla - CORREGIDO: usar minúsculas consistentes
+                    certificadoHTML = certificadoHTML.replace(/{{cargo}}/g, cargo);
+                    certificadoHTML = certificadoHTML.replace(/{{apellido}}/g, apellido);
+                    certificadoHTML = certificadoHTML.replace(/{{nombre}}/g, nombre);
+                    
+                    // Crear un PDF con el contenido HTML
+                    generarPDF(certificadoHTML, nombre, apellido);
+                    
+                    externalCertificateStatus.innerHTML = '<div class="alert alert-success">Certificado PDF descargado correctamente.</div>';
+                })
+                .catch(function(error) {
+                    console.error('Error al procesar la plantilla:', error);
+                    externalCertificateStatus.innerHTML = `<div class="alert alert-danger">Error al procesar la plantilla: ${error.message}</div>`;
+                });
         }
         
         // NUEVA FUNCIÓN: Vista previa del certificado
@@ -3150,6 +3261,10 @@
         btnDownloadHtmlCertificate.addEventListener('click', descargarCertificadoHTML);
         btnDownloadPdfCertificate.addEventListener('click', descargarCertificadoPDF);
         
+        // NUEVOS BOTONES: Generar certificados para personas no inscritas
+        btnGenerateExternalCertificate.addEventListener('click', generarCertificadoExterno);
+        btnDownloadExternalCertificate.addEventListener('click', descargarCertificadoExterno);
+        
         // Búsqueda en asistencias
         btnSearchAttendance.addEventListener('click', function() {
             const termino = searchAttendance.value.trim();
@@ -3338,8 +3453,6 @@
                 const index = asistencias.findIndex(a => a.id === id);
                 if (index !== -1) {
                     asistencias.splice(index, 1);
-                    // SOLUCIÓN: Guardar asistencias en localStorage después de eliminar
-                    guardarAsistenciasEnStorage();
                     actualizarTablaAsistencias();
                     calcularEstadisticasAsistencias();
                 }
@@ -3516,9 +3629,6 @@
                     fecha: new Date().toLocaleString()
                 });
             }
-            
-            // SOLUCIÓN: Guardar asistencias en localStorage
-            guardarAsistenciasEnStorage();
             
             actualizarTablaAsistencias();
             calcularEstadisticasAsistencias();
