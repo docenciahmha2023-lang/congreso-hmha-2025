@@ -931,7 +931,7 @@
                             <label for="form-link-23">Enlace Google Forms</label>
                             <input type="url" id="form-link-23" placeholder="https://forms.google.com/...">
                         </div>
-                        <button class="btn btn-primary" data-day="23">Sincronizar Asistencias</button>
+                        <button class="btn btn-primary" data-day="23">Guardar Enlace</button>
                     </div>
                     <div class="attendance-form">
                         <h4>Viernes 24</h4>
@@ -939,7 +939,7 @@
                             <label for="form-link-24">Enlace Google Forms</label>
                             <input type="url" id="form-link-24" placeholder="https://forms.google.com/...">
                         </div>
-                        <button class="btn btn-primary" data-day="24">Sincronizar Asistencias</button>
+                        <button class="btn btn-primary" data-day="24">Guardar Enlace</button>
                     </div>
                     <div class="attendance-form">
                         <h4>Sábado 25</h4>
@@ -947,7 +947,7 @@
                             <label for="form-link-25">Enlace Google Forms</label>
                             <input type="url" id="form-link-25" placeholder="https://forms.google.com/...">
                         </div>
-                        <button class="btn btn-primary" data-day="25">Sincronizar Asistencias</button>
+                        <button class="btn btn-primary" data-day="25">Guardar Enlace</button>
                     </div>
                 </div>
                 
@@ -1014,6 +1014,7 @@
                         <p style="margin-top: 1rem; font-size: 0.9rem;">Tamaño máximo: 20MB</p>
                         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Utiliza los campos: {{cargo}}, {{apellido}}, {{nombre}}</p>
                     </div>
+                    <div id="template-status" style="margin-top: 1rem;"></div>
                 </div>
                 
                 <div style="margin: 2rem 0;">
@@ -1196,6 +1197,7 @@
         let agendaFile = null;
         let certificateTemplate = null;
         let attendanceData = {};
+        let formLinks = {};
         let adminLoggedIn = false;
         const registrationDeadline = new Date('2025-10-22T23:59:00');
         const certificatesAvailableDate = new Date('2025-10-25T13:00:00');
@@ -1230,6 +1232,7 @@
         const templateUploadArea = document.getElementById('template-upload-area');
         const templateFileInput = document.getElementById('template-file');
         const browseTemplateBtn = document.getElementById('browse-template');
+        const templateStatus = document.getElementById('template-status');
         const generateAllCertificatesBtn = document.getElementById('generate-all-certificates');
         const generateCertificateManualBtn = document.getElementById('generate-certificate-manual');
         const downloadAllCertificatesBtn = document.getElementById('download-all-certificates');
@@ -1260,6 +1263,9 @@
             setInterval(updateCountdown, 1000);
             
             loadParticipants();
+            loadAgendaData();
+            loadFormLinks();
+            loadTemplate();
             updateAvailableSlots();
             updateRegistrationButton();
             
@@ -1314,11 +1320,11 @@
             downloadAllCertificatesBtn.addEventListener('click', downloadAllCertificates);
             externalCertificateForm.addEventListener('submit', generateExternalCertificate);
             
-            // Attendance synchronization
+            // Attendance form links
             document.querySelectorAll('.attendance-form button').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const day = this.getAttribute('data-day');
-                    syncAttendance(day);
+                    saveFormLink(day);
                 });
             });
             
@@ -1830,27 +1836,88 @@
                 return;
             }
             
-            // In a real implementation, you would upload the file to a server
-            // For this demo, we'll just store the file name in localStorage
-            localStorage.setItem('agendaFileName', agendaFile.name);
-            localStorage.setItem('agendaPublished', 'true');
+            // Convert file to base64 for storage
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const agendaData = {
+                    name: agendaFile.name,
+                    type: agendaFile.type,
+                    size: agendaFile.size,
+                    data: e.target.result,
+                    published: true,
+                    publishedDate: new Date().toISOString()
+                };
+                
+                // Save agenda data
+                localStorage.setItem('congresoAgenda', JSON.stringify(agendaData));
+                
+                alert('Agenda publicada exitosamente.');
+                
+                // Update public section
+                const agendaContainer = document.querySelector('.agenda-container');
+                agendaContainer.innerHTML = `
+                    <h3>Agenda del Congreso</h3>
+                    <p>La agenda completa del congreso está disponible para descarga.</p>
+                    <a href="#" class="cta-button" id="download-agenda">Descargar Agenda</a>
+                `;
+                
+                // Add download functionality
+                document.getElementById('download-agenda').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    downloadAgenda();
+                });
+            };
+            reader.readAsDataURL(agendaFile);
+        }
+        
+        function downloadAgenda() {
+            const agendaData = JSON.parse(localStorage.getItem('congresoAgenda'));
+            if (!agendaData) {
+                alert('No hay agenda disponible para descargar.');
+                return;
+            }
             
-            alert('Agenda publicada exitosamente.');
+            // Create a blob from base64 data
+            const byteCharacters = atob(agendaData.data.split(',')[1]);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: agendaData.type });
             
-            // Update public section
-            const agendaContainer = document.querySelector('.agenda-container');
-            agendaContainer.innerHTML = `
-                <h3>Agenda del Congreso</h3>
-                <p>La agenda completa del congreso está disponible para descarga.</p>
-                <a href="#" class="cta-button" id="download-agenda">Descargar Agenda</a>
-            `;
-            
-            // Add download functionality
-            document.getElementById('download-agenda').addEventListener('click', function(e) {
-                e.preventDefault();
-                // In a real implementation, this would download the actual file
-                alert('Descargando agenda...');
-            });
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = agendaData.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function loadAgendaData() {
+            const agendaData = localStorage.getItem('congresoAgenda');
+            if (agendaData) {
+                const parsedData = JSON.parse(agendaData);
+                
+                // Update public section if agenda is published
+                if (parsedData.published) {
+                    const agendaContainer = document.querySelector('.agenda-container');
+                    agendaContainer.innerHTML = `
+                        <h3>Agenda del Congreso</h3>
+                        <p>La agenda completa del congreso está disponible para descarga.</p>
+                        <a href="#" class="cta-button" id="download-agenda">Descargar Agenda</a>
+                    `;
+                    
+                    // Add download functionality
+                    document.getElementById('download-agenda').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        downloadAgenda();
+                    });
+                }
+            }
         }
         
         // Certificate template handling
@@ -1873,7 +1940,70 @@
             
             certificateTemplate = file;
             
-            alert('Plantilla cargada exitosamente.');
+            // Save template to localStorage
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const templateData = {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    data: e.target.result,
+                    uploadedDate: new Date().toISOString()
+                };
+                
+                localStorage.setItem('congresoTemplate', JSON.stringify(templateData));
+                templateStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Plantilla cargada exitosamente: ${file.name}</p>`;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function loadTemplate() {
+            const storedTemplate = localStorage.getItem('congresoTemplate');
+            if (storedTemplate) {
+                const templateData = JSON.parse(storedTemplate);
+                certificateTemplate = templateData;
+                templateStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Plantilla cargada: ${templateData.name}</p>`;
+            }
+        }
+        
+        // Form links management
+        function saveFormLink(day) {
+            const linkInput = document.getElementById(`form-link-${day}`);
+            const link = linkInput.value.trim();
+            
+            if (!link) {
+                alert('Por favor, ingrese un enlace válido.');
+                return;
+            }
+            
+            // Validate URL format
+            try {
+                new URL(link);
+            } catch (e) {
+                alert('Por favor, ingrese un enlace válido.');
+                return;
+            }
+            
+            // Save form link
+            formLinks[day] = link;
+            localStorage.setItem('congresoFormLinks', JSON.stringify(formLinks));
+            
+            alert(`Enlace para el día ${day} guardado exitosamente.`);
+        }
+        
+        function loadFormLinks() {
+            const storedLinks = localStorage.getItem('congresoFormLinks');
+            if (storedLinks) {
+                formLinks = JSON.parse(storedLinks);
+                
+                // Populate form fields
+                Object.keys(formLinks).forEach(day => {
+                    const input = document.getElementById(`form-link-${day}`);
+                    if (input) {
+                        input.value = formLinks[day];
+                    }
+                });
+            }
         }
         
         // Generate certificates for approved participants
@@ -1964,7 +2094,51 @@
                 return;
             }
             
-            // In a real implementation, this would create a ZIP file with all certificates
+            // Create a ZIP file with all certificates
+            const zip = new JSZip();
+            
+            participantsWithCertificates.forEach(participant => {
+                // Create a simple PDF certificate (in a real implementation, this would use the template)
+                const certificateContent = `
+                    <html>
+                    <head>
+                        <style>
+                            body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+                            .certificate { border: 5px solid #1a4a7a; padding: 50px; max-width: 800px; margin: 0 auto; }
+                            .title { font-size: 32px; color: #1a4a7a; margin-bottom: 30px; }
+                            .name { font-size: 28px; font-weight: bold; margin: 20px 0; }
+                            .text { font-size: 18px; margin: 10px 0; }
+                            .signature { margin-top: 50px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="certificate">
+                            <div class="title">CERTIFICADO DE PARTICIPACIÓN</div>
+                            <div class="text">Se otorga el presente certificado a:</div>
+                            <div class="name">${participant.cargo} ${participant.nombre} ${participant.apellido}</div>
+                            <div class="text">Por su participación en el</div>
+                            <div class="text">I ER CONGRESO INTERNACIONAL DE ESPECIALIDADES CLINICAS-QUIRURGICAS</div>
+                            <div class="text">Hospital Miguel H. Alcivar</div>
+                            <div class="text">23-25 Octubre 2025</div>
+                            <div class="signature">
+                                <div>_________________________</div>
+                                <div>Dr. Julio Feijoo</div>
+                                <div>Analista de Docencia</div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                // Add certificate to ZIP
+                zip.file(`Certificado_${participant.cargo}_${participant.nombre}_${participant.apellido}.html`, certificateContent);
+            });
+            
+            // Generate and download ZIP file
+            zip.generateAsync({type:"blob"}).then(function(content) {
+                saveAs(content, "certificados_congreso.zip");
+            });
+            
             alert(`Descargando ${participantsWithCertificates.length} certificados en formato ZIP...`);
         }
         
@@ -2026,7 +2200,7 @@
                     <td>${certificateStatus}</td>
                     <td class="action-buttons">
                         ${hasCertificate ? 
-                            `<button class="btn btn-primary" onclick="downloadCertificate('${participant.id}')">Descargar</button>` : 
+                            `<button class="btn btn-primary" onclick="downloadIndividualCertificate('${participant.id}')">Descargar</button>` : 
                             `<button class="btn btn-secondary" onclick="generateCertificateForParticipant('${participant.id}')">Generar</button>`
                         }
                     </td>
@@ -2073,38 +2247,60 @@
             alert(`Certificado generado para ${participant.cargo} ${participant.nombre} ${participant.apellido}`);
         }
         
-        function downloadCertificate(participantId) {
+        function downloadIndividualCertificate(participantId) {
             const participant = participants.find(p => p.id === participantId);
             if (!participant || !participant.certificates || participant.certificates.length === 0) {
                 alert('No hay certificado disponible para este participante.');
                 return;
             }
             
-            // In a real implementation, this would download the actual certificate
+            // Create a simple PDF certificate (in a real implementation, this would use the template)
+            const certificateContent = `
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+                        .certificate { border: 5px solid #1a4a7a; padding: 50px; max-width: 800px; margin: 0 auto; }
+                        .title { font-size: 32px; color: #1a4a7a; margin-bottom: 30px; }
+                        .name { font-size: 28px; font-weight: bold; margin: 20px 0; }
+                        .text { font-size: 18px; margin: 10px 0; }
+                        .signature { margin-top: 50px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="certificate">
+                        <div class="title">CERTIFICADO DE PARTICIPACIÓN</div>
+                        <div class="text">Se otorga el presente certificado a:</div>
+                        <div class="name">${participant.cargo} ${participant.nombre} ${participant.apellido}</div>
+                        <div class="text">Por su participación en el</div>
+                        <div class="text">I ER CONGRESO INTERNACIONAL DE ESPECIALIDADES CLINICAS-QUIRURGICAS</div>
+                        <div class="text">Hospital Miguel H. Alcivar</div>
+                        <div class="text">23-25 Octubre 2025</div>
+                        <div class="signature">
+                            <div>_________________________</div>
+                            <div>Dr. Julio Feijoo</div>
+                            <div>Analista de Docencia</div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            // Create and download the certificate
+            const blob = new Blob([certificateContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Certificado_${participant.cargo}_${participant.nombre}_${participant.apellido}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
             alert(`Descargando certificado para ${participant.cargo} ${participant.nombre} ${participant.apellido}...`);
         }
         
         // Attendance management
-        function syncAttendance(day) {
-            // In a real implementation, this would connect to Google Forms API
-            // For this demo, we'll just simulate the process
-            alert(`Sincronizando asistencias para el día ${day}...`);
-            
-            // Simulate fetching data and updating attendance
-            if (!attendanceData[day]) {
-                attendanceData[day] = {};
-            }
-            
-            // Mark some random participants as attended
-            participants.forEach(p => {
-                if (Math.random() > 0.3) { // 70% chance of attendance
-                    attendanceData[day][p.id] = true;
-                }
-            });
-            
-            updateAttendanceDashboard();
-        }
-        
         function updateAttendanceDashboard() {
             // Calculate attendance statistics
             const total = participants.length;
