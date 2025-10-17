@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congreso Hospitalario 2025</title>
+    <title>I ER CONGRESO INTERNACIONAL DE ESPECIALIDADES CLINICAS-QUIRURGICAS | HOSPITAL MIGUEL H. ALCIVAR 2025</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <style>
         :root {
             --primary-blue: #1a4a7a;
@@ -32,9 +32,9 @@
 
         body {
             font-family: 'Open Sans', sans-serif;
-            line-height: 1.6;
             color: var(--dark-gray);
             background-color: var(--light-gray);
+            line-height: 1.6;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -47,346 +47,289 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 20px;
         }
 
-        /* Header & Navigation */
-        header {
-            background-color: var(--white);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        /* Header Section */
+        .header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 0;
+            border-bottom: 3px solid var(--secondary-blue);
         }
 
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            flex-wrap: wrap;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .organizer-info {
+            flex: 1;
+            min-width: 300px;
         }
 
-        .logo-placeholder {
-            width: 60px;
-            height: 60px;
-            background-color: var(--primary-blue);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .logo-text h1 {
+        .organizer-info h2 {
             font-size: 1.2rem;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.5rem;
         }
 
-        .logo-text p {
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
             font-size: 0.9rem;
-            color: var(--dark-gray);
         }
 
-        .admin-login-btn {
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brochure-link {
             background-color: var(--secondary-blue);
-            color: white;
-            border: none;
+            color: var(--white);
             padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
+            border-radius: 5px;
+            text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .admin-login-btn:hover {
-            background-color: var(--primary-blue);
+        .brochure-link:hover {
+            background-color: #1a4a7a;
         }
 
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            color: white;
-            padding: 3rem 0;
+            color: var(--white);
+            padding: 4rem 0;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
-        .hero h2 {
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo {
+            height: 80px;
+            margin-right: 20px;
+        }
+
+        .hero h1 {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+        .countdown {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2rem;
+            margin: 2rem 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            display: inline-block;
         }
 
         .badges {
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+            margin: 1.5rem 0;
         }
 
         .badge {
-            background-color: rgba(255,255,255,0.2);
+            background-color: var(--countdown-orange);
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-weight: 600;
-        }
-
-        .countdown {
-            font-family: 'Roboto Mono', monospace;
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            background-color: rgba(0,0,0,0.2);
-            padding: 1rem;
-            border-radius: 8px;
-            display: inline-block;
+            font-size: 0.9rem;
         }
 
         .cta-button {
-            background-color: var(--countdown-orange);
-            color: white;
-            border: none;
+            display: inline-block;
+            background-color: var(--success-green);
+            color: var(--white);
             padding: 1rem 2rem;
-            border-radius: 4px;
-            font-size: 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
             font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
         }
 
         .cta-button:hover {
-            background-color: #e06616;
+            background-color: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .cta-button:disabled {
-            background-color: var(--medium-gray);
-            color: var(--dark-gray);
-            cursor: not-allowed;
-        }
-
-        /* Information Cards */
-        .info-section {
-            padding: 3rem 0;
+        /* Cards Section */
+        .cards-section {
+            padding: 4rem 0;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             color: var(--primary-blue);
         }
 
-        .cards-container {
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
         .card {
             background-color: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background-color: var(--primary-blue);
+            color: var(--white);
             padding: 1.5rem;
             text-align: center;
         }
 
-        .card i {
-            font-size: 2rem;
-            color: var(--secondary-blue);
-            margin-bottom: 1rem;
+        .card-body {
+            padding: 1.5rem;
         }
 
-        .card h3 {
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
             color: var(--primary-blue);
-            margin-bottom: 0.5rem;
+        }
+
+        .capacity-counter {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin: 1rem 0;
         }
 
         /* Registration Section */
         .registration-section {
-            padding: 3rem 0;
-            background-color: var(--white);
+            padding: 4rem 0;
+            background-color: var(--medium-gray);
         }
 
         .registration-form {
             max-width: 600px;
             margin: 0 auto;
-            background-color: var(--light-gray);
+            background-color: var(--white);
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
             margin-bottom: 1.5rem;
         }
 
-        .form-group label {
+        label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
 
-        .form-group input, .form-group select {
+        input, select {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid var(--medium-gray);
-            border-radius: 4px;
+            border-radius: 5px;
             font-family: 'Open Sans', sans-serif;
         }
 
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--secondary-blue);
-        }
-
-        .registration-status {
-            text-align: center;
-            margin-bottom: 1.5rem;
+        .submit-btn {
+            width: 100%;
             padding: 1rem;
-            border-radius: 4px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .status-open {
-            background-color: rgba(40, 167, 69, 0.1);
-            color: var(--success-green);
-            border: 1px solid var(--success-green);
+        .submit-btn:hover {
+            background-color: var(--secondary-blue);
         }
 
-        .status-closed {
-            background-color: rgba(220, 53, 69, 0.1);
-            color: var(--alert-red);
-            border: 1px solid var(--alert-red);
-        }
-
-        .status-limited {
-            background-color: rgba(253, 126, 20, 0.1);
-            color: var(--countdown-orange);
-            border: 1px solid var(--countdown-orange);
-        }
-
-        .slots-info {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: var(--dark-gray);
+        .submit-btn:disabled {
+            background-color: var(--medium-gray);
+            cursor: not-allowed;
         }
 
         /* Agenda & Certificates Section */
         .agenda-certificates {
-            padding: 3rem 0;
+            padding: 4rem 0;
         }
 
         .agenda-container, .certificates-container {
             background-color: var(--white);
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            text-align: center;
         }
 
-        .agenda-status, .certificates-status {
-            margin: 1rem 0;
-            padding: 1rem;
-            border-radius: 4px;
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
             font-weight: 600;
+            margin-top: 1rem;
         }
 
         .status-pending {
-            background-color: rgba(253, 126, 20, 0.1);
-            color: var(--countdown-orange);
+            background-color: var(--countdown-orange);
+            color: var(--white);
         }
 
         .status-available {
-            background-color: rgba(40, 167, 69, 0.1);
-            color: var(--success-green);
+            background-color: var(--success-green);
+            color: var(--white);
         }
 
-        .download-btn {
-            background-color: var(--secondary-blue);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s;
-        }
-
-        .download-btn:hover {
-            background-color: var(--primary-blue);
-        }
-
-        .download-btn:disabled {
+        .status-unavailable {
             background-color: var(--medium-gray);
             color: var(--dark-gray);
-            cursor: not-allowed;
         }
 
-        /* Footer */
-        footer {
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            padding: 2rem;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--dark-gray);
-        }
-
-        /* Admin Panel Styles */
+        /* Admin Panel */
         .admin-panel {
-            display: none;
             padding: 2rem 0;
+            display: none;
         }
 
         .admin-header {
@@ -400,40 +343,38 @@
 
         .admin-tabs {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
             border-bottom: 1px solid var(--medium-gray);
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
         .admin-tab {
-            padding: 0.75rem 1.5rem;
+            padding: 1rem 2rem;
             background: none;
             border: none;
-            border-bottom: 3px solid transparent;
             cursor: pointer;
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            color: var(--dark-gray);
-            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
         }
 
         .admin-tab.active {
+            border-bottom: 3px solid var(--primary-blue);
             color: var(--primary-blue);
-            border-bottom-color: var(--primary-blue);
         }
 
-        .admin-tab-content {
+        .admin-content {
             display: none;
         }
 
-        .admin-tab-content.active {
+        .admin-content.active {
             display: block;
         }
 
         .dashboard-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
@@ -441,160 +382,254 @@
             background-color: var(--white);
             padding: 1.5rem;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-        .stat-value {
+        .stat-number {
             font-size: 2rem;
             font-weight: 700;
             color: var(--primary-blue);
-            margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-            color: var(--dark-gray);
-            font-size: 0.9rem;
-        }
-
-        .data-table {
+        .participants-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
-            background-color: var(--white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: hidden;
         }
 
-        .data-table th, .data-table td {
-            padding: 1rem;
+        .participants-table th, .participants-table td {
+            padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid var(--medium-gray);
         }
 
-        .data-table th {
+        .participants-table th {
             background-color: var(--primary-blue);
-            color: white;
-            font-weight: 600;
+            color: var(--white);
         }
 
-        .data-table tr:last-child td {
-            border-bottom: none;
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
         }
 
-        .action-btn {
-            background: none;
+        .btn {
+            padding: 0.5rem 1rem;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
-            margin-right: 0.5rem;
-            color: var(--secondary-blue);
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
         }
 
-        .action-btn.delete {
-            color: var(--alert-red);
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-success {
+            background-color: var(--success-green);
+            color: var(--white);
+        }
+
+        .btn-danger {
+            background-color: var(--alert-red);
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background-color: var(--medium-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-warning {
+            background-color: var(--countdown-orange);
+            color: var(--white);
+        }
+
+        .file-upload {
+            border: 2px dashed var(--medium-gray);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload.active {
+            border-color: var(--primary-blue);
+            background-color: rgba(26, 74, 122, 0.05);
+        }
+
+        .attendance-forms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .attendance-form {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .certificate-template {
+            margin-bottom: 2rem;
+        }
+
+        /* Search and Filters */
+        .search-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
 
         .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .filter-select {
+            min-width: 150px;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--medium-gray);
-            border-radius: 4px;
-            margin-bottom: 1rem;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
-        .file-upload-area {
-            border: 2px dashed var(--medium-gray);
-            border-radius: 8px;
+        .modal-content {
+            background-color: var(--white);
             padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
             text-align: center;
-            margin-bottom: 1rem;
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .file-upload-area:hover {
-            border-color: var(--secondary-blue);
-            background-color: rgba(44, 106, 164, 0.05);
+        /* Map Styles */
+        .map-container {
+            height: 200px;
+            margin-top: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
-        .file-upload-area i {
-            font-size: 3rem;
-            color: var(--secondary-blue);
-            margin-bottom: 1rem;
+        /* Edit Modal */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
-        .attendance-status {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .status-approved {
-            background-color: rgba(40, 167, 69, 0.1);
-            color: var(--success-green);
-        }
-
-        .status-pending {
-            background-color: rgba(253, 126, 20, 0.1);
-            color: var(--countdown-orange);
-        }
-
-        .status-reproved {
-            background-color: rgba(220, 53, 69, 0.1);
-            color: var(--alert-red);
+        .edit-modal-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hero h2 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .countdown {
-                font-size: 1.2rem;
-            }
-            
-            .admin-tabs {
-                flex-wrap: wrap;
-            }
-            
-            .admin-tab {
-                flex: 1;
-                min-width: 120px;
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
                 text-align: center;
             }
-            
-            .data-table {
-                display: block;
-                overflow-x: auto;
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .countdown {
+                font-size: 1.5rem;
+            }
+
+            .badges {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .admin-tabs {
+                flex-direction: column;
+            }
+
+            .admin-tab {
+                border-bottom: 1px solid var(--medium-gray);
+                border-left: 3px solid transparent;
+            }
+
+            .admin-tab.active {
+                border-left: 3px solid var(--primary-blue);
+                border-bottom: 1px solid var(--medium-gray);
+            }
+
+            .search-filters {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
+    <!-- Header Section -->
+    <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo-container">
-                    <div class="logo-placeholder">
-                        <i class="fas fa-hospital"></i>
-                    </div>
-                    <div class="logo-text">
-                        <h1>Hospital ULEAM</h1>
-                        <p>Congreso Médico 2025</p>
+                <div class="organizer-info">
+                    <h2>UNIDAD DE DOCENCIA E INVESTIGACIÓN</h2>
+                    <p>Hospital Miguel H. Alcivar</p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>docenciahmha2023@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>0991708712</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-user-md"></i>
+                            <span>Dr. Julio Feijoo - Analista de Docencia</span>
+                        </div>
                     </div>
                 </div>
-                <button class="admin-login-btn" id="adminLoginBtn">
-                    <i class="fas fa-lock"></i> Acceso Admin
-                </button>
+                <a href="https://www.canva.com/design/DAGxPEDGSwU/q74TWlodBfOzME7a7nRHlw/edit" target="_blank" class="brochure-link">
+                    <i class="fas fa-book-open"></i>
+                    Ver Información del Congreso
+                </a>
             </div>
         </div>
     </header>
@@ -603,106 +638,125 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h2>Congreso de Actualización Médica 2025</h2>
-                <p>Avances y tendencias en medicina moderna</p>
-                
+                <div class="logo-container">
+                    <img src="https://via.placeholder.com/80x80/1a4a7a/ffffff?text=MH" alt="Hospital Miguel H. Alcivar" class="logo">
+                    <h1>I ER CONGRESO INTERNACIONAL DE ESPECIALIDADES CLINICAS-QUIRURGICAS</h1>
+                </div>
+                <div class="countdown" id="countdown">
+                    <span id="days">00</span>d <span id="hours">00</span>h <span id="minutes">00</span>m <span id="seconds">00</span>s
+                </div>
                 <div class="badges">
                     <div class="badge">GRATUITO</div>
                     <div class="badge">CUPOS LIMITADOS: 220</div>
                 </div>
-                
-                <div class="countdown" id="countdown">
-                    <span id="days">00</span>d <span id="hours">00</span>h <span id="minutes">00</span>m <span id="seconds">00</span>s
-                </div>
-                
-                <button class="cta-button" id="registerButton">Registrarse Ahora</button>
+                <a href="#registration" class="cta-button">Registrarse Ahora</a>
             </div>
         </div>
     </section>
 
-    <!-- Information Section -->
-    <section class="info-section">
+    <!-- Information Cards -->
+    <section class="cards-section">
         <div class="container">
-            <h2 class="section-title">Información del Evento</h2>
-            <div class="cards-container">
+            <h2 class="section-title">Información Esencial</h2>
+            <div class="cards-grid">
                 <div class="card">
-                    <i class="fas fa-calendar-alt"></i>
-                    <h3>Fechas</h3>
-                    <p>23-25 Octubre 2025</p>
+                    <div class="card-header">
+                        <h3>Fechas</h3>
+                    </div>
+                    <div class="card-body">
+                        <i class="fas fa-calendar-alt card-icon"></i>
+                        <p>23-25 Octubre 2025</p>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h3>Ubicación</h3>
-                    <p>Auditorio ULEAM</p>
-                    <p>Manta, Ecuador</p>
+                    <div class="card-header">
+                        <h3>Lugar</h3>
+                    </div>
+                    <div class="card-body">
+                        <i class="fas fa-map-marker-alt card-icon"></i>
+                        <p>BAHIA DE CARAQUEZ, DESTINO UNICO EN MANABI</p>
+                        <p>Auditorio ULEAM BAHIA DE CARAQUEZ EXTENSION SUCRE</p>
+                        <div class="map-container">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.267441346091!2d-80.427545!3d-0.5975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902b6b8a5f0c0001%3A0x8c5e5e5e5e5e5e5e!2sBah%C3%ADa%20de%20Car%C3%A1quez%2C%20Ecuador!5e0!3m2!1ses!2ses!4v1690000000000!5m2!1ses!2ses" 
+                                width="100%" 
+                                height="200" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-users"></i>
-                    <h3>Capacidad</h3>
-                    <p>220 cupos totales</p>
-                    <p id="availableSlotsInfo">50 disponibles para médicos</p>
+                    <div class="card-header">
+                        <h3>Capacidad</h3>
+                    </div>
+                    <div class="card-body">
+                        <i class="fas fa-users card-icon"></i>
+                        <p>220 cupos totales</p>
+                        <div class="capacity-counter">
+                            <span id="available-slots">50</span> cupos disponibles
+                        </div>
+                        <!-- Información restringida para administradores -->
+                    </div>
                 </div>
                 <div class="card">
-                    <i class="fas fa-certificate"></i>
-                    <h3>Certificados</h3>
-                    <p>Requieren 2/3 asistencias</p>
-                    <p>Disponibles: 25-Oct, 13:00</p>
+                    <div class="card-header">
+                        <h3>Certificados</h3>
+                    </div>
+                    <div class="card-body">
+                        <i class="fas fa-certificate card-icon"></i>
+                        <p>Disponibles a partir del 25 de Octubre 2025, 13:00</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Registration Section -->
-    <section class="registration-section">
+    <section class="registration-section" id="registration">
         <div class="container">
-            <h2 class="section-title">Registro de Participantes</h2>
+            <h2 class="section-title">Registro</h2>
             <div class="registration-form">
-                <div id="registrationStatus" class="registration-status status-open">
-                    <i class="fas fa-check-circle"></i> Inscripciones Abiertas
-                </div>
-                
-                <form id="registrationForm">
+                <form id="registration-form">
                     <div class="form-group">
-                        <label for="title">Título</label>
-                        <select id="title" name="title" required>
-                            <option value="">Seleccione</option>
+                        <label for="cargo">Cargo *</label>
+                        <select id="cargo" name="cargo" required>
+                            <option value="">Seleccione su cargo</option>
                             <option value="DR.">DR.</option>
                             <option value="DRA.">DRA.</option>
+                            <option value="LCDO." disabled>LCDO. (No disponible)</option>
+                            <option value="LCDA." disabled>LCDA. (No disponible)</option>
+                            <option value="IRM." disabled>IRM. (No disponible)</option>
+                            <option value="IRE." disabled>IRE. (No disponible)</option>
                         </select>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="firstName">Nombres</label>
-                        <input type="text" id="firstName" name="firstName" required>
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" name="nombre" required>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="lastName">Apellidos</label>
-                        <input type="text" id="lastName" name="lastName" required>
+                        <label for="apellido">Apellido *</label>
+                        <input type="text" id="apellido" name="apellido" required>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="email">Correo Electrónico</label>
+                        <label for="email">Email *</label>
                         <input type="email" id="email" name="email" required>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="category">Categoría</label>
-                        <select id="category" name="category" required>
-                            <option value="">Seleccione</option>
-                            <option value="DR./DRA. Médico General">DR./DRA. Médico General</option>
-                            <option value="DR./DRA. Especialista">DR./DRA. Especialista</option>
-                            <option value="Licenciado Enfermería">Licenciado Enfermería</option>
-                            <option value="Internos">Internos</option>
+                        <label for="categoria">Categoría *</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Seleccione su categoría</option>
+                            <option value="Médico General">Médico General</option>
+                            <option value="Especialista">Especialista</option>
+                            <option value="Otro">Otro</option>
                         </select>
                     </div>
-                    
-                    <div class="slots-info" id="slotsInfo">
-                        Cupos disponibles para médicos: <span id="medicalSlots">50</span>
-                    </div>
-                    
-                    <button type="submit" class="cta-button" id="submitRegistration">Completar Registro</button>
+                    <button type="submit" class="submit-btn" id="submit-btn">Registrarse</button>
                 </form>
+                <div id="registration-message" style="margin-top: 1rem;"></div>
             </div>
         </div>
     </section>
@@ -710,66 +764,31 @@
     <!-- Agenda & Certificates Section -->
     <section class="agenda-certificates">
         <div class="container">
+            <h2 class="section-title">Agenda & Certificados</h2>
             <div class="agenda-container">
-                <h2>Agenda del Congreso</h2>
-                <div class="agenda-status status-pending">
-                    <i class="fas fa-clock"></i> Próximamente
-                </div>
-                <button class="download-btn" id="downloadAgenda" disabled>
-                    <i class="fas fa-download"></i> Descargar Agenda
-                </button>
+                <h3>Agenda del Congreso</h3>
+                <p>La agenda completa del congreso estará disponible próximamente.</p>
+                <div class="status-badge status-pending">Próximamente</div>
             </div>
-            
             <div class="certificates-container">
-                <h2>Certificados de Participación</h2>
-                <div class="certificates-status status-pending">
-                    <i class="fas fa-clock"></i> Disponibles a partir del 25-Oct-2025, 13:00
-                </div>
-                <p>Requisito: Mínimo 2 de 3 asistencias registradas</p>
-                <button class="download-btn" id="downloadCertificate" disabled>
-                    <i class="fas fa-download"></i> Descargar Certificado
-                </button>
+                <h3>Certificados de Participación</h3>
+                <p>Los certificados estarán disponibles para descarga a partir del 25 de Octubre 2025, 13:00</p>
+                <div class="status-badge status-unavailable">No Disponible</div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>Congreso de Actualización Médica 2025 - Hospital ULEAM</p>
-            <p>Auditorio ULEAM, Manta, Ecuador | 23-25 Octubre 2025</p>
-        </div>
-    </footer>
-
-    <!-- Admin Login Modal -->
-    <div class="modal" id="adminLoginModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Acceso Administrativo</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="adminLoginForm">
-                <div class="form-group">
-                    <label for="adminUsername">Usuario</label>
-                    <input type="text" id="adminUsername" name="adminUsername" required>
-                </div>
-                <div class="form-group">
-                    <label for="adminPassword">Contraseña</label>
-                    <input type="password" id="adminPassword" name="adminPassword" required>
-                </div>
-                <button type="submit" class="cta-button">Ingresar</button>
-            </form>
-        </div>
+    <!-- Admin Login Button -->
+    <div class="container" style="text-align: center; margin: 2rem 0;">
+        <button id="admin-login-btn" class="btn btn-primary">Acceso Administrativo</button>
     </div>
 
     <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
+    <section class="admin-panel" id="admin-panel">
         <div class="container">
             <div class="admin-header">
                 <h2>Panel de Administración</h2>
-                <button class="admin-login-btn" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                </button>
+                <button id="admin-logout" class="btn btn-secondary">Cerrar Sesión</button>
             </div>
             
             <div class="admin-tabs">
@@ -779,846 +798,1482 @@
                 <button class="admin-tab" data-tab="certificates">Generación de Certificados</button>
             </div>
             
-            <!-- Participants Management Tab -->
-            <div class="admin-tab-content active" id="participants-tab">
-                <h3>Gestión de Participantes</h3>
-                
+            <!-- Participants Management -->
+            <div class="admin-content active" id="participants-content">
                 <div class="dashboard-stats">
                     <div class="stat-card">
-                        <div class="stat-value" id="totalSlots">220</div>
-                        <div class="stat-label">Cupos Totales</div>
+                        <div class="stat-number" id="total-slots">220</div>
+                        <div>Cupos Totales</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="assignedSlots">0</div>
-                        <div class="stat-label">Cupos Asignados</div>
+                        <div class="stat-number" id="assigned-slots">0</div>
+                        <div>Cupos Asignados</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="availableSlots">220</div>
-                        <div class="stat-label">Cupos Disponibles</div>
+                        <div class="stat-number" id="available-admin-slots">220</div>
+                        <div>Cupos Disponibles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="dr-dra-slots">50</div>
+                        <div>Cupos DR./DRA.</div>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <input type="text" class="search-box" id="participantSearch" placeholder="Buscar participantes...">
+                <h3>Registrar Nuevo Participante</h3>
+                <form id="admin-registration-form">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="admin-cargo">Cargo</label>
+                            <select id="admin-cargo" name="cargo" required>
+                                <option value="DR.">DR.</option>
+                                <option value="DRA.">DRA.</option>
+                                <option value="LCDO.">LCDO.</option>
+                                <option value="LCDA.">LCDA.</option>
+                                <option value="IRM.">IRM.</option>
+                                <option value="IRE.">IRE.</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-categoria">Categoría</label>
+                            <select id="admin-categoria" name="categoria" required>
+                                <option value="Médico General">Médico General</option>
+                                <option value="Especialista">Especialista</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="admin-nombre">Nombre</label>
+                            <input type="text" id="admin-nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-apellido">Apellido</label>
+                            <input type="text" id="admin-apellido" name="apellido" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-email">Email</label>
+                        <input type="email" id="admin-email" name="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar Participante</button>
+                </form>
+                
+                <h3 style="margin-top: 2rem;">Lista de Participantes</h3>
+                <div class="search-filters">
+                    <div class="search-box form-group">
+                        <input type="text" id="search-participants" placeholder="Buscar por nombre, apellido, email o cargo...">
+                    </div>
+                    <div class="filter-select form-group">
+                        <select id="filter-cargo">
+                            <option value="">Todos los cargos</option>
+                            <option value="DR.">DR.</option>
+                            <option value="DRA.">DRA.</option>
+                            <option value="LCDO.">LCDO.</option>
+                            <option value="LCDA.">LCDA.</option>
+                            <option value="IRM.">IRM.</option>
+                            <option value="IRE.">IRE.</option>
+                        </select>
+                    </div>
+                    <div class="filter-select form-group">
+                        <select id="filter-categoria">
+                            <option value="">Todas las categorías</option>
+                            <option value="Médico General">Médico General</option>
+                            <option value="Especialista">Especialista</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
                 </div>
-                
-                <button class="cta-button" id="addParticipantBtn">
-                    <i class="fas fa-plus"></i> Agregar Participante
-                </button>
-                
-                <button class="download-btn" id="exportParticipantsBtn">
-                    <i class="fas fa-file-export"></i> Exportar a CSV
-                </button>
-                
-                <table class="data-table" id="participantsTable">
+                <table class="participants-table">
                     <thead>
                         <tr>
                             <th>Nombre</th>
                             <th>Email</th>
+                            <th>Cargo</th>
                             <th>Categoría</th>
-                            <th>Fecha Registro</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="participantsTableBody">
-                        <!-- Participants will be populated here -->
+                    <tbody id="participants-table-body">
+                        <!-- Participants will be loaded here -->
                     </tbody>
                 </table>
+                <button id="export-csv" class="btn btn-success" style="margin-top: 1rem;">Exportar a CSV</button>
             </div>
             
-            <!-- Agenda Management Tab -->
-            <div class="admin-tab-content" id="agenda-tab">
+            <!-- Agenda Management -->
+            <div class="admin-content" id="agenda-content">
                 <h3>Gestión de Agenda</h3>
-                
-                <div class="file-upload-area" id="agendaUploadArea">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Arrastra y suelta el archivo de agenda aquí o haz clic para seleccionar</p>
-                    <p><small>Formato permitido: PDF (máximo 20MB)</small></p>
-                    <input type="file" id="agendaFile" accept=".pdf" style="display: none;">
+                <div class="file-upload" id="agenda-upload-area">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
+                    <p>Arrastra y suelta el archivo PDF de la agenda aquí</p>
+                    <p>o</p>
+                    <input type="file" id="agenda-file" accept=".pdf" style="display: none;">
+                    <button class="btn btn-primary" id="browse-agenda">Seleccionar Archivo</button>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">Tamaño máximo: 20MB</p>
                 </div>
-                
-                <div id="agendaPreview" style="display: none;">
-                    <h4>Vista Previa de Agenda</h4>
-                    <div id="agendaPreviewContent"></div>
-                    <button class="cta-button" id="publishAgendaBtn">
-                        <i class="fas fa-check"></i> Publicar Agenda
-                    </button>
+                <div id="agenda-preview" style="display: none;">
+                    <h4>Vista Previa</h4>
+                    <div id="preview-content"></div>
+                    <button id="publish-agenda" class="btn btn-success">Publicar Agenda</button>
                 </div>
             </div>
             
-            <!-- Attendance Control Tab -->
-            <div class="admin-tab-content" id="attendance-tab">
+            <!-- Attendance Control -->
+            <div class="admin-content" id="attendance-content">
                 <h3>Control de Asistencias</h3>
+                <p><strong>Requisito para certificados:</strong> Mínimo 2 de 3 asistencias verificadas</p>
                 
-                <div class="form-group">
-                    <label for="attendanceDay">Día del Congreso</label>
-                    <select id="attendanceDay">
-                        <option value="day1">Día 1 (23 Oct)</option>
-                        <option value="day2">Día 2 (24 Oct)</option>
-                        <option value="day3">Día 3 (25 Oct)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="googleFormLink">Enlace de Google Forms</label>
-                    <input type="url" id="googleFormLink" placeholder="https://forms.google.com/...">
-                    <button class="download-btn" id="saveFormLinkBtn">Guardar Enlace</button>
-                </div>
-                
-                <button class="cta-button" id="syncAttendanceBtn">
-                    <i class="fas fa-sync"></i> Sincronizar Asistencias
-                </button>
-                
-                <button class="download-btn" id="exportAttendanceBtn">
-                    <i class="fas fa-file-export"></i> Exportar Consolidado
-                </button>
-                
-                <table class="data-table" id="attendanceTable">
-                    <thead>
-                        <tr>
-                            <th>Participante</th>
-                            <th>Día 1</th>
-                            <th>Día 2</th>
-                            <th>Día 3</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody id="attendanceTableBody">
-                        <!-- Attendance data will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Certificates Generation Tab -->
-            <div class="admin-tab-content" id="certificates-tab">
-                <h3>Generación de Certificados</h3>
-                
-                <div class="file-upload-area" id="certificateTemplateUploadArea">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Arrastra y suelta la plantilla de certificado aquí o haz clic para seleccionar</p>
-                    <p><small>Formato permitido: Word (.docx) con campos: {{cargo}}, {{apellido}}, {{nombre}}</small></p>
-                    <input type="file" id="certificateTemplateFile" accept=".docx" style="display: none;">
-                </div>
-                
-                <div id="certificatePreview" style="display: none;">
-                    <h4>Vista Previa de Certificado</h4>
-                    <div id="certificatePreviewContent"></div>
-                    
-                    <div style="margin-top: 1rem;">
-                        <button class="cta-button" id="generateAllCertificatesBtn">
-                            <i class="fas fa-certificate"></i> Generar Todos los Certificados
-                        </button>
-                        
-                        <button class="download-btn" id="downloadCertificatesZipBtn">
-                            <i class="fas fa-file-archive"></i> Descargar Todos (ZIP)
-                        </button>
+                <div class="attendance-forms">
+                    <div class="attendance-form">
+                        <h4>Jueves 23</h4>
+                        <div class="form-group">
+                            <label for="form-link-23">Enlace Google Forms</label>
+                            <input type="url" id="form-link-23" placeholder="https://forms.google.com/...">
+                        </div>
+                        <button class="btn btn-primary" data-day="23">Sincronizar Asistencias</button>
+                    </div>
+                    <div class="attendance-form">
+                        <h4>Viernes 24</h4>
+                        <div class="form-group">
+                            <label for="form-link-24">Enlace Google Forms</label>
+                            <input type="url" id="form-link-24" placeholder="https://forms.google.com/...">
+                        </div>
+                        <button class="btn btn-primary" data-day="24">Sincronizar Asistencias</button>
+                    </div>
+                    <div class="attendance-form">
+                        <h4>Sábado 25</h4>
+                        <div class="form-group">
+                            <label for="form-link-25">Enlace Google Forms</label>
+                            <input type="url" id="form-link-25" placeholder="https://forms.google.com/...">
+                        </div>
+                        <button class="btn btn-primary" data-day="25">Sincronizar Asistencias</button>
                     </div>
                 </div>
                 
+                <h3>Estadísticas de Asistencia</h3>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-participants">0</div>
+                        <div>Total Participantes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="approved-participants">0</div>
+                        <div>Aprobados (2/3)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-participants">0</div>
+                        <div>Pendientes</div>
+                    </div>
+                </div>
+                
+                <h3>Detalle de Asistencias</h3>
+                <div class="search-filters">
+                    <div class="search-box form-group">
+                        <input type="text" id="search-attendance" placeholder="Buscar participantes...">
+                    </div>
+                    <div class="filter-select form-group">
+                        <select id="filter-attendance-status">
+                            <option value="">Todos los estados</option>
+                            <option value="Aprobado">Aprobado</option>
+                            <option value="No Aprobado">No Aprobado</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="participants-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Jue 23</th>
+                            <th>Vie 24</th>
+                            <th>Sab 25</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendance-table-body">
+                        <!-- Attendance data will be loaded here -->
+                    </tbody>
+                </table>
+                <button id="export-attendance" class="btn btn-success" style="margin-top: 1rem;">Exportar CSV</button>
+            </div>
+            
+            <!-- Certificates Generation -->
+            <div class="admin-content" id="certificates-content">
+                <h3>Generación de Certificados</h3>
+                <p><strong>Requisito para certificados:</strong> Mínimo 2 de 3 asistencias verificadas</p>
+                
+                <div class="certificate-template">
+                    <h4>Plantilla de Certificado</h4>
+                    <div class="file-upload" id="template-upload-area">
+                        <i class="fas fa-file-word" style="font-size: 3rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
+                        <p>Arrastra y suelta la plantilla Word (.docx) aquí</p>
+                        <p>o</p>
+                        <input type="file" id="template-file" accept=".docx" style="display: none;">
+                        <button class="btn btn-primary" id="browse-template">Seleccionar Plantilla</button>
+                        <p style="margin-top: 1rem; font-size: 0.9rem;">Tamaño máximo: 20MB</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Utiliza los campos: {{cargo}}, {{apellido}}, {{nombre}}</p>
+                    </div>
+                </div>
+                
+                <div style="margin: 2rem 0;">
+                    <button id="generate-all-certificates" class="btn btn-success">Generar Certificados para Aprobados</button>
+                    <button id="generate-certificate-manual" class="btn btn-primary">Generar Certificado Individual</button>
+                </div>
+                
+                <h4>Certificados Generados</h4>
+                <div class="search-filters">
+                    <div class="search-box form-group">
+                        <input type="text" id="search-certificates" placeholder="Buscar participantes...">
+                    </div>
+                    <div class="filter-select form-group">
+                        <select id="filter-certificate-status">
+                            <option value="">Todos los estados</option>
+                            <option value="Disponible">Disponible</option>
+                            <option value="No Generado">No Generado</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="participants-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Estado Asistencia</th>
+                            <th>Certificado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="certificates-table-body">
+                        <!-- Certificates data will be loaded here -->
+                    </tbody>
+                </table>
+                
                 <div style="margin-top: 2rem;">
-                    <h4>Certificados para No Inscritos</h4>
-                    <button class="cta-button" id="generateExternalCertificateBtn">
-                        <i class="fas fa-user-plus"></i> Generar Certificado Externo
-                    </button>
+                    <button id="download-all-certificates" class="btn btn-success">Descargar Todos los Certificados (ZIP)</button>
+                </div>
+                
+                <div style="margin-top: 3rem; border-top: 1px solid var(--medium-gray); padding-top: 2rem;">
+                    <h4>Generar Certificados para No Inscritos</h4>
+                    <form id="external-certificate-form">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="external-cargo">Cargo</label>
+                                <select id="external-cargo" name="cargo" required>
+                                    <option value="DR.">DR.</option>
+                                    <option value="DRA.">DRA.</option>
+                                    <option value="LCDO.">LCDO.</option>
+                                    <option value="LCDA.">LCDA.</option>
+                                    <option value="IRM.">IRM.</option>
+                                    <option value="IRE.">IRE.</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="external-nombre">Nombre</label>
+                                <input type="text" id="external-nombre" name="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="external-apellido">Apellido</label>
+                                <input type="text" id="external-apellido" name="apellido" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Generar Certificado</button>
+                    </form>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-modal">&times;</span>
+                <h2>Acceso Administrativo</h2>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Participant Modal -->
+    <div class="edit-modal" id="edit-participant-modal">
+        <div class="edit-modal-content">
+            <div class="modal-header">
+                <span class="close-edit-modal">&times;</span>
+                <h2>Editar Participante</h2>
+            </div>
+            <form id="edit-participant-form">
+                <input type="hidden" id="edit-participant-id">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="edit-cargo">Cargo</label>
+                        <select id="edit-cargo" name="cargo" required>
+                            <option value="DR.">DR.</option>
+                            <option value="DRA.">DRA.</option>
+                            <option value="LCDO.">LCDO.</option>
+                            <option value="LCDA.">LCDA.</option>
+                            <option value="IRM.">IRM.</option>
+                            <option value="IRE.">IRE.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-categoria">Categoría</label>
+                        <select id="edit-categoria" name="categoria" required>
+                            <option value="Médico General">Médico General</option>
+                            <option value="Especialista">Especialista</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="edit-nombre">Nombre</label>
+                        <input type="text" id="edit-nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-apellido">Apellido</label>
+                        <input type="text" id="edit-apellido" name="apellido" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email" name="email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Attendance Modal -->
+    <div class="edit-modal" id="edit-attendance-modal">
+        <div class="edit-modal-content">
+            <div class="modal-header">
+                <span class="close-edit-attendance-modal">&times;</span>
+                <h2>Editar Asistencias</h2>
+            </div>
+            <form id="edit-attendance-form">
+                <input type="hidden" id="edit-attendance-participant-id">
+                <div class="form-group">
+                    <label><strong>Participante:</strong> <span id="edit-attendance-participant-name"></span></label>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="edit-attendance-23" value="23">
+                            Jueves 23
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="edit-attendance-24" value="24">
+                            Viernes 24
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="edit-attendance-25" value="25">
+                            Sábado 25
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Asistencias</button>
+            </form>
         </div>
     </div>
 
     <script>
-        // Estado global de la aplicación
-        const AppState = {
-            // Estados del sistema
-            REGISTRATION: {
-                OPEN: 'Inscripciones Abiertas',
-                CLOSED: 'Inscripciones Cerradas',
-                LIMITED: 'Cupos Limitados'
-            },
-            ATTENDANCE: {
-                PENDING: 'Pendiente',
-                APPROVED: 'Aprobado',
-                REPROVED: 'No Aprobado'
-            },
-            CERTIFICATES: {
-                UNAVAILABLE: 'No Disponible',
-                AVAILABLE: 'Descargar',
-                PENDING: 'Pendiente de Asistencia'
-            },
-            
-            // Datos iniciales
-            participants: [],
-            slots: {
-                total: 220,
-                categories: {
-                    'DR./DRA. Médico General': 25,
-                    'DR./DRA. Especialista': 25,
-                    'Licenciado Enfermería': 100,
-                    'Internos': 70
-                },
-                assigned: {
-                    'DR./DRA. Médico General': 0,
-                    'DR./DRA. Especialista': 0,
-                    'Licenciado Enfermería': 0,
-                    'Internos': 0
-                }
-            },
-            agenda: null,
-            attendance: {},
-            certificateTemplate: null,
-            adminSession: null,
-            
-            // Participante demo
-            DEMO_PARTICIPANT: {
-                cargo: 'DR.',
-                nombre: 'Prueba',
-                apellido: 'Prueba',
-                email: 'demo@hospital.com',
-                categoria: 'Especialista',
-                fechaRegistro: new Date().toISOString()
-            }
-        };
-
-        // Inicialización cuando el DOM está listo
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            setupEventListeners();
+        // Global variables
+        let participants = [];
+        let agendaFile = null;
+        let certificateTemplate = null;
+        let attendanceData = {};
+        let adminLoggedIn = false;
+        const registrationDeadline = new Date('2025-10-22T23:59:00');
+        const certificatesAvailableDate = new Date('2025-10-25T13:00:00');
+        const totalSlots = 220;
+        const drDraSlots = 50;
+        
+        // DOM Elements
+        const countdownElement = document.getElementById('countdown');
+        const availableSlotsElement = document.getElementById('available-slots');
+        const registrationForm = document.getElementById('registration-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const registrationMessage = document.getElementById('registration-message');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const adminPanel = document.getElementById('admin-panel');
+        const adminLogout = document.getElementById('admin-logout');
+        const loginModal = document.getElementById('login-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const loginForm = document.getElementById('login-form');
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        const adminContents = document.querySelectorAll('.admin-content');
+        const adminRegistrationForm = document.getElementById('admin-registration-form');
+        const participantsTableBody = document.getElementById('participants-table-body');
+        const searchParticipants = document.getElementById('search-participants');
+        const filterCargo = document.getElementById('filter-cargo');
+        const filterCategoria = document.getElementById('filter-categoria');
+        const exportCsvBtn = document.getElementById('export-csv');
+        const agendaUploadArea = document.getElementById('agenda-upload-area');
+        const agendaFileInput = document.getElementById('agenda-file');
+        const browseAgendaBtn = document.getElementById('browse-agenda');
+        const agendaPreview = document.getElementById('agenda-preview');
+        const publishAgendaBtn = document.getElementById('publish-agenda');
+        const templateUploadArea = document.getElementById('template-upload-area');
+        const templateFileInput = document.getElementById('template-file');
+        const browseTemplateBtn = document.getElementById('browse-template');
+        const generateAllCertificatesBtn = document.getElementById('generate-all-certificates');
+        const generateCertificateManualBtn = document.getElementById('generate-certificate-manual');
+        const downloadAllCertificatesBtn = document.getElementById('download-all-certificates');
+        const externalCertificateForm = document.getElementById('external-certificate-form');
+        const attendanceTableBody = document.getElementById('attendance-table-body');
+        const searchAttendance = document.getElementById('search-attendance');
+        const filterAttendanceStatus = document.getElementById('filter-attendance-status');
+        const exportAttendanceBtn = document.getElementById('export-attendance');
+        const totalParticipantsElement = document.getElementById('total-participants');
+        const approvedParticipantsElement = document.getElementById('approved-participants');
+        const pendingParticipantsElement = document.getElementById('pending-participants');
+        const totalSlotsElement = document.getElementById('total-slots');
+        const assignedSlotsElement = document.getElementById('assigned-slots');
+        const availableAdminSlotsElement = document.getElementById('available-admin-slots');
+        const drDraSlotsElement = document.getElementById('dr-dra-slots');
+        const editParticipantModal = document.getElementById('edit-participant-modal');
+        const closeEditModal = document.querySelector('.close-edit-modal');
+        const editParticipantForm = document.getElementById('edit-participant-form');
+        const editAttendanceModal = document.getElementById('edit-attendance-modal');
+        const closeEditAttendanceModal = document.querySelector('.close-edit-attendance-modal');
+        const editAttendanceForm = document.getElementById('edit-attendance-form');
+        const searchCertificates = document.getElementById('search-certificates');
+        const filterCertificateStatus = document.getElementById('filter-certificate-status');
+        
+        // Initialize the application
+        function init() {
             updateCountdown();
             setInterval(updateCountdown, 1000);
-            checkRegistrationStatus();
-            updateSlotsInfo();
-        });
-
-        // Inicializar la aplicación
-        function initializeApp() {
-            // Cargar datos del localStorage
-            loadFromLocalStorage();
             
-            // Agregar participante demo si no hay datos
-            if (AppState.participants.length === 0) {
-                AppState.participants.push(AppState.DEMO_PARTICIPANT);
-                AppState.slots.assigned['DR./DRA. Especialista'] = 1;
-                saveToLocalStorage();
-            }
+            loadParticipants();
+            updateAvailableSlots();
+            updateRegistrationButton();
             
-            // Actualizar la UI
-            updateParticipantsTable();
-            updateAttendanceTable();
-            updateDashboardStats();
-        }
-
-        // Configurar event listeners
-        function setupEventListeners() {
-            // Botón de acceso admin
-            document.getElementById('adminLoginBtn').addEventListener('click', showAdminLoginModal);
+            // Event listeners
+            registrationForm.addEventListener('submit', handleRegistration);
+            adminLoginBtn.addEventListener('click', showLoginModal);
+            closeModal.addEventListener('click', hideLoginModal);
+            loginForm.addEventListener('submit', handleAdminLogin);
+            adminLogout.addEventListener('click', handleAdminLogout);
             
-            // Cerrar modal
-            document.querySelector('.close-modal').addEventListener('click', hideAdminLoginModal);
-            
-            // Login admin
-            document.getElementById('adminLoginForm').addEventListener('submit', handleAdminLogin);
-            
-            // Cerrar sesión
-            document.getElementById('logoutBtn').addEventListener('click', handleAdminLogout);
-            
-            // Tabs del admin panel
-            document.querySelectorAll('.admin-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    switchAdminTab(this.dataset.tab);
+            // Admin tab switching
+            adminTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    switchAdminTab(tabId);
                 });
             });
             
-            // Formulario de registro
-            document.getElementById('registrationForm').addEventListener('submit', handleRegistration);
+            // Admin registration form
+            adminRegistrationForm.addEventListener('submit', handleAdminRegistration);
             
-            // Botón de registro desde hero
-            document.getElementById('registerButton').addEventListener('click', function() {
-                document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth' });
+            // Search and filter participants
+            searchParticipants.addEventListener('input', filterParticipants);
+            filterCargo.addEventListener('change', filterParticipants);
+            filterCategoria.addEventListener('change', filterParticipants);
+            
+            // Search and filter attendance
+            searchAttendance.addEventListener('input', filterAttendance);
+            filterAttendanceStatus.addEventListener('change', filterAttendance);
+            
+            // Search and filter certificates
+            searchCertificates.addEventListener('input', filterCertificates);
+            filterCertificateStatus.addEventListener('change', filterCertificates);
+            
+            // Export CSV
+            exportCsvBtn.addEventListener('click', exportParticipantsToCSV);
+            
+            // Agenda file upload
+            browseAgendaBtn.addEventListener('click', () => agendaFileInput.click());
+            agendaFileInput.addEventListener('change', handleAgendaFileUpload);
+            setupDragAndDrop(agendaUploadArea, agendaFileInput);
+            publishAgendaBtn.addEventListener('click', publishAgenda);
+            
+            // Template file upload
+            browseTemplateBtn.addEventListener('click', () => templateFileInput.click());
+            templateFileInput.addEventListener('change', handleTemplateFileUpload);
+            setupDragAndDrop(templateUploadArea, templateFileInput);
+            
+            // Certificate generation
+            generateAllCertificatesBtn.addEventListener('click', generateAllCertificates);
+            generateCertificateManualBtn.addEventListener('click', generateCertificateManual);
+            downloadAllCertificatesBtn.addEventListener('click', downloadAllCertificates);
+            externalCertificateForm.addEventListener('submit', generateExternalCertificate);
+            
+            // Attendance synchronization
+            document.querySelectorAll('.attendance-form button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const day = this.getAttribute('data-day');
+                    syncAttendance(day);
+                });
             });
             
-            // Búsqueda de participantes
-            document.getElementById('participantSearch').addEventListener('input', filterParticipants);
+            // Export attendance
+            exportAttendanceBtn.addEventListener('click', exportAttendanceToCSV);
             
-            // Agregar participante
-            document.getElementById('addParticipantBtn').addEventListener('click', showAddParticipantModal);
+            // Edit modals
+            closeEditModal.addEventListener('click', () => editParticipantModal.style.display = 'none');
+            closeEditAttendanceModal.addEventListener('click', () => editAttendanceModal.style.display = 'none');
+            editParticipantForm.addEventListener('submit', handleEditParticipant);
+            editAttendanceForm.addEventListener('submit', handleEditAttendance);
             
-            // Exportar participantes
-            document.getElementById('exportParticipantsBtn').addEventListener('click', exportParticipantsToCSV);
-            
-            // Subir agenda
-            document.getElementById('agendaUploadArea').addEventListener('click', function() {
-                document.getElementById('agendaFile').click();
-            });
-            
-            document.getElementById('agendaFile').addEventListener('change', handleAgendaUpload);
-            
-            // Sincronizar asistencias
-            document.getElementById('syncAttendanceBtn').addEventListener('click', syncAttendance);
-            
-            // Exportar asistencias
-            document.getElementById('exportAttendanceBtn').addEventListener('click', exportAttendanceToCSV);
-            
-            // Subir plantilla de certificados
-            document.getElementById('certificateTemplateUploadArea').addEventListener('click', function() {
-                document.getElementById('certificateTemplateFile').click();
-            });
-            
-            document.getElementById('certificateTemplateFile').addEventListener('change', handleCertificateTemplateUpload);
-            
-            // Generar certificados
-            document.getElementById('generateAllCertificatesBtn').addEventListener('click', generateAllCertificates);
+            // Check if admin is already logged in
+            checkAdminSession();
         }
-
-        // Contador regresivo
+        
+        // Countdown timer
         function updateCountdown() {
-            const targetDate = new Date('2025-10-23T00:00:00').getTime();
-            const now = new Date().getTime();
-            const difference = targetDate - now;
-            
-            if (difference > 0) {
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-                
-                document.getElementById('days').textContent = days.toString().padStart(2, '0');
-                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-            } else {
-                document.getElementById('countdown').textContent = '¡El congreso ha comenzado!';
-            }
-        }
-
-        // Verificar estado de registro
-        function checkRegistrationStatus() {
             const now = new Date();
-            const deadline = new Date('2025-10-22T23:59:59');
-            const statusElement = document.getElementById('registrationStatus');
-            const submitButton = document.getElementById('submitRegistration');
-            const registerButton = document.getElementById('registerButton');
+            const targetDate = new Date('2025-10-23T08:00:00');
+            const timeRemaining = targetDate - now;
             
-            if (now > deadline) {
-                // Fuera de fecha
-                statusElement.className = 'registration-status status-closed';
-                statusElement.innerHTML = '<i class="fas fa-times-circle"></i> Inscripciones Cerradas';
-                submitButton.disabled = true;
-                submitButton.textContent = 'Inscripciones Cerradas';
-                registerButton.disabled = true;
-                registerButton.textContent = 'Inscripciones Cerradas';
-            } else {
-                // Dentro de fecha
-                const medicalSlotsAvailable = AppState.slots.categories['DR./DRA. Médico General'] + 
-                                            AppState.slots.categories['DR./DRA. Especialista'] - 
-                                            AppState.slots.assigned['DR./DRA. Médico General'] - 
-                                            AppState.slots.assigned['DR./DRA. Especialista'];
-                
-                if (medicalSlotsAvailable <= 0) {
-                    // Cupos agotados
-                    statusElement.className = 'registration-status status-closed';
-                    statusElement.innerHTML = '<i class="fas fa-times-circle"></i> Cupos Agotados para Médicos';
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'No Disponible';
-                    registerButton.disabled = true;
-                    registerButton.textContent = 'No Disponible';
-                } else {
-                    // Cupos disponibles
-                    statusElement.className = 'registration-status status-open';
-                    statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Inscripciones Abiertas';
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Completar Registro';
-                    registerButton.disabled = false;
-                    registerButton.textContent = 'Registrarse Ahora';
-                }
-            }
-        }
-
-        // Actualizar información de cupos
-        function updateSlotsInfo() {
-            const medicalSlotsAvailable = AppState.slots.categories['DR./DRA. Médico General'] + 
-                                        AppState.slots.categories['DR./DRA. Especialista'] - 
-                                        AppState.slots.assigned['DR./DRA. Médico General'] - 
-                                        AppState.slots.assigned['DR./DRA. Especialista'];
-            
-            document.getElementById('medicalSlots').textContent = medicalSlotsAvailable;
-            document.getElementById('availableSlotsInfo').textContent = `${medicalSlotsAvailable} disponibles para médicos`;
-        }
-
-        // Manejar registro de participantes
-        function handleRegistration(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(event.target);
-            const title = formData.get('title');
-            const firstName = formData.get('firstName');
-            const lastName = formData.get('lastName');
-            const email = formData.get('email');
-            const category = formData.get('category');
-            
-            // Verificar disponibilidad de cupos
-            if (category === 'DR./DRA. Médico General' || category === 'DR./DRA. Especialista') {
-                const assigned = AppState.slots.assigned[category];
-                const available = AppState.slots.categories[category];
-                
-                if (assigned >= available) {
-                    alert('Lo sentimos, no hay cupos disponibles para esta categoría.');
-                    return;
-                }
-            } else {
-                alert('Solo se permiten registros para médicos generales o especialistas.');
+            if (timeRemaining <= 0) {
+                countdownElement.innerHTML = "¡El congreso ha comenzado!";
                 return;
             }
             
-            // Crear nuevo participante
-            const newParticipant = {
-                cargo: title,
-                nombre: firstName,
-                apellido: lastName,
-                email: email,
-                categoria: category,
-                fechaRegistro: new Date().toISOString(),
-                asistencias: {
-                    day1: false,
-                    day2: false,
-                    day3: false
-                }
-            };
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
             
-            // Agregar a la lista
-            AppState.participants.push(newParticipant);
-            AppState.slots.assigned[category]++;
-            
-            // Guardar en localStorage
-            saveToLocalStorage();
-            
-            // Actualizar UI
-            updateParticipantsTable();
-            updateDashboardStats();
-            updateSlotsInfo();
-            checkRegistrationStatus();
-            
-            // Limpiar formulario
-            event.target.reset();
-            
-            // Mostrar confirmación
-            alert('¡Registro exitoso! Te hemos enviado un correo de confirmación.');
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
-
-        // Mostrar modal de login admin
-        function showAdminLoginModal() {
-            document.getElementById('adminLoginModal').style.display = 'flex';
-        }
-
-        // Ocultar modal de login admin
-        function hideAdminLoginModal() {
-            document.getElementById('adminLoginModal').style.display = 'none';
-            document.getElementById('adminLoginForm').reset();
-        }
-
-        // Manejar login admin
-        function handleAdminLogin(event) {
-            event.preventDefault();
+        
+        // Update available slots display
+        function updateAvailableSlots() {
+            const drDraParticipants = participants.filter(p => 
+                (p.cargo === 'DR.' || p.cargo === 'DRA.') && 
+                (p.categoria === 'Médico General' || p.categoria === 'Especialista')
+            ).length;
             
-            const formData = new FormData(event.target);
-            const username = formData.get('adminUsername');
-            const password = formData.get('adminPassword');
+            const available = Math.max(0, drDraSlots - drDraParticipants);
+            availableSlotsElement.textContent = available;
             
-            if (username === 'DOCENCIA' && password === 'DOCENCIA') {
-                // Crear sesión admin
-                AppState.adminSession = {
-                    username: username,
-                    loginTime: new Date().toISOString()
-                };
-                
-                // Guardar sesión en sessionStorage
-                sessionStorage.setItem('adminSession', JSON.stringify(AppState.adminSession));
-                
-                // Mostrar panel admin
-                document.getElementById('adminPanel').style.display = 'block';
-                document.querySelector('header').style.display = 'none';
-                document.querySelector('.hero').style.display = 'none';
-                document.querySelector('.info-section').style.display = 'none';
-                document.querySelector('.registration-section').style.display = 'none';
-                document.querySelector('.agenda-certificates').style.display = 'none';
-                document.querySelector('footer').style.display = 'none';
-                
-                // Ocultar modal
-                hideAdminLoginModal();
-                
-                // Configurar timeout de sesión (30 minutos)
-                setTimeout(handleAdminLogout, 30 * 60 * 1000);
+            // Actualizar también en el panel administrativo
+            const assigned = participants.length;
+            const availableAdmin = totalSlots - assigned;
+            
+            totalSlotsElement.textContent = totalSlots;
+            assignedSlotsElement.textContent = assigned;
+            availableAdminSlotsElement.textContent = availableAdmin;
+            drDraSlotsElement.textContent = drDraSlots - drDraParticipants;
+        }
+        
+        // Update registration button based on date and availability
+        function updateRegistrationButton() {
+            const now = new Date();
+            const drDraParticipants = participants.filter(p => 
+                (p.cargo === 'DR.' || p.cargo === 'DRA.') && 
+                (p.categoria === 'Médico General' || p.categoria === 'Especialista')
+            ).length;
+            
+            if (now > registrationDeadline) {
+                submitBtn.textContent = 'Inscripciones Cerradas';
+                submitBtn.disabled = true;
+            } else if (drDraParticipants >= drDraSlots) {
+                submitBtn.textContent = 'No Disponible';
+                submitBtn.disabled = true;
             } else {
-                alert('Credenciales incorrectas. Usuario: DOCENCIA, Contraseña: DOCENCIA');
+                submitBtn.textContent = 'Registrarse';
+                submitBtn.disabled = false;
             }
         }
-
-        // Manejar logout admin
+        
+        // Handle public registration
+        function handleRegistration(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(registrationForm);
+            const cargo = formData.get('cargo');
+            const nombre = formData.get('nombre');
+            const apellido = formData.get('apellido');
+            const email = formData.get('email');
+            const categoria = formData.get('categoria');
+            
+            // Check if registration is still open
+            const now = new Date();
+            if (now > registrationDeadline) {
+                showMessage('Las inscripciones han cerrado.', 'error');
+                return;
+            }
+            
+            // Check for duplicate email
+            if (participants.some(p => p.email === email)) {
+                showMessage('Este email ya está registrado.', 'error');
+                return;
+            }
+            
+            // Check for duplicate name
+            if (participants.some(p => p.nombre === nombre && p.apellido === apellido)) {
+                showMessage('Este nombre ya está registrado.', 'error');
+                return;
+            }
+            
+            // Check category restrictions
+            if ((cargo === 'DR.' || cargo === 'DRA.') && 
+                (categoria === 'Médico General' || categoria === 'Especialista')) {
+                
+                const drDraParticipants = participants.filter(p => 
+                    (p.cargo === 'DR.' || p.cargo === 'DRA.') && 
+                    (p.categoria === 'Médico General' || p.categoria === 'Especialista')
+                ).length;
+                
+                if (drDraParticipants >= drDraSlots) {
+                    showMessage('No hay cupos disponibles para DR./DRA. en este momento.', 'error');
+                    return;
+                }
+            } else {
+                showMessage('No hay disponibilidad para esta categoría en este momento.', 'error');
+                return;
+            }
+            
+            // Add participant
+            const newParticipant = {
+                id: generateId(),
+                cargo,
+                nombre,
+                apellido,
+                email,
+                categoria,
+                fechaRegistro: new Date().toISOString()
+            };
+            
+            participants.push(newParticipant);
+            saveParticipants();
+            updateAvailableSlots();
+            updateRegistrationButton();
+            
+            showMessage('¡Registro exitoso! Te esperamos en el congreso.', 'success');
+            registrationForm.reset();
+        }
+        
+        // Show message to user
+        function showMessage(message, type) {
+            registrationMessage.textContent = message;
+            registrationMessage.style.color = type === 'success' ? 'green' : 'red';
+            registrationMessage.style.fontWeight = '600';
+            
+            setTimeout(() => {
+                registrationMessage.textContent = '';
+            }, 5000);
+        }
+        
+        // Admin functions
+        function showLoginModal() {
+            loginModal.style.display = 'flex';
+        }
+        
+        function hideLoginModal() {
+            loginModal.style.display = 'none';
+            loginForm.reset();
+        }
+        
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'DOCENCIA' && password === 'DOCENCIA') {
+                adminLoggedIn = true;
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                sessionStorage.setItem('loginTime', new Date().getTime().toString());
+                
+                adminPanel.style.display = 'block';
+                hideLoginModal();
+                updateAdminDashboard();
+                
+                // Set session timeout (8 hours)
+                setTimeout(() => {
+                    handleAdminLogout();
+                }, 8 * 60 * 60 * 1000);
+            } else {
+                alert('Credenciales incorrectas. Intente nuevamente.');
+            }
+        }
+        
+        function checkAdminSession() {
+            const loggedIn = sessionStorage.getItem('adminLoggedIn');
+            const loginTime = parseInt(sessionStorage.getItem('loginTime') || '0');
+            const now = new Date().getTime();
+            
+            // Check if session is still valid (8 hours)
+            if (loggedIn === 'true' && (now - loginTime) < (8 * 60 * 60 * 1000)) {
+                adminLoggedIn = true;
+                adminPanel.style.display = 'block';
+                updateAdminDashboard();
+                
+                // Reset timeout
+                setTimeout(() => {
+                    handleAdminLogout();
+                }, 8 * 60 * 60 * 1000 - (now - loginTime));
+            }
+        }
+        
         function handleAdminLogout() {
-            AppState.adminSession = null;
-            sessionStorage.removeItem('adminSession');
+            adminLoggedIn = false;
+            sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('loginTime');
             
-            // Ocultar panel admin
-            document.getElementById('adminPanel').style.display = 'none';
-            
-            // Mostrar contenido público
-            document.querySelector('header').style.display = 'block';
-            document.querySelector('.hero').style.display = 'block';
-            document.querySelector('.info-section').style.display = 'block';
-            document.querySelector('.registration-section').style.display = 'block';
-            document.querySelector('.agenda-certificates').style.display = 'block';
-            document.querySelector('footer').style.display = 'block';
+            adminPanel.style.display = 'none';
+            alert('Sesión cerrada exitosamente.');
         }
-
-        // Cambiar tab en panel admin
-        function switchAdminTab(tabName) {
-            // Desactivar todos los tabs
-            document.querySelectorAll('.admin-tab').forEach(tab => {
-                tab.classList.remove('active');
+        
+        function switchAdminTab(tabId) {
+            // Update active tab
+            adminTabs.forEach(tab => {
+                if (tab.getAttribute('data-tab') === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
             });
             
-            document.querySelectorAll('.admin-tab-content').forEach(content => {
-                content.classList.remove('active');
+            // Update active content
+            adminContents.forEach(content => {
+                if (content.id === `${tabId}-content`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
             });
             
-            // Activar tab seleccionado
-            document.querySelector(`.admin-tab[data-tab="${tabName}"]`).classList.add('active');
-            document.getElementById(`${tabName}-tab`).classList.add('active');
+            // Load specific data if needed
+            if (tabId === 'attendance') {
+                updateAttendanceDashboard();
+            } else if (tabId === 'certificates') {
+                updateCertificatesTable();
+            }
         }
-
-        // Actualizar tabla de participantes
-        function updateParticipantsTable() {
-            const tableBody = document.getElementById('participantsTableBody');
-            tableBody.innerHTML = '';
+        
+        function handleAdminRegistration(e) {
+            e.preventDefault();
             
-            AppState.participants.forEach((participant, index) => {
+            const formData = new FormData(adminRegistrationForm);
+            const cargo = formData.get('cargo');
+            const nombre = formData.get('nombre');
+            const apellido = formData.get('apellido');
+            const email = formData.get('email');
+            const categoria = formData.get('categoria');
+            
+            // Check for duplicate email
+            if (participants.some(p => p.email === email)) {
+                alert('Este email ya está registrado.');
+                return;
+            }
+            
+            // Check for duplicate name
+            if (participants.some(p => p.nombre === nombre && p.apellido === apellido)) {
+                alert('Este nombre ya está registrado.');
+                return;
+            }
+            
+            // Add participant (admin can register without restrictions)
+            const newParticipant = {
+                id: generateId(),
+                cargo,
+                nombre,
+                apellido,
+                email,
+                categoria,
+                fechaRegistro: new Date().toISOString()
+            };
+            
+            participants.push(newParticipant);
+            saveParticipants();
+            updateAvailableSlots();
+            updateRegistrationButton();
+            updateAdminDashboard();
+            
+            alert('Participante registrado exitosamente.');
+            adminRegistrationForm.reset();
+        }
+        
+        function updateAdminDashboard() {
+            // Update stats
+            const assigned = participants.length;
+            const available = totalSlots - assigned;
+            const drDraParticipants = participants.filter(p => 
+                (p.cargo === 'DR.' || p.cargo === 'DRA.') && 
+                (p.categoria === 'Médico General' || p.categoria === 'Especialista')
+            ).length;
+            
+            totalSlotsElement.textContent = totalSlots;
+            assignedSlotsElement.textContent = assigned;
+            availableAdminSlotsElement.textContent = available;
+            drDraSlotsElement.textContent = drDraSlots - drDraParticipants;
+            
+            // Update participants table
+            renderParticipantsTable();
+        }
+        
+        function renderParticipantsTable(filteredParticipants = null) {
+            const participantsToShow = filteredParticipants || participants;
+            
+            participantsTableBody.innerHTML = '';
+            
+            if (participantsToShow.length === 0) {
+                participantsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No hay participantes registrados</td></tr>';
+                return;
+            }
+            
+            participantsToShow.forEach(participant => {
                 const row = document.createElement('tr');
                 
                 row.innerHTML = `
                     <td>${participant.cargo} ${participant.nombre} ${participant.apellido}</td>
                     <td>${participant.email}</td>
+                    <td>${participant.cargo}</td>
                     <td>${participant.categoria}</td>
-                    <td>${new Date(participant.fechaRegistro).toLocaleDateString()}</td>
-                    <td>
-                        <button class="action-btn edit" data-index="${index}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn delete" data-index="${index}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                    <td class="action-buttons">
+                        <button class="btn btn-warning" onclick="editParticipant('${participant.id}')">Editar</button>
+                        <button class="btn btn-danger" onclick="deleteParticipant('${participant.id}')">Eliminar</button>
                     </td>
                 `;
                 
-                tableBody.appendChild(row);
-            });
-            
-            // Agregar event listeners a los botones de acción
-            document.querySelectorAll('.action-btn.edit').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = this.dataset.index;
-                    editParticipant(index);
-                });
-            });
-            
-            document.querySelectorAll('.action-btn.delete').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = this.dataset.index;
-                    deleteParticipant(index);
-                });
+                participantsTableBody.appendChild(row);
             });
         }
-
-        // Filtrar participantes
+        
         function filterParticipants() {
-            const searchTerm = document.getElementById('participantSearch').value.toLowerCase();
-            const rows = document.querySelectorAll('#participantsTableBody tr');
+            const searchTerm = searchParticipants.value.toLowerCase();
+            const cargoFilter = filterCargo.value;
+            const categoriaFilter = filterCategoria.value;
             
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            const filtered = participants.filter(p => {
+                const matchesSearch = 
+                    p.nombre.toLowerCase().includes(searchTerm) ||
+                    p.apellido.toLowerCase().includes(searchTerm) ||
+                    p.email.toLowerCase().includes(searchTerm) ||
+                    p.cargo.toLowerCase().includes(searchTerm);
+                
+                const matchesCargo = !cargoFilter || p.cargo === cargoFilter;
+                const matchesCategoria = !categoriaFilter || p.categoria === categoriaFilter;
+                
+                return matchesSearch && matchesCargo && matchesCategoria;
             });
-        }
-
-        // Actualizar estadísticas del dashboard
-        function updateDashboardStats() {
-            const totalAssigned = Object.values(AppState.slots.assigned).reduce((a, b) => a + b, 0);
             
-            document.getElementById('totalSlots').textContent = AppState.slots.total;
-            document.getElementById('assignedSlots').textContent = totalAssigned;
-            document.getElementById('availableSlots').textContent = AppState.slots.total - totalAssigned;
+            renderParticipantsTable(filtered);
         }
-
-        // Editar participante
-        function editParticipant(index) {
-            const participant = AppState.participants[index];
-            // En una implementación completa, aquí se mostraría un modal de edición
-            alert(`Editar participante: ${participant.nombre} ${participant.apellido}`);
+        
+        function editParticipant(id) {
+            const participant = participants.find(p => p.id === id);
+            if (!participant) return;
+            
+            document.getElementById('edit-participant-id').value = participant.id;
+            document.getElementById('edit-cargo').value = participant.cargo;
+            document.getElementById('edit-categoria').value = participant.categoria;
+            document.getElementById('edit-nombre').value = participant.nombre;
+            document.getElementById('edit-apellido').value = participant.apellido;
+            document.getElementById('edit-email').value = participant.email;
+            
+            editParticipantModal.style.display = 'flex';
         }
-
-        // Eliminar participante
-        function deleteParticipant(index) {
-            if (confirm('¿Está seguro de eliminar este participante?')) {
-                const participant = AppState.participants[index];
-                
-                // Liberar cupo
-                AppState.slots.assigned[participant.categoria]--;
-                
-                // Eliminar participante
-                AppState.participants.splice(index, 1);
-                
-                // Guardar cambios
-                saveToLocalStorage();
-                
-                // Actualizar UI
-                updateParticipantsTable();
-                updateDashboardStats();
-                updateSlotsInfo();
-                checkRegistrationStatus();
+        
+        function handleEditParticipant(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('edit-participant-id').value;
+            const cargo = document.getElementById('edit-cargo').value;
+            const nombre = document.getElementById('edit-nombre').value;
+            const apellido = document.getElementById('edit-apellido').value;
+            const email = document.getElementById('edit-email').value;
+            const categoria = document.getElementById('edit-categoria').value;
+            
+            const participantIndex = participants.findIndex(p => p.id === id);
+            if (participantIndex === -1) return;
+            
+            // Check for duplicate email (excluding current participant)
+            if (participants.some(p => p.id !== id && p.email === email)) {
+                alert('Este email ya está registrado por otro participante.');
+                return;
+            }
+            
+            // Check for duplicate name (excluding current participant)
+            if (participants.some(p => p.id !== id && p.nombre === nombre && p.apellido === apellido)) {
+                alert('Este nombre ya está registrado por otro participante.');
+                return;
+            }
+            
+            participants[participantIndex] = {
+                ...participants[participantIndex],
+                cargo,
+                nombre,
+                apellido,
+                email,
+                categoria
+            };
+            
+            saveParticipants();
+            updateAvailableSlots();
+            updateRegistrationButton();
+            updateAdminDashboard();
+            
+            editParticipantModal.style.display = 'none';
+            alert('Participante actualizado exitosamente.');
+        }
+        
+        function deleteParticipant(id) {
+            if (confirm('¿Está seguro de que desea eliminar este participante?')) {
+                participants = participants.filter(p => p.id !== id);
+                saveParticipants();
+                updateAvailableSlots();
+                updateRegistrationButton();
+                updateAdminDashboard();
             }
         }
-
-        // Exportar participantes a CSV
+        
         function exportParticipantsToCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Cargo,Nombre,Apellido,Email,Categoría,Fecha Registro\n";
+            if (participants.length === 0) {
+                alert('No hay datos para exportar.');
+                return;
+            }
             
-            AppState.participants.forEach(participant => {
-                const row = [
-                    participant.cargo,
-                    participant.nombre,
-                    participant.apellido,
-                    participant.email,
-                    participant.categoria,
-                    participant.fechaRegistro
-                ].join(",");
-                
-                csvContent += row + "\n";
+            let csvContent = 'Cargo,Nombre,Apellido,Email,Categoría,Fecha Registro\n';
+            
+            participants.forEach(p => {
+                csvContent += `"${p.cargo}","${p.nombre}","${p.apellido}","${p.email}","${p.categoria}","${p.fechaRegistro}"\n`;
             });
             
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "participantes_congreso.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            saveAs(blob, 'participantes_congreso.csv');
         }
-
-        // Manejar subida de agenda
-        function handleAgendaUpload(event) {
-            const file = event.target.files[0];
+        
+        // Agenda management
+        function setupDragAndDrop(dropArea, fileInput) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('active');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('active');
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length) {
+                    fileInput.files = files;
+                    fileInput.dispatchEvent(new Event('change'));
+                }
+            }
+        }
+        
+        function handleAgendaFileUpload(e) {
+            const file = e.target.files[0];
+            
             if (!file) return;
             
-            // Validar tipo y tamaño
+            // Validate file type
             if (file.type !== 'application/pdf') {
-                alert('Solo se permiten archivos PDF.');
+                alert('Por favor, seleccione un archivo PDF.');
                 return;
             }
             
+            // Validate file size (20MB)
             if (file.size > 20 * 1024 * 1024) {
-                alert('El archivo es demasiado grande. Máximo 20MB.');
+                alert('El archivo es demasiado grande. El tamaño máximo es 20MB.');
                 return;
             }
             
-            // Guardar archivo en estado
-            AppState.agenda = file;
+            agendaFile = file;
             
-            // Mostrar vista previa
-            document.getElementById('agendaPreview').style.display = 'block';
-            document.getElementById('agendaPreviewContent').innerHTML = `
+            // Show preview
+            agendaPreview.style.display = 'block';
+            document.getElementById('preview-content').innerHTML = `
                 <p><strong>Archivo:</strong> ${file.name}</p>
                 <p><strong>Tamaño:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
             `;
-            
-            // Guardar en localStorage (en una implementación real, esto se haría en el servidor)
-            saveToLocalStorage();
         }
-
-        // Sincronizar asistencias
-        function syncAttendance() {
-            // En una implementación completa, aquí se conectaría con Google Forms API
-            // Por ahora, simulamos la sincronización
+        
+        function publishAgenda() {
+            if (!agendaFile) {
+                alert('Por favor, seleccione un archivo primero.');
+                return;
+            }
             
-            // Simular datos de asistencias
-            AppState.participants.forEach(participant => {
-                // Asignar asistencias aleatorias para demostración
-                participant.asistencias = {
-                    day1: Math.random() > 0.3,
-                    day2: Math.random() > 0.3,
-                    day3: Math.random() > 0.3
-                };
+            // In a real implementation, you would upload the file to a server
+            // For this demo, we'll just store the file name in localStorage
+            localStorage.setItem('agendaFileName', agendaFile.name);
+            localStorage.setItem('agendaPublished', 'true');
+            
+            alert('Agenda publicada exitosamente.');
+            
+            // Update public section
+            const agendaContainer = document.querySelector('.agenda-container');
+            agendaContainer.innerHTML = `
+                <h3>Agenda del Congreso</h3>
+                <p>La agenda completa del congreso está disponible para descarga.</p>
+                <a href="#" class="cta-button" id="download-agenda">Descargar Agenda</a>
+            `;
+            
+            // Add download functionality
+            document.getElementById('download-agenda').addEventListener('click', function(e) {
+                e.preventDefault();
+                // In a real implementation, this would download the actual file
+                alert('Descargando agenda...');
+            });
+        }
+        
+        // Certificate template handling
+        function handleTemplateFileUpload(e) {
+            const file = e.target.files[0];
+            
+            if (!file) return;
+            
+            // Validate file type
+            if (!file.name.endsWith('.docx')) {
+                alert('Por favor, seleccione un archivo Word (.docx).');
+                return;
+            }
+            
+            // Validate file size (20MB)
+            if (file.size > 20 * 1024 * 1024) {
+                alert('El archivo es demasiado grande. El tamaño máximo es 20MB.');
+                return;
+            }
+            
+            certificateTemplate = file;
+            
+            alert('Plantilla cargada exitosamente.');
+        }
+        
+        // Generate certificates for approved participants
+        function generateAllCertificates() {
+            if (!certificateTemplate) {
+                alert('Por favor, cargue una plantilla primero.');
+                return;
+            }
+            
+            // Get participants with 2/3 attendances
+            const approvedParticipants = participants.filter(p => {
+                const attendances = getParticipantAttendances(p.id);
+                return attendances >= 2;
             });
             
-            // Guardar cambios
-            saveToLocalStorage();
+            if (approvedParticipants.length === 0) {
+                alert('No hay participantes que cumplan con el requisito de 2/3 asistencias.');
+                return;
+            }
             
-            // Actualizar tabla
-            updateAttendanceTable();
+            // Process template for each approved participant
+            approvedParticipants.forEach(participant => {
+                generateCertificate(participant);
+            });
             
-            alert('Asistencias sincronizadas correctamente.');
+            alert(`Se generaron ${approvedParticipants.length} certificados para participantes aprobados.`);
+            
+            // Update certificates table
+            updateCertificatesTable();
         }
-
-        // Actualizar tabla de asistencias
-        function updateAttendanceTable() {
-            const tableBody = document.getElementById('attendanceTableBody');
-            tableBody.innerHTML = '';
+        
+        // Generate certificate for a specific participant
+        function generateCertificate(participant) {
+            if (!certificateTemplate) return;
             
-            AppState.participants.forEach(participant => {
-                const asistencias = participant.asistencias || { day1: false, day2: false, day3: false };
-                const totalAsistencias = (asistencias.day1 ? 1 : 0) + (asistencias.day2 ? 1 : 0) + (asistencias.day3 ? 1 : 0);
-                const estado = totalAsistencias >= 2 ? 'Aprobado' : 'No Aprobado';
-                const estadoClass = totalAsistencias >= 2 ? 'status-approved' : 'status-reproved';
-                
+            // In a real implementation, this would process the Word template
+            // and replace the placeholders with actual data
+            const certificateData = {
+                cargo: participant.cargo,
+                apellido: participant.apellido,
+                nombre: participant.nombre
+            };
+            
+            // Store certificate data
+            if (!participant.certificates) {
+                participant.certificates = [];
+            }
+            
+            participant.certificates.push({
+                id: generateId(),
+                fechaGeneracion: new Date().toISOString(),
+                data: certificateData
+            });
+            
+            saveParticipants();
+        }
+        
+        function generateCertificateManual() {
+            if (!certificateTemplate) {
+                alert('Por favor, cargue una plantilla primero.');
+                return;
+            }
+            
+            // Show dialog to select participant
+            const participantId = prompt('Ingrese el ID del participante:');
+            if (!participantId) return;
+            
+            const participant = participants.find(p => p.id === participantId);
+            if (!participant) {
+                alert('Participante no encontrado.');
+                return;
+            }
+            
+            // Generate certificate regardless of attendance (admin privilege)
+            generateCertificate(participant);
+            alert(`Certificado generado para ${participant.cargo} ${participant.nombre} ${participant.apellido}`);
+            
+            updateCertificatesTable();
+        }
+        
+        function downloadAllCertificates() {
+            const participantsWithCertificates = participants.filter(p => 
+                p.certificates && p.certificates.length > 0
+            );
+            
+            if (participantsWithCertificates.length === 0) {
+                alert('No hay certificados para descargar.');
+                return;
+            }
+            
+            // In a real implementation, this would create a ZIP file with all certificates
+            alert(`Descargando ${participantsWithCertificates.length} certificados en formato ZIP...`);
+        }
+        
+        function generateExternalCertificate(e) {
+            e.preventDefault();
+            
+            if (!certificateTemplate) {
+                alert('Por favor, cargue una plantilla primero.');
+                return;
+            }
+            
+            const formData = new FormData(externalCertificateForm);
+            const cargo = formData.get('cargo');
+            const nombre = formData.get('nombre');
+            const apellido = formData.get('apellido');
+            
+            // Create external participant object
+            const externalParticipant = {
+                id: generateId(),
+                cargo,
+                nombre,
+                apellido,
+                email: 'externo@congreso.com',
+                categoria: 'Externo',
+                fechaRegistro: new Date().toISOString(),
+                externo: true
+            };
+            
+            // Generate certificate
+            generateCertificate(externalParticipant);
+            alert(`Certificado generado para ${cargo} ${nombre} ${apellido}`);
+            
+            externalCertificateForm.reset();
+        }
+        
+        function updateCertificatesTable() {
+            const certificatesTableBody = document.getElementById('certificates-table-body');
+            certificatesTableBody.innerHTML = '';
+            
+            if (participants.length === 0) {
+                certificatesTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay participantes registrados</td></tr>';
+                return;
+            }
+            
+            participants.forEach(participant => {
                 const row = document.createElement('tr');
+                
+                // Calculate attendance status
+                const attendances = getParticipantAttendances(participant.id);
+                const attendanceStatus = attendances >= 2 ? 'Aprobado' : 'No Aprobado';
+                
+                // Check if certificate exists
+                const hasCertificate = participant.certificates && participant.certificates.length > 0;
+                const certificateStatus = hasCertificate ? 'Disponible' : 'No Generado';
                 
                 row.innerHTML = `
                     <td>${participant.cargo} ${participant.nombre} ${participant.apellido}</td>
-                    <td>${asistencias.day1 ? '<span class="attendance-status status-approved">✓</span>' : '<span class="attendance-status status-reproved">✗</span>'}</td>
-                    <td>${asistencias.day2 ? '<span class="attendance-status status-approved">✓</span>' : '<span class="attendance-status status-reproved">✗</span>'}</td>
-                    <td>${asistencias.day3 ? '<span class="attendance-status status-approved">✓</span>' : '<span class="attendance-status status-reproved">✗</span>'}</td>
-                    <td><span class="attendance-status ${estadoClass}">${estado}</span></td>
+                    <td>${attendanceStatus} (${attendances}/3)</td>
+                    <td>${certificateStatus}</td>
+                    <td class="action-buttons">
+                        ${hasCertificate ? 
+                            `<button class="btn btn-primary" onclick="downloadCertificate('${participant.id}')">Descargar</button>` : 
+                            `<button class="btn btn-secondary" onclick="generateCertificateForParticipant('${participant.id}')">Generar</button>`
+                        }
+                    </td>
                 `;
                 
-                tableBody.appendChild(row);
+                certificatesTableBody.appendChild(row);
             });
         }
-
-        // Exportar asistencias a CSV
-        function exportAttendanceToCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Participante,Día 1,Día 2,Día 3,Total Asistencias,Estado\n";
+        
+        function filterCertificates() {
+            const searchTerm = searchCertificates.value.toLowerCase();
+            const statusFilter = filterCertificateStatus.value;
             
-            AppState.participants.forEach(participant => {
-                const asistencias = participant.asistencias || { day1: false, day2: false, day3: false };
-                const totalAsistencias = (asistencias.day1 ? 1 : 0) + (asistencias.day2 ? 1 : 0) + (asistencias.day3 ? 1 : 0);
-                const estado = totalAsistencias >= 2 ? 'Aprobado' : 'No Aprobado';
-                
-                const row = [
-                    `${participant.cargo} ${participant.nombre} ${participant.apellido}`,
-                    asistencias.day1 ? 'Sí' : 'No',
-                    asistencias.day2 ? 'Sí' : 'No',
-                    asistencias.day3 ? 'Sí' : 'No',
-                    totalAsistencias,
-                    estado
-                ].join(",");
-                
-                csvContent += row + "\n";
-            });
+            const certificatesTableBody = document.getElementById('certificates-table-body');
+            const rows = certificatesTableBody.getElementsByTagName('tr');
             
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "asistencias_congreso.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            for (let row of rows) {
+                const name = row.cells[0].textContent.toLowerCase();
+                const status = row.cells[2].textContent;
+                
+                const matchesSearch = name.includes(searchTerm);
+                const matchesStatus = !statusFilter || status === statusFilter;
+                
+                row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+            }
         }
-
-        // Manejar subida de plantilla de certificados
-        function handleCertificateTemplateUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        
+        function getParticipantAttendances(participantId) {
+            let count = 0;
+            ['23', '24', '25'].forEach(day => {
+                if (attendanceData[day] && attendanceData[day][participantId]) {
+                    count++;
+                }
+            });
+            return count;
+        }
+        
+        function generateCertificateForParticipant(participantId) {
+            const participant = participants.find(p => p.id === participantId);
+            if (!participant) return;
             
-            // Validar tipo
-            if (!file.name.endsWith('.docx')) {
-                alert('Solo se permiten archivos Word (.docx).');
+            generateCertificate(participant);
+            updateCertificatesTable();
+            alert(`Certificado generado para ${participant.cargo} ${participant.nombre} ${participant.apellido}`);
+        }
+        
+        function downloadCertificate(participantId) {
+            const participant = participants.find(p => p.id === participantId);
+            if (!participant || !participant.certificates || participant.certificates.length === 0) {
+                alert('No hay certificado disponible para este participante.');
                 return;
             }
             
-            // Guardar plantilla en estado
-            AppState.certificateTemplate = file;
-            
-            // Mostrar vista previa
-            document.getElementById('certificatePreview').style.display = 'block';
-            document.getElementById('certificatePreviewContent').innerHTML = `
-                <p><strong>Plantilla:</strong> ${file.name}</p>
-                <p><strong>Campos dinámicos detectados:</strong> {{cargo}}, {{apellido}}, {{nombre}}</p>
-            `;
-            
-            // Guardar en localStorage (en una implementación real, esto se haría en el servidor)
-            saveToLocalStorage();
+            // In a real implementation, this would download the actual certificate
+            alert(`Descargando certificado para ${participant.cargo} ${participant.nombre} ${participant.apellido}...`);
         }
-
-        // Generar todos los certificados
-        function generateAllCertificates() {
-            if (!AppState.certificateTemplate) {
-                alert('Primero debe cargar una plantilla de certificado.');
-                return;
+        
+        // Attendance management
+        function syncAttendance(day) {
+            // In a real implementation, this would connect to Google Forms API
+            // For this demo, we'll just simulate the process
+            alert(`Sincronizando asistencias para el día ${day}...`);
+            
+            // Simulate fetching data and updating attendance
+            if (!attendanceData[day]) {
+                attendanceData[day] = {};
             }
             
-            // En una implementación completa, aquí se procesaría la plantilla Word
-            // y se generarían los PDFs para cada participante aprobado
-            
-            alert('Certificados generados correctamente. Los participantes aprobados podrán descargarlos desde la sección pública.');
-        }
-
-        // Cargar datos del localStorage
-        function loadFromLocalStorage() {
-            try {
-                const savedParticipants = localStorage.getItem('congreso_participants');
-                const savedSlots = localStorage.getItem('congreso_slots');
-                const savedAgenda = localStorage.getItem('congreso_agenda');
-                const savedAttendance = localStorage.getItem('congreso_attendance');
-                const savedTemplate = localStorage.getItem('congreso_certificate_template');
-                
-                if (savedParticipants) {
-                    AppState.participants = JSON.parse(savedParticipants);
+            // Mark some random participants as attended
+            participants.forEach(p => {
+                if (Math.random() > 0.3) { // 70% chance of attendance
+                    attendanceData[day][p.id] = true;
                 }
-                
-                if (savedSlots) {
-                    AppState.slots = JSON.parse(savedSlots);
-                }
-                
-                // En una implementación real, los archivos se manejarían de forma diferente
-                // ya que localStorage no es adecuado para archivos grandes
-            } catch (error) {
-                console.error('Error al cargar datos del localStorage:', error);
-            }
+            });
+            
+            updateAttendanceDashboard();
         }
-
-        // Guardar datos en localStorage
-        function saveToLocalStorage() {
-            try {
-                localStorage.setItem('congreso_participants', JSON.stringify(AppState.participants));
-                localStorage.setItem('congreso_slots', JSON.stringify(AppState.slots));
-                
-                // En una implementación real, los archivos se guardarían en el servidor
-                // o se usaría IndexedDB para almacenamiento local de archivos
-            } catch (error) {
-                console.error('Error al guardar datos en localStorage:', error);
-            }
-        }
-
-        // Verificar si hay sesión admin activa al cargar la página
-        function checkAdminSession() {
-            const savedSession = sessionStorage.getItem('adminSession');
-            if (savedSession) {
-                AppState.adminSession = JSON.parse(savedSession);
-                
-                // Verificar si la sesión no ha expirado (30 minutos)
-                const loginTime = new Date(AppState.adminSession.loginTime);
-                const now = new Date();
-                const sessionDuration = now - loginTime;
-                
-                if (sessionDuration < 30 * 60 * 1000) {
-                    // Mostrar panel admin
-                    document.getElementById('adminPanel').style.display = 'block';
-                    document.querySelector('header').style.display = 'none';
-                    document.querySelector('.hero').style.display = 'none';
-                    document.querySelector('.info-section').style.display = 'none';
-                    document.querySelector('.registration-section').style.display = 'none';
-                    document.querySelector('.agenda-certificates').style.display = 'none';
-                    document.querySelector('footer').style.display = 'none';
-                    
-                    // Configurar timeout de sesión restante
-                    setTimeout(handleAdminLogout, 30 * 60 * 1000 - sessionDuration);
+        
+        function updateAttendanceDashboard() {
+            // Calculate attendance statistics
+            const total = participants.length;
+            let approved = 0;
+            let pending = 0;
+            
+            participants.forEach(p => {
+                const daysAttended = getParticipantAttendances(p.id);
+                if (daysAttended >= 2) {
+                    approved++;
                 } else {
-                    // Sesión expirada
-                    handleAdminLogout();
+                    pending++;
                 }
+            });
+            
+            totalParticipantsElement.textContent = total;
+            approvedParticipantsElement.textContent = approved;
+            pendingParticipantsElement.textContent = pending;
+            
+            // Update attendance table
+            renderAttendanceTable();
+        }
+        
+        function renderAttendanceTable(filteredParticipants = null) {
+            const participantsToShow = filteredParticipants || participants;
+            
+            attendanceTableBody.innerHTML = '';
+            
+            if (participantsToShow.length === 0) {
+                attendanceTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay participantes registrados</td></tr>';
+                return;
+            }
+            
+            participantsToShow.forEach(participant => {
+                const row = document.createElement('tr');
+                
+                const day23 = attendanceData['23'] && attendanceData['23'][participant.id] ? '✓' : '✗';
+                const day24 = attendanceData['24'] && attendanceData['24'][participant.id] ? '✓' : '✗';
+                const day25 = attendanceData['25'] && attendanceData['25'][participant.id] ? '✓' : '✗';
+                
+                const daysAttended = [day23, day24, day25].filter(d => d === '✓').length;
+                const status = daysAttended >= 2 ? 'Aprobado' : 'No Aprobado';
+                
+                row.innerHTML = `
+                    <td>${participant.cargo} ${participant.nombre} ${participant.apellido}</td>
+                    <td>${day23}</td>
+                    <td>${day24}</td>
+                    <td>${day25}</td>
+                    <td>${status}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-warning" onclick="editAttendance('${participant.id}')">Editar</button>
+                    </td>
+                `;
+                
+                attendanceTableBody.appendChild(row);
+            });
+        }
+        
+        function filterAttendance() {
+            const searchTerm = searchAttendance.value.toLowerCase();
+            const statusFilter = filterAttendanceStatus.value;
+            
+            const filtered = participants.filter(p => {
+                const matchesSearch = 
+                    p.nombre.toLowerCase().includes(searchTerm) ||
+                    p.apellido.toLowerCase().includes(searchTerm) ||
+                    p.cargo.toLowerCase().includes(searchTerm);
+                
+                const attendances = getParticipantAttendances(p.id);
+                const status = attendances >= 2 ? 'Aprobado' : 'No Aprobado';
+                const matchesStatus = !statusFilter || status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+            
+            renderAttendanceTable(filtered);
+        }
+        
+        function editAttendance(participantId) {
+            const participant = participants.find(p => p.id === participantId);
+            if (!participant) return;
+            
+            document.getElementById('edit-attendance-participant-id').value = participant.id;
+            document.getElementById('edit-attendance-participant-name').textContent = 
+                `${participant.cargo} ${participant.nombre} ${participant.apellido}`;
+            
+            // Set checkbox values based on current attendance
+            document.getElementById('edit-attendance-23').checked = 
+                attendanceData['23'] && attendanceData['23'][participant.id] || false;
+            document.getElementById('edit-attendance-24').checked = 
+                attendanceData['24'] && attendanceData['24'][participant.id] || false;
+            document.getElementById('edit-attendance-25').checked = 
+                attendanceData['25'] && attendanceData['25'][participant.id] || false;
+            
+            editAttendanceModal.style.display = 'flex';
+        }
+        
+        function handleEditAttendance(e) {
+            e.preventDefault();
+            
+            const participantId = document.getElementById('edit-attendance-participant-id').value;
+            const day23 = document.getElementById('edit-attendance-23').checked;
+            const day24 = document.getElementById('edit-attendance-24').checked;
+            const day25 = document.getElementById('edit-attendance-25').checked;
+            
+            // Update attendance data
+            if (!attendanceData['23']) attendanceData['23'] = {};
+            if (!attendanceData['24']) attendanceData['24'] = {};
+            if (!attendanceData['25']) attendanceData['25'] = {};
+            
+            attendanceData['23'][participantId] = day23;
+            attendanceData['24'][participantId] = day24;
+            attendanceData['25'][participantId] = day25;
+            
+            saveParticipants();
+            updateAttendanceDashboard();
+            
+            editAttendanceModal.style.display = 'none';
+            alert('Asistencias actualizadas exitosamente.');
+        }
+        
+        function exportAttendanceToCSV() {
+            if (participants.length === 0) {
+                alert('No hay datos para exportar.');
+                return;
+            }
+            
+            let csvContent = 'Nombre,Jueves 23,Viernes 24,Sábado 25,Estado\n';
+            
+            participants.forEach(p => {
+                const day23 = attendanceData['23'] && attendanceData['23'][p.id] ? 'Presente' : 'Ausente';
+                const day24 = attendanceData['24'] && attendanceData['24'][p.id] ? 'Presente' : 'Ausente';
+                const day25 = attendanceData['25'] && attendanceData['25'][p.id] ? 'Presente' : 'Ausente';
+                
+                const daysAttended = [day23, day24, day25].filter(d => d === 'Presente').length;
+                const status = daysAttended >= 2 ? 'Aprobado' : 'No Aprobado';
+                
+                csvContent += `"${p.cargo} ${p.nombre} ${p.apellido}","${day23}","${day24}","${day25}","${status}"\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            saveAs(blob, 'asistencias_congreso.csv');
+        }
+        
+        // Utility functions
+        function generateId() {
+            return '_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        function loadParticipants() {
+            const stored = localStorage.getItem('congresoParticipants');
+            if (stored) {
+                participants = JSON.parse(stored);
+            }
+            
+            // Load attendance data
+            const storedAttendance = localStorage.getItem('congresoAttendance');
+            if (storedAttendance) {
+                attendanceData = JSON.parse(storedAttendance);
             }
         }
-
-        // Ejecutar verificación de sesión al cargar
-        checkAdminSession();
+        
+        function saveParticipants() {
+            localStorage.setItem('congresoParticipants', JSON.stringify(participants));
+            localStorage.setItem('congresoAttendance', JSON.stringify(attendanceData));
+        }
+        
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
