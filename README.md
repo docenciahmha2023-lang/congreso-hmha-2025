@@ -624,7 +624,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="https://www.canva.com/design/DAGxPEDGSwU/q74TWlodBfOzME7a7nRHlw/edit" target="_blank" class="brochure-link">
+                <a href="https://www.canva.com/design/DAGxPEDGSwU/hq3RFABqYJqYkuVMhQWBag/watch?utm_content=DAGxPEDGSwU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h2671635ad9" target="_blank" class="brochure-link">
                     <i class="fas fa-book-open"></i>
                     Ver Información del Congreso
                 </a>
@@ -663,7 +663,7 @@
                     </div>
                     <div class="card-body">
                         <i class="fas fa-calendar-alt card-icon"></i>
-                        <p>23-25 Octubre 2025</p>
+                        <p>23-25 Octubre </p><p>2025</p>
                     </div>
                 </div>
                 <div class="card">
@@ -695,7 +695,7 @@
                         <i class="fas fa-users card-icon"></i>
                         <p>220 cupos totales</p>
                         <div class="capacity-counter">
-                            <span id="available-slots">50</span> cupos disponibles
+                            <span id="available-slots">220</span> cupos disponibles
                         </div>
                     </div>
                 </div>
@@ -705,7 +705,7 @@
                     </div>
                     <div class="card-body">
                         <i class="fas fa-certificate card-icon"></i>
-                        <p>Disponibles a partir del 25 de Octubre 2025, 13:00</p>
+                        <p>Disponibles a partir del 27 de Octubre 2025, 8:00</p>
                     </div>
                 </div>
             </div>
@@ -724,10 +724,10 @@
                             <option value="">Seleccione su cargo</option>
                             <option value="DR.">DR.</option>
                             <option value="DRA.">DRA.</option>
-                            <option value="LCDO." disabled>LCDO. (No disponible)</option>
-                            <option value="LCDA." disabled>LCDA. (No disponible)</option>
-                            <option value="IRM." disabled>IRM. (No disponible)</option>
-                            <option value="IRE." disabled>IRE. (No disponible)</option>
+                            <option value="LCDO.">LCDO.</option>
+                            <option value="LCDA.">LCDA.</option>
+                            <option value="IRM.">IRM.</option>
+                            <option value="IRE.">IRE.</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -764,12 +764,26 @@
             <h2 class="section-title">Agenda & Certificados</h2>
             <div class="agenda-container">
                 <h3>Agenda del Congreso</h3>
-                <p>La agenda completa del congreso estará disponible próximamente.</p>
-                <div class="status-badge status-pending">Próximamente</div>
+                <p>La agenda completa del congreso está disponible en los siguientes enlaces:</p>
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                    <a href="https://www.canva.com/design/DAGviQzNOHg/TEdQktBuK4jmsez6md4o1Q/watch?utm_content=DAGviQzNOHg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h7ace130b42" 
+                       target="_blank" class="cta-button" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+                        <i class="fas fa-external-link-alt"></i> Agenda Jueves 23
+                    </a>
+                    <a href="https://www.canva.com/design/DAGvnJ0sKWg/P9bBMb4_9RMxwjsn-U6L1A/watch?utm_content=DAGvnJ0sKWg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h3de5508bd7" 
+                       target="_blank" class="cta-button" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+                        <i class="fas fa-external-link-alt"></i> Agenda Viernes 24
+                    </a>
+                    <a href="https://www.canva.com/design/DAGvnl0xCEU/BGl0NXd5kBGS6nBUaSS96g/watch?utm_content=DAGvnl0xCEU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hdbc43ce954" 
+                       target="_blank" class="cta-button" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+                        <i class="fas fa-external-link-alt"></i> Agenda Sábado 25
+                    </a>
+                </div>
+                <div class="status-badge status-available">Disponible</div>
             </div>
             <div class="certificates-container">
                 <h3>Certificados de Participación</h3>
-                <p>Los certificados estarán disponibles para descarga a partir del 25 de Octubre 2025, 13:00</p>
+                <p>Los certificados estarán disponibles para descarga a partir del 27 de Octubre 2025, 8:00</p>
                 <div class="status-badge status-unavailable">No Disponible</div>
             </div>
         </div>
@@ -790,9 +804,8 @@
             
             <div class="admin-tabs">
                 <button class="admin-tab active" data-tab="participants">Gestión de Participantes</button>
-                <button class="admin-tab" data-tab="agenda">Gestión de Agenda</button>
                 <button class="admin-tab" data-tab="attendance">Control de Asistencias</button>
-                <button class="admin-tab" data-tab="certificates">Generación de Certificados</button>
+                <button class="admin-tab" data-tab="certificates">Enlace de Certificados</button>
             </div>
             
             <!-- Participants Management -->
@@ -898,25 +911,6 @@
                 <button id="export-csv" class="btn btn-success" style="margin-top: 1rem;">Exportar a CSV</button>
             </div>
             
-            <!-- Agenda Management -->
-            <div class="admin-content" id="agenda-content">
-                <h3>Gestión de Agenda</h3>
-                <div class="file-upload" id="agenda-upload-area">
-                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
-                    <p>Arrastra y suelta el archivo PDF de la agenda aquí</p>
-                    <p>o</p>
-                    <input type="file" id="agenda-file" accept=".pdf" style="display: none;">
-                    <button class="btn btn-primary" id="browse-agenda">Seleccionar Archivo</button>
-                    <p style="margin-top: 1rem; font-size: 0.9rem;">Tamaño máximo: 20MB</p>
-                </div>
-                <div id="agenda-preview" style="display: none;">
-                    <h4>Vista Previa</h4>
-                    <div id="preview-content"></div>
-                    <button id="publish-agenda" class="btn btn-success">Publicar Agenda</button>
-                </div>
-                <div id="agenda-status" style="margin-top: 1rem;"></div>
-            </div>
-            
             <!-- Attendance Control -->
             <div class="admin-content" id="attendance-content">
                 <h3>Control de Asistencias</h3>
@@ -927,7 +921,7 @@
                         <h4>Jueves 23</h4>
                         <div class="form-group">
                             <label for="form-link-23">Enlace Google Forms</label>
-                            <input type="url" id="form-link-23" placeholder="https://forms.google.com/...">
+                            <input type="url" id="form-link-23" placeholder="https://forms.google.com/..." value="https://docs.google.com/forms/d/1nihA_9JrKg1KOJCy4ypah4wtS5wXN3ETaKDgxNjTj70/edit#responses">
                         </div>
                         <div class="action-buttons">
                             <button class="btn btn-primary" data-day="23">Guardar Enlace</button>
@@ -938,7 +932,7 @@
                         <h4>Viernes 24</h4>
                         <div class="form-group">
                             <label for="form-link-24">Enlace Google Forms</label>
-                            <input type="url" id="form-link-24" placeholder="https://forms.google.com/...">
+                            <input type="url" id="form-link-24" placeholder="https://forms.google.com/..." value="https://docs.google.com/forms/d/18n4OUSB3iGBlBTBH6k4d-Tvma1rSXSS0Yv_vdq7bLVY/edit#responses">
                         </div>
                         <div class="action-buttons">
                             <button class="btn btn-primary" data-day="24">Guardar Enlace</button>
@@ -949,7 +943,7 @@
                         <h4>Sábado 25</h4>
                         <div class="form-group">
                             <label for="form-link-25">Enlace Google Forms</label>
-                            <input type="url" id="form-link-25" placeholder="https://forms.google.com/...">
+                            <input type="url" id="form-link-25" placeholder="https://forms.google.com/..." value="https://docs.google.com/forms/d/11PXiisbAVSnWc74sRQJntSvnbSFk53um0CQikR0QHww/edit?edit_requested=true#responses">
                         </div>
                         <div class="action-buttons">
                             <button class="btn btn-primary" data-day="25">Guardar Enlace</button>
@@ -1005,87 +999,25 @@
                 <button id="export-attendance" class="btn btn-success" style="margin-top: 1rem;">Exportar CSV</button>
             </div>
             
-            <!-- Certificates Generation -->
+            <!-- Certificates Link -->
             <div class="admin-content" id="certificates-content">
-                <h3>Generación de Certificados</h3>
-                <p><strong>Requisito para certificados:</strong> Mínimo 2 de 3 asistencias verificadas</p>
+                <h3>Enlace de Certificados</h3>
+                <p>Configure el enlace para que los asistentes puedan descargar sus certificados a partir del 27 de Octubre 2025, 8:00</p>
                 
                 <div class="certificate-template">
-                    <h4>Plantilla de Certificado</h4>
-                    <div class="file-upload" id="template-upload-area">
-                        <i class="fas fa-file-word" style="font-size: 3rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
-                        <p>Arrastra y suelta la plantilla Word (.docx) aquí</p>
-                        <p>o</p>
-                        <input type="file" id="template-file" accept=".docx" style="display: none;">
-                        <button class="btn btn-primary" id="browse-template">Seleccionar Plantilla</button>
-                        <p style="margin-top: 1rem; font-size: 0.9rem;">Tamaño máximo: 20MB</p>
-                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Utiliza los campos: {{cargo}}, {{apellido}}, {{nombre}}</p>
+                    <h4>Enlace de Descarga de Certificados</h4>
+                    <div class="form-group">
+                        <label for="certificate-link">URL de Certificados</label>
+                        <input type="url" id="certificate-link" placeholder="https://..." style="width: 100%;">
                     </div>
-                    <div id="template-status" style="margin-top: 1rem;"></div>
+                    <button id="save-certificate-link" class="btn btn-success">Guardar Enlace</button>
+                    <div id="certificate-link-status" style="margin-top: 1rem;"></div>
                 </div>
-                
-                <div style="margin: 2rem 0;">
-                    <button id="generate-all-certificates" class="btn btn-success">Generar Certificados para Aprobados</button>
-                    <button id="generate-certificate-manual" class="btn btn-primary">Generar Certificado Individual</button>
-                </div>
-                
-                <h4>Certificados Generados</h4>
-                <div class="search-filters">
-                    <div class="search-box form-group">
-                        <input type="text" id="search-certificates" placeholder="Buscar participantes...">
-                    </div>
-                    <div class="filter-select form-group">
-                        <select id="filter-certificate-status">
-                            <option value="">Todos los estados</option>
-                            <option value="Disponible">Disponible</option>
-                            <option value="No Generado">No Generado</option>
-                        </select>
-                    </div>
-                </div>
-                <table class="participants-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Estado Asistencia</th>
-                            <th>Certificado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="certificates-table-body">
-                        <!-- Certificates data will be loaded here -->
-                    </tbody>
-                </table>
                 
                 <div style="margin-top: 2rem;">
-                    <button id="download-all-certificates" class="btn btn-success">Descargar Todos los Certificados (ZIP)</button>
-                </div>
-                
-                <div style="margin-top: 3rem; border-top: 1px solid var(--medium-gray); padding-top: 2rem;">
-                    <h4>Generar Certificados para No Inscritos</h4>
-                    <form id="external-certificate-form">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
-                            <div class="form-group">
-                                <label for="external-cargo">Cargo</label>
-                                <select id="external-cargo" name="cargo" required>
-                                    <option value="DR.">DR.</option>
-                                    <option value="DRA.">DRA.</option>
-                                    <option value="LCDO.">LCDO.</option>
-                                    <option value="LCDA.">LCDA.</option>
-                                    <option value="IRM.">IRM.</option>
-                                    <option value="IRE.">IRE.</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="external-nombre">Nombre</label>
-                                <input type="text" id="external-nombre" name="nombre" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="external-apellido">Apellido</label>
-                                <input type="text" id="external-apellido" name="apellido" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Generar Certificado</button>
-                    </form>
+                    <h4>Información para Participantes</h4>
+                    <p>Los certificados estarán disponibles a partir del <strong>27 de Octubre 2025, 8:00</strong>.</p>
+                    <p>Los participantes podrán acceder a sus certificados mediante el enlace proporcionado.</p>
                 </div>
             </div>
         </div>
@@ -1201,13 +1133,12 @@
     <script>
         // Global variables
         let participants = [];
-        let agendaFile = null;
-        let certificateTemplate = null;
         let attendanceData = {};
         let formLinks = {};
+        let certificateLink = "";
         let adminLoggedIn = false;
         const registrationDeadline = new Date('2025-10-22T23:59:00');
-        const certificatesAvailableDate = new Date('2025-10-25T13:00:00');
+        const certificatesAvailableDate = new Date('2025-10-27T08:00:00');
         const totalSlots = 220;
         const drDraSlots = 50;
         
@@ -1231,20 +1162,6 @@
         const filterCargo = document.getElementById('filter-cargo');
         const filterCategoria = document.getElementById('filter-categoria');
         const exportCsvBtn = document.getElementById('export-csv');
-        const agendaUploadArea = document.getElementById('agenda-upload-area');
-        const agendaFileInput = document.getElementById('agenda-file');
-        const browseAgendaBtn = document.getElementById('browse-agenda');
-        const agendaPreview = document.getElementById('agenda-preview');
-        const publishAgendaBtn = document.getElementById('publish-agenda');
-        const agendaStatus = document.getElementById('agenda-status');
-        const templateUploadArea = document.getElementById('template-upload-area');
-        const templateFileInput = document.getElementById('template-file');
-        const browseTemplateBtn = document.getElementById('browse-template');
-        const templateStatus = document.getElementById('template-status');
-        const generateAllCertificatesBtn = document.getElementById('generate-all-certificates');
-        const generateCertificateManualBtn = document.getElementById('generate-certificate-manual');
-        const downloadAllCertificatesBtn = document.getElementById('download-all-certificates');
-        const externalCertificateForm = document.getElementById('external-certificate-form');
         const attendanceTableBody = document.getElementById('attendance-table-body');
         const searchAttendance = document.getElementById('search-attendance');
         const filterAttendanceStatus = document.getElementById('filter-attendance-status');
@@ -1262,18 +1179,19 @@
         const editAttendanceModal = document.getElementById('edit-attendance-modal');
         const closeEditAttendanceModal = document.querySelector('.close-edit-attendance-modal');
         const editAttendanceForm = document.getElementById('edit-attendance-form');
-        const searchCertificates = document.getElementById('search-certificates');
-        const filterCertificateStatus = document.getElementById('filter-certificate-status');
+        const certificateLinkInput = document.getElementById('certificate-link');
+        const saveCertificateLinkBtn = document.getElementById('save-certificate-link');
+        const certificateLinkStatus = document.getElementById('certificate-link-status');
         
         // Initialize the application
         function init() {
+            console.log("Inicializando aplicación...");
             updateCountdown();
             setInterval(updateCountdown, 1000);
             
             loadParticipants();
-            loadAgendaData();
             loadFormLinks();
-            loadTemplate();
+            loadCertificateLink();
             updateAvailableSlots();
             updateRegistrationButton();
             
@@ -1304,29 +1222,11 @@
             searchAttendance.addEventListener('input', filterAttendance);
             filterAttendanceStatus.addEventListener('change', filterAttendance);
             
-            // Search and filter certificates
-            searchCertificates.addEventListener('input', filterCertificates);
-            filterCertificateStatus.addEventListener('change', filterCertificates);
-            
             // Export CSV
             exportCsvBtn.addEventListener('click', exportParticipantsToCSV);
             
-            // Agenda file upload
-            browseAgendaBtn.addEventListener('click', () => agendaFileInput.click());
-            agendaFileInput.addEventListener('change', handleAgendaFileUpload);
-            setupDragAndDrop(agendaUploadArea, agendaFileInput);
-            publishAgendaBtn.addEventListener('click', publishAgenda);
-            
-            // Template file upload
-            browseTemplateBtn.addEventListener('click', () => templateFileInput.click());
-            templateFileInput.addEventListener('change', handleTemplateFileUpload);
-            setupDragAndDrop(templateUploadArea, templateFileInput);
-            
-            // Certificate generation
-            generateAllCertificatesBtn.addEventListener('click', generateAllCertificates);
-            generateCertificateManualBtn.addEventListener('click', generateCertificateManual);
-            downloadAllCertificatesBtn.addEventListener('click', downloadAllCertificates);
-            externalCertificateForm.addEventListener('submit', generateExternalCertificate);
+            // Certificate link
+            saveCertificateLinkBtn.addEventListener('click', saveCertificateLink);
             
             // Attendance form links
             document.querySelectorAll('.attendance-form .btn-primary').forEach(btn => {
@@ -1354,6 +1254,8 @@
             
             // Check if admin is already logged in
             checkAdminSession();
+            
+            console.log("Aplicación inicializada. Participantes cargados:", participants.length);
         }
         
         // Countdown timer
@@ -1385,12 +1287,14 @@
                 (p.categoria === 'Médico General' || p.categoria === 'Especialista')
             ).length;
             
+            // Para usuarios públicos, siempre mostrar 50 cupos disponibles
+            // aunque internamente podamos exceder los 220
             const available = Math.max(0, drDraSlots - drDraParticipants);
             availableSlotsElement.textContent = available;
             
             // Actualizar también en el panel administrativo
             const assigned = participants.length;
-            const availableAdmin = totalSlots - assigned;
+            const availableAdmin = Math.max(0, totalSlots - assigned);
             
             totalSlotsElement.textContent = totalSlots;
             assignedSlotsElement.textContent = assigned;
@@ -1481,6 +1385,7 @@
             saveParticipants();
             updateAvailableSlots();
             updateRegistrationButton();
+            updateAttendanceDashboard(); // Actualizar lista de asistencia
             
             showMessage('¡Registro exitoso! Te esperamos en el congreso.', 'success');
             registrationForm.reset();
@@ -1580,8 +1485,6 @@
             // Load specific data if needed
             if (tabId === 'attendance') {
                 updateAttendanceDashboard();
-            } else if (tabId === 'certificates') {
-                updateCertificatesTable();
             }
         }
         
@@ -1623,6 +1526,7 @@
             updateAvailableSlots();
             updateRegistrationButton();
             updateAdminDashboard();
+            updateAttendanceDashboard(); // Actualizar lista de asistencia
             
             alert('Participante registrado exitosamente.');
             adminRegistrationForm.reset();
@@ -1631,7 +1535,7 @@
         function updateAdminDashboard() {
             // Update stats
             const assigned = participants.length;
-            const available = totalSlots - assigned;
+            const available = Math.max(0, totalSlots - assigned);
             const drDraParticipants = participants.filter(p => 
                 (p.cargo === 'DR.' || p.cargo === 'DRA.') && 
                 (p.categoria === 'Médico General' || p.categoria === 'Especialista')
@@ -1747,6 +1651,7 @@
             updateAvailableSlots();
             updateRegistrationButton();
             updateAdminDashboard();
+            updateAttendanceDashboard(); // Actualizar lista de asistencia
             
             editParticipantModal.style.display = 'none';
             alert('Participante actualizado exitosamente.');
@@ -1759,6 +1664,7 @@
                 updateAvailableSlots();
                 updateRegistrationButton();
                 updateAdminDashboard();
+                updateAttendanceDashboard(); // Actualizar lista de asistencia
             }
         }
         
@@ -1776,204 +1682,6 @@
             
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             saveAs(blob, 'participantes_congreso.csv');
-        }
-        
-        // Agenda management
-        function setupDragAndDrop(dropArea, fileInput) {
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false);
-            });
-            
-            function highlight() {
-                dropArea.classList.add('active');
-            }
-            
-            function unhighlight() {
-                dropArea.classList.remove('active');
-            }
-            
-            dropArea.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                
-                if (files.length) {
-                    fileInput.files = files;
-                    fileInput.dispatchEvent(new Event('change'));
-                }
-            }
-        }
-        
-        function handleAgendaFileUpload(e) {
-            const file = e.target.files[0];
-            
-            if (!file) return;
-            
-            // Validate file type
-            if (file.type !== 'application/pdf') {
-                alert('Por favor, seleccione un archivo PDF.');
-                return;
-            }
-            
-            // Validate file size (20MB)
-            if (file.size > 20 * 1024 * 1024) {
-                alert('El archivo es demasiado grande. El tamaño máximo es 20MB.');
-                return;
-            }
-            
-            agendaFile = file;
-            
-            // Show preview
-            agendaPreview.style.display = 'block';
-            document.getElementById('preview-content').innerHTML = `
-                <p><strong>Archivo:</strong> ${file.name}</p>
-                <p><strong>Tamaño:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
-            `;
-        }
-        
-        function publishAgenda() {
-            if (!agendaFile) {
-                alert('Por favor, seleccione un archivo primero.');
-                return;
-            }
-            
-            // Convert file to base64 for storage
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const agendaData = {
-                    name: agendaFile.name,
-                    type: agendaFile.type,
-                    size: agendaFile.size,
-                    data: e.target.result,
-                    published: true,
-                    publishedDate: new Date().toISOString()
-                };
-                
-                // Save agenda data
-                localStorage.setItem('congresoAgenda', JSON.stringify(agendaData));
-                
-                agendaStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Agenda publicada exitosamente: ${agendaFile.name}</p>`;
-                
-                // Update public section
-                updatePublicAgenda();
-            };
-            reader.readAsDataURL(agendaFile);
-        }
-        
-        function updatePublicAgenda() {
-            const agendaContainer = document.querySelector('.agenda-container');
-            agendaContainer.innerHTML = `
-                <h3>Agenda del Congreso</h3>
-                <p>La agenda completa del congreso está disponible para descarga.</p>
-                <a href="#" class="cta-button" id="download-agenda">Descargar Agenda</a>
-            `;
-            
-            // Add download functionality
-            document.getElementById('download-agenda').addEventListener('click', function(e) {
-                e.preventDefault();
-                downloadAgenda();
-            });
-        }
-        
-        function downloadAgenda() {
-            const agendaData = localStorage.getItem('congresoAgenda');
-            if (!agendaData) {
-                alert('No hay agenda disponible para descargar.');
-                return;
-            }
-            
-            const parsedData = JSON.parse(agendaData);
-            
-            // Create a blob from base64 data
-            const byteCharacters = atob(parsedData.data.split(',')[1]);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray], { type: parsedData.type });
-            
-            // Create download link
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = parsedData.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-        
-        function loadAgendaData() {
-            const agendaData = localStorage.getItem('congresoAgenda');
-            if (agendaData) {
-                const parsedData = JSON.parse(agendaData);
-                
-                // Update public section if agenda is published
-                if (parsedData.published) {
-                    updatePublicAgenda();
-                }
-            }
-        }
-        
-        // Certificate template handling
-        function handleTemplateFileUpload(e) {
-            const file = e.target.files[0];
-            
-            if (!file) return;
-            
-            // Validate file type
-            if (!file.name.endsWith('.docx')) {
-                alert('Por favor, seleccione un archivo Word (.docx).');
-                return;
-            }
-            
-            // Validate file size (20MB)
-            if (file.size > 20 * 1024 * 1024) {
-                alert('El archivo es demasiado grande. El tamaño máximo es 20MB.');
-                return;
-            }
-            
-            certificateTemplate = file;
-            
-            // Save template to localStorage
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const templateData = {
-                    name: file.name,
-                    type: file.type,
-                    size: file.size,
-                    data: e.target.result,
-                    uploadedDate: new Date().toISOString()
-                };
-                
-                localStorage.setItem('congresoTemplate', JSON.stringify(templateData));
-                templateStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Plantilla cargada exitosamente: ${file.name}</p>`;
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function loadTemplate() {
-            const storedTemplate = localStorage.getItem('congresoTemplate');
-            if (storedTemplate) {
-                const templateData = JSON.parse(storedTemplate);
-                certificateTemplate = templateData;
-                templateStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Plantilla cargada: ${templateData.name}</p>`;
-            }
         }
         
         // Form links management
@@ -2040,356 +1748,54 @@
                         input.value = formLinks[day];
                     }
                 });
-            }
-        }
-        
-        // Generate certificates for approved participants
-        function generateAllCertificates() {
-            if (!certificateTemplate) {
-                alert('Por favor, cargue una plantilla primero.');
-                return;
-            }
-            
-            // Get participants with 2/3 attendances
-            const approvedParticipants = participants.filter(p => {
-                const attendances = getParticipantAttendances(p.id);
-                return attendances >= 2;
-            });
-            
-            if (approvedParticipants.length === 0) {
-                alert('No hay participantes que cumplan con el requisito de 2/3 asistencias.');
-                return;
-            }
-            
-            // Process template for each approved participant
-            approvedParticipants.forEach(participant => {
-                generateCertificate(participant);
-            });
-            
-            alert(`Se generaron ${approvedParticipants.length} certificados para participantes aprobados.`);
-            
-            // Update certificates table
-            updateCertificatesTable();
-        }
-        
-        // Generate certificate for a specific participant
-        function generateCertificate(participant) {
-            if (!certificateTemplate) return;
-            
-            // Store certificate data
-            if (!participant.certificates) {
-                participant.certificates = [];
-            }
-            
-            participant.certificates.push({
-                id: generateId(),
-                fechaGeneracion: new Date().toISOString(),
-                data: {
-                    cargo: participant.cargo,
-                    apellido: participant.apellido,
-                    nombre: participant.nombre
-                }
-            });
-            
-            saveParticipants();
-        }
-        
-        function generateCertificateManual() {
-            if (!certificateTemplate) {
-                alert('Por favor, cargue una plantilla primero.');
-                return;
-            }
-            
-            // Show dialog to select participant
-            const participantId = prompt('Ingrese el ID del participante:');
-            if (!participantId) return;
-            
-            const participant = participants.find(p => p.id === participantId);
-            if (!participant) {
-                alert('Participante no encontrado.');
-                return;
-            }
-            
-            // Generate certificate regardless of attendance (admin privilege)
-            generateCertificate(participant);
-            alert(`Certificado generado para ${participant.cargo} ${participant.nombre} ${participant.apellido}`);
-            
-            updateCertificatesTable();
-        }
-        
-        function downloadAllCertificates() {
-            const participantsWithCertificates = participants.filter(p => 
-                p.certificates && p.certificates.length > 0
-            );
-            
-            if (participantsWithCertificates.length === 0) {
-                alert('No hay certificados para descargar.');
-                return;
-            }
-            
-            // Create a ZIP file with all certificates
-            const zip = new JSZip();
-            
-            participantsWithCertificates.forEach(participant => {
-                const certificateContent = createCertificateContent(participant);
+            } else {
+                // Set default links
+                formLinks = {
+                    '23': 'https://docs.google.com/forms/d/1nihA_9JrKg1KOJCy4ypah4wtS5wXN3ETaKDgxNjTj70/edit#responses',
+                    '24': 'https://docs.google.com/forms/d/18n4OUSB3iGBlBTBH6k4d-Tvma1rSXSS0Yv_vdq7bLVY/edit#responses',
+                    '25': 'https://docs.google.com/forms/d/11PXiisbAVSnWc74sRQJntSvnbSFk53um0CQikR0QHww/edit?edit_requested=true#responses'
+                };
                 
-                // Add certificate to ZIP
-                zip.file(`Certificado_${participant.cargo}_${participant.nombre}_${participant.apellido}.html`, certificateContent);
-            });
-            
-            // Generate and download ZIP file
-            zip.generateAsync({type:"blob"}).then(function(content) {
-                saveAs(content, "certificados_congreso.zip");
-            });
+                // Populate form fields with default links
+                document.getElementById('form-link-23').value = formLinks['23'];
+                document.getElementById('form-link-24').value = formLinks['24'];
+                document.getElementById('form-link-25').value = formLinks['25'];
+                
+                localStorage.setItem('congresoFormLinks', JSON.stringify(formLinks));
+            }
         }
         
-        function createCertificateContent(participant) {
-            return `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Certificado - ${participant.cargo} ${participant.nombre} ${participant.apellido}</title>
-                    <style>
-                        body { 
-                            font-family: Arial, sans-serif; 
-                            text-align: center; 
-                            padding: 50px; 
-                            margin: 0;
-                            background: linear-gradient(135deg, #1a4a7a 0%, #2c6aa4 100%);
-                            min-height: 100vh;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        }
-                        .certificate { 
-                            background: white; 
-                            border: 10px solid gold; 
-                            padding: 60px 40px; 
-                            max-width: 800px; 
-                            margin: 0 auto;
-                            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                            position: relative;
-                        }
-                        .certificate:before {
-                            content: "";
-                            position: absolute;
-                            top: 20px;
-                            left: 20px;
-                            right: 20px;
-                            bottom: 20px;
-                            border: 2px solid #1a4a7a;
-                            pointer-events: none;
-                        }
-                        .title { 
-                            font-size: 36px; 
-                            color: #1a4a7a; 
-                            margin-bottom: 30px;
-                            font-weight: bold;
-                            text-transform: uppercase;
-                            letter-spacing: 2px;
-                        }
-                        .subtitle {
-                            font-size: 20px;
-                            color: #2c6aa4;
-                            margin-bottom: 40px;
-                        }
-                        .name { 
-                            font-size: 32px; 
-                            font-weight: bold; 
-                            margin: 30px 0;
-                            color: #1a4a7a;
-                            padding: 20px;
-                            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-                            border-radius: 10px;
-                        }
-                        .text { 
-                            font-size: 18px; 
-                            margin: 15px 0; 
-                            line-height: 1.6;
-                        }
-                        .signature { 
-                            margin-top: 50px;
-                            border-top: 2px solid #1a4a7a;
-                            padding-top: 20px;
-                            display: inline-block;
-                            width: 300px;
-                        }
-                        .logo {
-                            height: 80px;
-                            margin-bottom: 20px;
-                        }
-                        .footer {
-                            margin-top: 40px;
-                            font-size: 14px;
-                            color: #666;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="certificate">
-                        <div class="title">Certificado de Participación</div>
-                        <div class="subtitle">I ER CONGRESO INTERNACIONAL DE ESPECIALIDADES CLINICAS-QUIRURGICAS</div>
-                        
-                        <div class="text">Se otorga el presente certificado a:</div>
-                        <div class="name">${participant.cargo} ${participant.nombre} ${participant.apellido}</div>
-                        
-                        <div class="text">Por su participación activa en el congreso internacional organizado por</div>
-                        <div class="text">el Hospital Miguel H. Alcivar, realizado del 23 al 25 de Octubre de 2025</div>
-                        
-                        <div class="signature">
-                            <div style="margin-bottom: 10px;">_________________________</div>
-                            <div><strong>Dr. Julio Feijoo</strong></div>
-                            <div>Analista de Docencia</div>
-                            <div>Hospital Miguel H. Alcivar</div>
-                        </div>
-                        
-                        <div class="footer">
-                            <div>Código de verificación: ${participant.id}</div>
-                            <div>Fecha de emisión: ${new Date().toLocaleDateString('es-ES')}</div>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `;
-        }
-        
-        function generateExternalCertificate(e) {
-            e.preventDefault();
+        // Certificate link management
+        function saveCertificateLink() {
+            const link = certificateLinkInput.value.trim();
             
-            if (!certificateTemplate) {
-                alert('Por favor, cargue una plantilla primero.');
+            if (!link) {
+                alert('Por favor, ingrese un enlace válido.');
                 return;
             }
             
-            const formData = new FormData(externalCertificateForm);
-            const cargo = formData.get('cargo');
-            const nombre = formData.get('nombre');
-            const apellido = formData.get('apellido');
-            
-            // Create external participant object
-            const externalParticipant = {
-                id: generateId(),
-                cargo,
-                nombre,
-                apellido,
-                email: 'externo@congreso.com',
-                categoria: 'Externo',
-                fechaRegistro: new Date().toISOString(),
-                externo: true
-            };
-            
-            // Generate certificate
-            generateCertificate(externalParticipant);
-            
-            // Create and download certificate immediately
-            const certificateContent = createCertificateContent(externalParticipant);
-            const blob = new Blob([certificateContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Certificado_${cargo}_${nombre}_${apellido}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert(`Certificado generado y descargado para ${cargo} ${nombre} ${apellido}`);
-            externalCertificateForm.reset();
-        }
-        
-        function updateCertificatesTable() {
-            const certificatesTableBody = document.getElementById('certificates-table-body');
-            certificatesTableBody.innerHTML = '';
-            
-            if (participants.length === 0) {
-                certificatesTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay participantes registrados</td></tr>';
+            // Validate URL format
+            try {
+                new URL(link);
+            } catch (e) {
+                alert('Por favor, ingrese un enlace válido.');
                 return;
             }
             
-            participants.forEach(participant => {
-                const row = document.createElement('tr');
-                
-                // Calculate attendance status
-                const attendances = getParticipantAttendances(participant.id);
-                const attendanceStatus = attendances >= 2 ? 'Aprobado' : 'No Aprobado';
-                
-                // Check if certificate exists
-                const hasCertificate = participant.certificates && participant.certificates.length > 0;
-                const certificateStatus = hasCertificate ? 'Disponible' : 'No Generado';
-                
-                row.innerHTML = `
-                    <td>${participant.cargo} ${participant.nombre} ${participant.apellido}</td>
-                    <td>${attendanceStatus} (${attendances}/3)</td>
-                    <td>${certificateStatus}</td>
-                    <td class="action-buttons">
-                        ${hasCertificate ? 
-                            `<button class="btn btn-primary" onclick="downloadIndividualCertificate('${participant.id}')">Descargar</button>` : 
-                            `<button class="btn btn-secondary" onclick="generateCertificateForParticipant('${participant.id}')">Generar</button>`
-                        }
-                    </td>
-                `;
-                
-                certificatesTableBody.appendChild(row);
-            });
+            // Save certificate link
+            certificateLink = link;
+            localStorage.setItem('congresoCertificateLink', certificateLink);
+            
+            certificateLinkStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Enlace guardado exitosamente.</p>`;
+            alert('Enlace de certificados guardado exitosamente.');
         }
         
-        function filterCertificates() {
-            const searchTerm = searchCertificates.value.toLowerCase();
-            const statusFilter = filterCertificateStatus.value;
-            
-            const certificatesTableBody = document.getElementById('certificates-table-body');
-            const rows = certificatesTableBody.getElementsByTagName('tr');
-            
-            for (let row of rows) {
-                const name = row.cells[0].textContent.toLowerCase();
-                const status = row.cells[2].textContent;
-                
-                const matchesSearch = name.includes(searchTerm);
-                const matchesStatus = !statusFilter || status === statusFilter;
-                
-                row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+        function loadCertificateLink() {
+            const storedLink = localStorage.getItem('congresoCertificateLink');
+            if (storedLink) {
+                certificateLink = storedLink;
+                certificateLinkInput.value = certificateLink;
             }
-        }
-        
-        function getParticipantAttendances(participantId) {
-            let count = 0;
-            ['23', '24', '25'].forEach(day => {
-                if (attendanceData[day] && attendanceData[day][participantId]) {
-                    count++;
-                }
-            });
-            return count;
-        }
-        
-        function generateCertificateForParticipant(participantId) {
-            const participant = participants.find(p => p.id === participantId);
-            if (!participant) return;
-            
-            generateCertificate(participant);
-            updateCertificatesTable();
-            alert(`Certificado generado para ${participant.cargo} ${participant.nombre} ${participant.apellido}`);
-        }
-        
-        function downloadIndividualCertificate(participantId) {
-            const participant = participants.find(p => p.id === participantId);
-            if (!participant || !participant.certificates || participant.certificates.length === 0) {
-                alert('No hay certificado disponible para este participante.');
-                return;
-            }
-            
-            const certificateContent = createCertificateContent(participant);
-            
-            // Create and download the certificate
-            const blob = new Blob([certificateContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Certificado_${participant.cargo}_${participant.nombre}_${participant.apellido}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
         }
         
         // Attendance management
@@ -2539,26 +1945,50 @@
         
         // Utility functions
         function generateId() {
-            return '_' + Math.random().toString(36).substr(2, 9);
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+        
+        function getParticipantAttendances(participantId) {
+            let count = 0;
+            ['23', '24', '25'].forEach(day => {
+                if (attendanceData[day] && attendanceData[day][participantId]) {
+                    count++;
+                }
+            });
+            return count;
         }
         
         function loadParticipants() {
             const stored = localStorage.getItem('congresoParticipants');
+            
             if (stored) {
                 participants = JSON.parse(stored);
+                console.log("Participantes cargados desde localStorage:", participants.length);
+            } else {
+                console.log("No hay datos en localStorage, comenzando con lista vacía");
+                participants = [];
+                saveParticipants();
             }
             
             // Load attendance data
             const storedAttendance = localStorage.getItem('congresoAttendance');
             if (storedAttendance) {
                 attendanceData = JSON.parse(storedAttendance);
+            } else {
+                attendanceData = {};
             }
         }
         
         function saveParticipants() {
             localStorage.setItem('congresoParticipants', JSON.stringify(participants));
             localStorage.setItem('congresoAttendance', JSON.stringify(attendanceData));
+            console.log("Datos guardados en localStorage");
         }
+        
+        // Make functions available globally for onclick events
+        window.editParticipant = editParticipant;
+        window.deleteParticipant = deleteParticipant;
+        window.editAttendance = editAttendance;
         
         // Initialize the application when DOM is loaded
         document.addEventListener('DOMContentLoaded', init);
