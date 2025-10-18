@@ -6,6 +6,7 @@
     <title>I ER CONGRESO INTERNACIONAL DE ESPECIALIDADES CLINICAS-QUIRURGICAS | HOSPITAL MIGUEL H. ALCIVAR 2025</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -560,6 +561,41 @@
             overflow-y: auto;
         }
 
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
@@ -751,7 +787,10 @@
                             <option value="Otro">Otro</option>
                         </select>
                     </div>
-                    <button type="submit" class="submit-btn" id="submit-btn">Registrarse</button>
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        <span id="submit-text">Registrarse</span>
+                        <div class="loading" id="submit-loading" style="display: none;"></div>
+                    </button>
                 </form>
                 <div id="registration-message" style="margin-top: 1rem;"></div>
             </div>
@@ -866,7 +905,10 @@
                         <label for="admin-email">Email</label>
                         <input type="email" id="admin-email" name="email" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Registrar Participante</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="admin-submit-text">Registrar Participante</span>
+                        <div class="loading" id="admin-submit-loading" style="display: none;"></div>
+                    </button>
                 </form>
                 
                 <h3 style="margin-top: 2rem;">Lista de Participantes</h3>
@@ -1039,7 +1081,10 @@
                     <label for="password">Contraseña</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit" class="submit-btn">Iniciar Sesión</button>
+                <button type="submit" class="submit-btn">
+                    <span id="login-submit-text">Iniciar Sesión</span>
+                    <div class="loading" id="login-submit-loading" style="display: none;"></div>
+                </button>
             </form>
         </div>
     </div>
@@ -1131,6 +1176,13 @@
     </div>
 
     <script>
+        // Configuración de Supabase - TUS CREDENCIALES AQUÍ
+        const SUPABASE_URL = 'https://smihcuhfgyjtwuaatfak.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtaWhjdWhmZ3lqdHd1YWF0ZmFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MTAwODksImV4cCI6MjA3NjI4NjA4OX0.HQuTOSon8hCpkhxAp-tI3W28j7w7j7uVidV9i6-HpfE';
+        
+        // Inicializar Supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
         // Global variables
         let participants = [];
         let attendanceData = {};
@@ -1147,6 +1199,8 @@
         const availableSlotsElement = document.getElementById('available-slots');
         const registrationForm = document.getElementById('registration-form');
         const submitBtn = document.getElementById('submit-btn');
+        const submitText = document.getElementById('submit-text');
+        const submitLoading = document.getElementById('submit-loading');
         const registrationMessage = document.getElementById('registration-message');
         const adminLoginBtn = document.getElementById('admin-login-btn');
         const adminPanel = document.getElementById('admin-panel');
@@ -1154,9 +1208,13 @@
         const loginModal = document.getElementById('login-modal');
         const closeModal = document.querySelector('.close-modal');
         const loginForm = document.getElementById('login-form');
+        const loginSubmitText = document.getElementById('login-submit-text');
+        const loginSubmitLoading = document.getElementById('login-submit-loading');
         const adminTabs = document.querySelectorAll('.admin-tab');
         const adminContents = document.querySelectorAll('.admin-content');
         const adminRegistrationForm = document.getElementById('admin-registration-form');
+        const adminSubmitText = document.getElementById('admin-submit-text');
+        const adminSubmitLoading = document.getElementById('admin-submit-loading');
         const participantsTableBody = document.getElementById('participants-table-body');
         const searchParticipants = document.getElementById('search-participants');
         const filterCargo = document.getElementById('filter-cargo');
@@ -1184,14 +1242,14 @@
         const certificateLinkStatus = document.getElementById('certificate-link-status');
         
         // Initialize the application
-        function init() {
+        async function init() {
             console.log("Inicializando aplicación...");
             updateCountdown();
             setInterval(updateCountdown, 1000);
             
-            loadParticipants();
-            loadFormLinks();
-            loadCertificateLink();
+            await loadParticipants();
+            await loadFormLinks();
+            await loadCertificateLink();
             updateAvailableSlots();
             updateRegistrationButton();
             
@@ -1287,8 +1345,6 @@
                 (p.categoria === 'Médico General' || p.categoria === 'Especialista')
             ).length;
             
-            // Para usuarios públicos, siempre mostrar 50 cupos disponibles
-            // aunque internamente podamos exceder los 220
             const available = Math.max(0, drDraSlots - drDraParticipants);
             availableSlotsElement.textContent = available;
             
@@ -1311,19 +1367,19 @@
             ).length;
             
             if (now > registrationDeadline) {
-                submitBtn.textContent = 'Inscripciones Cerradas';
                 submitBtn.disabled = true;
+                submitText.textContent = 'Inscripciones Cerradas';
             } else if (drDraParticipants >= drDraSlots) {
-                submitBtn.textContent = 'No Disponible';
                 submitBtn.disabled = true;
+                submitText.textContent = 'No Disponible';
             } else {
-                submitBtn.textContent = 'Registrarse';
                 submitBtn.disabled = false;
+                submitText.textContent = 'Registrarse';
             }
         }
         
         // Handle public registration
-        function handleRegistration(e) {
+        async function handleRegistration(e) {
             e.preventDefault();
             
             const formData = new FormData(registrationForm);
@@ -1370,35 +1426,71 @@
                 return;
             }
             
-            // Add participant
-            const newParticipant = {
-                id: generateId(),
-                cargo,
-                nombre,
-                apellido,
-                email,
-                categoria,
-                fechaRegistro: new Date().toISOString()
-            };
+            // Show loading state
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline-block';
+            submitBtn.disabled = true;
             
-            participants.push(newParticipant);
-            saveParticipants();
-            updateAvailableSlots();
-            updateRegistrationButton();
-            updateAttendanceDashboard(); // Actualizar lista de asistencia
-            
-            showMessage('¡Registro exitoso! Te esperamos en el congreso.', 'success');
-            registrationForm.reset();
+            try {
+                // Add participant to database
+                const { data, error } = await supabase
+                    .from('participants')
+                    .insert([
+                        {
+                            cargo,
+                            nombre,
+                            apellido,
+                            email,
+                            categoria,
+                            fecha_registro: new Date().toISOString()
+                        }
+                    ])
+                    .select();
+                
+                if (error) throw error;
+                
+                // Add participant to local state
+                const newParticipant = {
+                    id: data[0].id,
+                    cargo,
+                    nombre,
+                    apellido,
+                    email,
+                    categoria,
+                    fechaRegistro: data[0].fecha_registro
+                };
+                
+                participants.push(newParticipant);
+                updateAvailableSlots();
+                updateRegistrationButton();
+                await updateAttendanceDashboard();
+                
+                showMessage('¡Registro exitoso! Te esperamos en el congreso.', 'success');
+                registrationForm.reset();
+            } catch (error) {
+                console.error('Error al registrar participante:', error);
+                showMessage('Error al registrar. Intente nuevamente.', 'error');
+            } finally {
+                // Hide loading state
+                submitText.style.display = 'inline-block';
+                submitLoading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
         }
         
         // Show message to user
         function showMessage(message, type) {
-            registrationMessage.textContent = message;
-            registrationMessage.style.color = type === 'success' ? 'green' : 'red';
-            registrationMessage.style.fontWeight = '600';
+            // Clear any existing messages
+            registrationMessage.innerHTML = '';
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'error'}`;
+            alertDiv.textContent = message;
+            
+            registrationMessage.appendChild(alertDiv);
             
             setTimeout(() => {
-                registrationMessage.textContent = '';
+                registrationMessage.innerHTML = '';
             }, 5000);
         }
         
@@ -1412,28 +1504,61 @@
             loginForm.reset();
         }
         
-        function handleAdminLogin(e) {
+        async function handleAdminLogin(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            if (username === 'DOCENCIA' && password === 'DOCENCIA') {
-                adminLoggedIn = true;
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                sessionStorage.setItem('loginTime', new Date().getTime().toString());
-                
-                adminPanel.style.display = 'block';
-                hideLoginModal();
-                updateAdminDashboard();
-                
-                // Set session timeout (8 hours)
-                setTimeout(() => {
-                    handleAdminLogout();
-                }, 8 * 60 * 60 * 1000);
-            } else {
-                alert('Credenciales incorrectas. Intente nuevamente.');
+            // Show loading state
+            loginSubmitText.style.display = 'none';
+            loginSubmitLoading.style.display = 'inline-block';
+            
+            try {
+                // Simple authentication (in production, use Supabase Auth)
+                if (username === 'DOCENCIA' && password === 'DOCENCIA') {
+                    adminLoggedIn = true;
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    sessionStorage.setItem('loginTime', new Date().getTime().toString());
+                    
+                    adminPanel.style.display = 'block';
+                    hideLoginModal();
+                    updateAdminDashboard();
+                    
+                    // Set session timeout (8 hours)
+                    setTimeout(() => {
+                        handleAdminLogout();
+                    }, 8 * 60 * 60 * 1000);
+                    
+                    showAdminMessage('Sesión iniciada correctamente', 'success');
+                } else {
+                    showAdminMessage('Credenciales incorrectas', 'error');
+                }
+            } finally {
+                // Hide loading state
+                loginSubmitText.style.display = 'inline-block';
+                loginSubmitLoading.style.display = 'none';
             }
+        }
+        
+        function showAdminMessage(message, type) {
+            const existingAlert = document.querySelector('.admin-alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'error'} admin-alert`;
+            alertDiv.textContent = message;
+            alertDiv.style.marginTop = '1rem';
+            
+            document.querySelector('.admin-header').appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 3000);
         }
         
         function checkAdminSession() {
@@ -1460,7 +1585,7 @@
             sessionStorage.removeItem('loginTime');
             
             adminPanel.style.display = 'none';
-            alert('Sesión cerrada exitosamente.');
+            showAdminMessage('Sesión cerrada exitosamente', 'success');
         }
         
         function switchAdminTab(tabId) {
@@ -1488,7 +1613,7 @@
             }
         }
         
-        function handleAdminRegistration(e) {
+        async function handleAdminRegistration(e) {
             e.preventDefault();
             
             const formData = new FormData(adminRegistrationForm);
@@ -1510,26 +1635,55 @@
                 return;
             }
             
-            // Add participant (admin can register without restrictions)
-            const newParticipant = {
-                id: generateId(),
-                cargo,
-                nombre,
-                apellido,
-                email,
-                categoria,
-                fechaRegistro: new Date().toISOString()
-            };
+            // Show loading state
+            adminSubmitText.style.display = 'none';
+            adminSubmitLoading.style.display = 'inline-block';
             
-            participants.push(newParticipant);
-            saveParticipants();
-            updateAvailableSlots();
-            updateRegistrationButton();
-            updateAdminDashboard();
-            updateAttendanceDashboard(); // Actualizar lista de asistencia
-            
-            alert('Participante registrado exitosamente.');
-            adminRegistrationForm.reset();
+            try {
+                // Add participant to database
+                const { data, error } = await supabase
+                    .from('participants')
+                    .insert([
+                        {
+                            cargo,
+                            nombre,
+                            apellido,
+                            email,
+                            categoria,
+                            fecha_registro: new Date().toISOString()
+                        }
+                    ])
+                    .select();
+                
+                if (error) throw error;
+                
+                // Add participant to local state
+                const newParticipant = {
+                    id: data[0].id,
+                    cargo,
+                    nombre,
+                    apellido,
+                    email,
+                    categoria,
+                    fechaRegistro: data[0].fecha_registro
+                };
+                
+                participants.push(newParticipant);
+                updateAvailableSlots();
+                updateRegistrationButton();
+                updateAdminDashboard();
+                await updateAttendanceDashboard();
+                
+                showAdminMessage('Participante registrado exitosamente', 'success');
+                adminRegistrationForm.reset();
+            } catch (error) {
+                console.error('Error al registrar participante:', error);
+                showAdminMessage('Error al registrar participante', 'error');
+            } finally {
+                // Hide loading state
+                adminSubmitText.style.display = 'inline-block';
+                adminSubmitLoading.style.display = 'none';
+            }
         }
         
         function updateAdminDashboard() {
@@ -1613,7 +1767,7 @@
             editParticipantModal.style.display = 'flex';
         }
         
-        function handleEditParticipant(e) {
+        async function handleEditParticipant(e) {
             e.preventDefault();
             
             const id = document.getElementById('edit-participant-id').value;
@@ -1638,33 +1792,67 @@
                 return;
             }
             
-            participants[participantIndex] = {
-                ...participants[participantIndex],
-                cargo,
-                nombre,
-                apellido,
-                email,
-                categoria
-            };
-            
-            saveParticipants();
-            updateAvailableSlots();
-            updateRegistrationButton();
-            updateAdminDashboard();
-            updateAttendanceDashboard(); // Actualizar lista de asistencia
-            
-            editParticipantModal.style.display = 'none';
-            alert('Participante actualizado exitosamente.');
-        }
-        
-        function deleteParticipant(id) {
-            if (confirm('¿Está seguro de que desea eliminar este participante?')) {
-                participants = participants.filter(p => p.id !== id);
-                saveParticipants();
+            try {
+                // Update participant in database
+                const { error } = await supabase
+                    .from('participants')
+                    .update({
+                        cargo,
+                        nombre,
+                        apellido,
+                        email,
+                        categoria
+                    })
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                // Update participant in local state
+                participants[participantIndex] = {
+                    ...participants[participantIndex],
+                    cargo,
+                    nombre,
+                    apellido,
+                    email,
+                    categoria
+                };
+                
                 updateAvailableSlots();
                 updateRegistrationButton();
                 updateAdminDashboard();
-                updateAttendanceDashboard(); // Actualizar lista de asistencia
+                await updateAttendanceDashboard();
+                
+                editParticipantModal.style.display = 'none';
+                showAdminMessage('Participante actualizado exitosamente', 'success');
+            } catch (error) {
+                console.error('Error al actualizar participante:', error);
+                showAdminMessage('Error al actualizar participante', 'error');
+            }
+        }
+        
+        async function deleteParticipant(id) {
+            if (confirm('¿Está seguro de que desea eliminar este participante?')) {
+                try {
+                    // Delete participant from database
+                    const { error } = await supabase
+                        .from('participants')
+                        .delete()
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                    
+                    // Delete participant from local state
+                    participants = participants.filter(p => p.id !== id);
+                    updateAvailableSlots();
+                    updateRegistrationButton();
+                    updateAdminDashboard();
+                    await updateAttendanceDashboard();
+                    
+                    showAdminMessage('Participante eliminado exitosamente', 'success');
+                } catch (error) {
+                    console.error('Error al eliminar participante:', error);
+                    showAdminMessage('Error al eliminar participante', 'error');
+                }
             }
         }
         
@@ -1685,7 +1873,7 @@
         }
         
         // Form links management
-        function saveFormLink(day) {
+        async function saveFormLink(day) {
             const linkInput = document.getElementById(`form-link-${day}`);
             const link = linkInput.value.trim();
             
@@ -1702,71 +1890,117 @@
                 return;
             }
             
-            // Save form link
-            formLinks[day] = link;
-            localStorage.setItem('congresoFormLinks', JSON.stringify(formLinks));
-            
-            alert(`Enlace para el día ${day} guardado exitosamente.`);
+            try {
+                // Save form link to database
+                const { error } = await supabase
+                    .from('config')
+                    .upsert({
+                        key: `form_link_${day}`,
+                        value: link
+                    }, {
+                        onConflict: 'key'
+                    });
+                
+                if (error) throw error;
+                
+                // Save form link to local state
+                formLinks[day] = link;
+                
+                showAdminMessage(`Enlace para el día ${day} guardado exitosamente`, 'success');
+            } catch (error) {
+                console.error('Error al guardar enlace:', error);
+                showAdminMessage('Error al guardar enlace', 'error');
+            }
         }
         
-        function syncAttendance(day) {
+        async function syncAttendance(day) {
             const link = formLinks[day];
             if (!link) {
                 alert('Primero debe guardar un enlace para este día.');
                 return;
             }
             
-            // Simulate synchronization (in a real implementation, this would connect to Google Forms API)
-            alert(`Sincronizando asistencias para el día ${day} desde: ${link}`);
+            // Simulate synchronization
+            showAdminMessage(`Sincronizando asistencias para el día ${day}...`, 'success');
             
-            // Simulate fetching data and updating attendance
-            if (!attendanceData[day]) {
-                attendanceData[day] = {};
-            }
-            
-            // Mark some random participants as attended
-            participants.forEach(p => {
-                if (Math.random() > 0.3) { // 70% chance of attendance
-                    attendanceData[day][p.id] = true;
+            try {
+                // In a real implementation, you would fetch data from Google Forms API
+                // For now, we'll simulate by marking some participants as attended
+                if (!attendanceData[day]) {
+                    attendanceData[day] = {};
                 }
-            });
-            
-            saveParticipants();
-            updateAttendanceDashboard();
-            alert(`Asistencias sincronizadas para el día ${day}.`);
+                
+                // Mark some random participants as attended
+                const updates = [];
+                participants.forEach(p => {
+                    const attended = Math.random() > 0.3; // 70% chance of attendance
+                    attendanceData[day][p.id] = attended;
+                    
+                    updates.push({
+                        participant_id: p.id,
+                        day: parseInt(day),
+                        attended: attended
+                    });
+                });
+                
+                // Save attendance data to database
+                const { error } = await supabase
+                    .from('attendance')
+                    .upsert(updates, {
+                        onConflict: 'participant_id,day'
+                    });
+                
+                if (error) throw error;
+                
+                await updateAttendanceDashboard();
+                showAdminMessage(`Asistencias sincronizadas para el día ${day}`, 'success');
+            } catch (error) {
+                console.error('Error al sincronizar asistencias:', error);
+                showAdminMessage('Error al sincronizar asistencias', 'error');
+            }
         }
         
-        function loadFormLinks() {
-            const storedLinks = localStorage.getItem('congresoFormLinks');
-            if (storedLinks) {
-                formLinks = JSON.parse(storedLinks);
+        async function loadFormLinks() {
+            try {
+                // Load form links from database
+                const { data, error } = await supabase
+                    .from('config')
+                    .select('key, value')
+                    .like('key', 'form_link_%');
                 
-                // Populate form fields
-                Object.keys(formLinks).forEach(day => {
-                    const input = document.getElementById(`form-link-${day}`);
-                    if (input) {
-                        input.value = formLinks[day];
-                    }
-                });
-            } else {
-                // Set default links
-                formLinks = {
-                    '23': 'https://docs.google.com/forms/d/1nihA_9JrKg1KOJCy4ypah4wtS5wXN3ETaKDgxNjTj70/edit#responses',
-                    '24': 'https://docs.google.com/forms/d/18n4OUSB3iGBlBTBH6k4d-Tvma1rSXSS0Yv_vdq7bLVY/edit#responses',
-                    '25': 'https://docs.google.com/forms/d/11PXiisbAVSnWc74sRQJntSvnbSFk53um0CQikR0QHww/edit?edit_requested=true#responses'
-                };
+                if (error) throw error;
                 
-                // Populate form fields with default links
-                document.getElementById('form-link-23').value = formLinks['23'];
-                document.getElementById('form-link-24').value = formLinks['24'];
-                document.getElementById('form-link-25').value = formLinks['25'];
-                
-                localStorage.setItem('congresoFormLinks', JSON.stringify(formLinks));
+                if (data && data.length > 0) {
+                    data.forEach(item => {
+                        const day = item.key.replace('form_link_', '');
+                        formLinks[day] = item.value;
+                        
+                        // Populate form fields
+                        const input = document.getElementById(`form-link-${day}`);
+                        if (input) {
+                            input.value = item.value;
+                        }
+                    });
+                } else {
+                    // Set default links
+                    formLinks = {
+                        '23': 'https://docs.google.com/forms/d/1nihA_9JrKg1KOJCy4ypah4wtS5wXN3ETaKDgxNjTj70/edit#responses',
+                        '24': 'https://docs.google.com/forms/d/18n4OUSB3iGBlBTBH6k4d-Tvma1rSXSS0Yv_vdq7bLVY/edit#responses',
+                        '25': 'https://docs.google.com/forms/d/11PXiisbAVSnWc74sRQJntSvnbSFk53um0CQikR0QHww/edit?edit_requested=true#responses'
+                    };
+                    
+                    // Populate form fields with default links
+                    document.getElementById('form-link-23').value = formLinks['23'];
+                    document.getElementById('form-link-24').value = formLinks['24'];
+                    document.getElementById('form-link-25').value = formLinks['25'];
+                }
+            } catch (error) {
+                console.error('Error al cargar enlaces de formularios:', error);
             }
         }
         
         // Certificate link management
-        function saveCertificateLink() {
+        async function saveCertificateLink() {
             const link = certificateLinkInput.value.trim();
             
             if (!link) {
@@ -1782,44 +2016,96 @@
                 return;
             }
             
-            // Save certificate link
-            certificateLink = link;
-            localStorage.setItem('congresoCertificateLink', certificateLink);
-            
-            certificateLinkStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Enlace guardado exitosamente.</p>`;
-            alert('Enlace de certificados guardado exitosamente.');
+            try {
+                // Save certificate link to database
+                const { error } = await supabase
+                    .from('config')
+                    .upsert({
+                        key: 'certificate_link',
+                        value: link
+                    }, {
+                        onConflict: 'key'
+                    });
+                
+                if (error) throw error;
+                
+                // Save certificate link to local state
+                certificateLink = link;
+                
+                certificateLinkStatus.innerHTML = `<div class="alert alert-success">Enlace guardado exitosamente</div>`;
+                showAdminMessage('Enlace de certificados guardado exitosamente', 'success');
+            } catch (error) {
+                console.error('Error al guardar enlace de certificados:', error);
+                certificateLinkStatus.innerHTML = `<div class="alert alert-error">Error al guardar enlace</div>`;
+            }
         }
         
-        function loadCertificateLink() {
-            const storedLink = localStorage.getItem('congresoCertificateLink');
-            if (storedLink) {
-                certificateLink = storedLink;
-                certificateLinkInput.value = certificateLink;
+        async function loadCertificateLink() {
+            try {
+                // Load certificate link from database
+                const { data, error } = await supabase
+                    .from('config')
+                    .select('value')
+                    .eq('key', 'certificate_link')
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "not found"
+                
+                if (data) {
+                    certificateLink = data.value;
+                    certificateLinkInput.value = certificateLink;
+                }
+            } catch (error) {
+                console.error('Error al cargar enlace de certificados:', error);
             }
         }
         
         // Attendance management
-        function updateAttendanceDashboard() {
-            // Calculate attendance statistics
-            const total = participants.length;
-            let approved = 0;
-            let pending = 0;
-            
-            participants.forEach(p => {
-                const daysAttended = getParticipantAttendances(p.id);
-                if (daysAttended >= 2) {
-                    approved++;
-                } else {
-                    pending++;
+        async function updateAttendanceDashboard() {
+            try {
+                // Load attendance data from database
+                const { data, error } = await supabase
+                    .from('attendance')
+                    .select('*');
+                
+                if (error) throw error;
+                
+                // Reset attendance data
+                attendanceData = {};
+                
+                // Process attendance data
+                if (data) {
+                    data.forEach(record => {
+                        if (!attendanceData[record.day]) {
+                            attendanceData[record.day] = {};
+                        }
+                        attendanceData[record.day][record.participant_id] = record.attended;
+                    });
                 }
-            });
-            
-            totalParticipantsElement.textContent = total;
-            approvedParticipantsElement.textContent = approved;
-            pendingParticipantsElement.textContent = pending;
-            
-            // Update attendance table
-            renderAttendanceTable();
+                
+                // Calculate attendance statistics
+                const total = participants.length;
+                let approved = 0;
+                let pending = 0;
+                
+                participants.forEach(p => {
+                    const daysAttended = getParticipantAttendances(p.id);
+                    if (daysAttended >= 2) {
+                        approved++;
+                    } else {
+                        pending++;
+                    }
+                });
+                
+                totalParticipantsElement.textContent = total;
+                approvedParticipantsElement.textContent = approved;
+                pendingParticipantsElement.textContent = pending;
+                
+                // Update attendance table
+                renderAttendanceTable();
+            } catch (error) {
+                console.error('Error al cargar datos de asistencia:', error);
+            }
         }
         
         function renderAttendanceTable(filteredParticipants = null) {
@@ -1896,7 +2182,7 @@
             editAttendanceModal.style.display = 'flex';
         }
         
-        function handleEditAttendance(e) {
+        async function handleEditAttendance(e) {
             e.preventDefault();
             
             const participantId = document.getElementById('edit-attendance-participant-id').value;
@@ -1904,20 +2190,39 @@
             const day24 = document.getElementById('edit-attendance-24').checked;
             const day25 = document.getElementById('edit-attendance-25').checked;
             
-            // Update attendance data
-            if (!attendanceData['23']) attendanceData['23'] = {};
-            if (!attendanceData['24']) attendanceData['24'] = {};
-            if (!attendanceData['25']) attendanceData['25'] = {};
-            
-            attendanceData['23'][participantId] = day23;
-            attendanceData['24'][participantId] = day24;
-            attendanceData['25'][participantId] = day25;
-            
-            saveParticipants();
-            updateAttendanceDashboard();
-            
-            editAttendanceModal.style.display = 'none';
-            alert('Asistencias actualizadas exitosamente.');
+            try {
+                // Update attendance data in database
+                const attendanceUpdates = [
+                    { participant_id: participantId, day: 23, attended: day23 },
+                    { participant_id: participantId, day: 24, attended: day24 },
+                    { participant_id: participantId, day: 25, attended: day25 }
+                ];
+                
+                const { error } = await supabase
+                    .from('attendance')
+                    .upsert(attendanceUpdates, {
+                        onConflict: 'participant_id,day'
+                    });
+                
+                if (error) throw error;
+                
+                // Update attendance data in local state
+                if (!attendanceData['23']) attendanceData['23'] = {};
+                if (!attendanceData['24']) attendanceData['24'] = {};
+                if (!attendanceData['25']) attendanceData['25'] = {};
+                
+                attendanceData['23'][participantId] = day23;
+                attendanceData['24'][participantId] = day24;
+                attendanceData['25'][participantId] = day25;
+                
+                await updateAttendanceDashboard();
+                
+                editAttendanceModal.style.display = 'none';
+                showAdminMessage('Asistencias actualizadas exitosamente', 'success');
+            } catch (error) {
+                console.error('Error al actualizar asistencias:', error);
+                showAdminMessage('Error al actualizar asistencias', 'error');
+            }
         }
         
         function exportAttendanceToCSV() {
@@ -1944,8 +2249,36 @@
         }
         
         // Utility functions
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        async function loadParticipants() {
+            try {
+                // Load participants from database
+                const { data, error } = await supabase
+                    .from('participants')
+                    .select('*')
+                    .order('fecha_registro', { ascending: false });
+                
+                if (error) throw error;
+                
+                if (data) {
+                    participants = data.map(p => ({
+                        id: p.id,
+                        cargo: p.cargo,
+                        nombre: p.nombre,
+                        apellido: p.apellido,
+                        email: p.email,
+                        categoria: p.categoria,
+                        fechaRegistro: p.fecha_registro
+                    }));
+                    
+                    console.log("Participantes cargados desde la base de datos:", participants.length);
+                } else {
+                    console.log("No hay datos en la base de datos, comenzando con lista vacía");
+                    participants = [];
+                }
+            } catch (error) {
+                console.error('Error al cargar participantes:', error);
+                participants = [];
+            }
         }
         
         function getParticipantAttendances(participantId) {
@@ -1956,33 +2289,6 @@
                 }
             });
             return count;
-        }
-        
-        function loadParticipants() {
-            const stored = localStorage.getItem('congresoParticipants');
-            
-            if (stored) {
-                participants = JSON.parse(stored);
-                console.log("Participantes cargados desde localStorage:", participants.length);
-            } else {
-                console.log("No hay datos en localStorage, comenzando con lista vacía");
-                participants = [];
-                saveParticipants();
-            }
-            
-            // Load attendance data
-            const storedAttendance = localStorage.getItem('congresoAttendance');
-            if (storedAttendance) {
-                attendanceData = JSON.parse(storedAttendance);
-            } else {
-                attendanceData = {};
-            }
-        }
-        
-        function saveParticipants() {
-            localStorage.setItem('congresoParticipants', JSON.stringify(participants));
-            localStorage.setItem('congresoAttendance', JSON.stringify(attendanceData));
-            console.log("Datos guardados en localStorage");
         }
         
         // Make functions available globally for onclick events
