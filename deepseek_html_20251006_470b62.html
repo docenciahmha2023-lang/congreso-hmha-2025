@@ -6,6 +6,7 @@
     <title>I ER CONGRESO INTERNACIONAL DE ESPECIALIDADES CLINICAS-QUIRURGICAS | HOSPITAL MIGUEL H. ALCIVAR 2025</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -764,11 +765,21 @@
             <h2 class="section-title">Agenda & Certificados</h2>
             <div class="agenda-container">
                 <h3>Agenda del Congreso</h3>
-                <p>La agenda completa del congreso está disponible en el siguiente enlace:</p>
-                <a href="https://www.canva.com/design/DAGyx3YUwqU/mYRdMB5jC_c5D-Z7_e_p8A/watch?utm_content=DAGyx3YUwqU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd8f82b6ae8" 
-                   target="_blank" class="cta-button">
-                    <i class="fas fa-external-link-alt"></i> Ver Agenda en Canva
-                </a>
+                <p>La agenda completa del congreso está disponible en los siguientes enlaces:</p>
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                    <a href="https://www.canva.com/design/DAGviQzNOHg/TEdQktBuK4jmsez6md4o1Q/watch?utm_content=DAGviQzNOHg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h7ace130b42" 
+                       target="_blank" class="cta-button" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+                        <i class="fas fa-external-link-alt"></i> Agenda Jueves 23
+                    </a>
+                    <a href="https://www.canva.com/design/DAGvnJ0sKWg/P9bBMb4_9RMxwjsn-U6L1A/watch?utm_content=DAGvnJ0sKWg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h3de5508bd7" 
+                       target="_blank" class="cta-button" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+                        <i class="fas fa-external-link-alt"></i> Agenda Viernes 24
+                    </a>
+                    <a href="https://www.canva.com/design/DAGvnl0xCEU/BGl0NXd5kBGS6nBUaSS96g/watch?utm_content=DAGvnl0xCEU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hdbc43ce954" 
+                       target="_blank" class="cta-button" style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+                        <i class="fas fa-external-link-alt"></i> Agenda Sábado 25
+                    </a>
+                </div>
                 <div class="status-badge status-available">Disponible</div>
             </div>
             <div class="certificates-container">
@@ -1121,6 +1132,13 @@
     </div>
 
     <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://smihcuhfgyjtwuaatfak.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtaWhjdWhmZ3lqdHd1YWF0ZmFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MTAwODksImV4cCI6MjA3NjI4NjA4OX0.HQuTOSon8hCpkhxAp-tI3W28j7w7j7uVidV9i6-HpfE';
+        
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
         // Global variables
         let participants = [];
         let attendanceData = {};
@@ -1174,14 +1192,14 @@
         const certificateLinkStatus = document.getElementById('certificate-link-status');
         
         // Initialize the application
-        function init() {
+        async function init() {
             console.log("Inicializando aplicación...");
             updateCountdown();
             setInterval(updateCountdown, 1000);
             
-            loadParticipants();
-            loadFormLinks();
-            loadCertificateLink();
+            await loadParticipants();
+            await loadFormLinks();
+            await loadCertificateLink();
             updateAvailableSlots();
             updateRegistrationButton();
             
@@ -1313,7 +1331,7 @@
         }
         
         // Handle public registration
-        function handleRegistration(e) {
+        async function handleRegistration(e) {
             e.preventDefault();
             
             const formData = new FormData(registrationForm);
@@ -1360,25 +1378,49 @@
                 return;
             }
             
-            // Add participant
-            const newParticipant = {
-                id: generateId(),
-                cargo,
-                nombre,
-                apellido,
-                email,
-                categoria,
-                fechaRegistro: new Date().toISOString()
-            };
-            
-            participants.push(newParticipant);
-            saveParticipants();
-            updateAvailableSlots();
-            updateRegistrationButton();
-            updateAttendanceDashboard(); // Actualizar lista de asistencia
-            
-            showMessage('¡Registro exitoso! Te esperamos en el congreso.', 'success');
-            registrationForm.reset();
+            // Add participant to Supabase
+            try {
+                const { data, error } = await supabase
+                    .from('participants')
+                    .insert([
+                        {
+                            cargo,
+                            nombre,
+                            apellido,
+                            email,
+                            categoria,
+                            fecha_registro: new Date().toISOString()
+                        }
+                    ])
+                    .select();
+                
+                if (error) {
+                    console.error('Error al registrar participante:', error);
+                    showMessage('Error al registrar. Intente nuevamente.', 'error');
+                    return;
+                }
+                
+                // Add to local array
+                participants.push({
+                    id: data[0].id,
+                    cargo,
+                    nombre,
+                    apellido,
+                    email,
+                    categoria,
+                    fechaRegistro: data[0].fecha_registro
+                });
+                
+                updateAvailableSlots();
+                updateRegistrationButton();
+                updateAttendanceDashboard(); // Actualizar lista de asistencia
+                
+                showMessage('¡Registro exitoso! Te esperamos en el congreso.', 'success');
+                registrationForm.reset();
+            } catch (error) {
+                console.error('Error al registrar participante:', error);
+                showMessage('Error al registrar. Intente nuevamente.', 'error');
+            }
         }
         
         // Show message to user
@@ -1478,7 +1520,7 @@
             }
         }
         
-        function handleAdminRegistration(e) {
+        async function handleAdminRegistration(e) {
             e.preventDefault();
             
             const formData = new FormData(adminRegistrationForm);
@@ -1500,26 +1542,50 @@
                 return;
             }
             
-            // Add participant (admin can register without restrictions)
-            const newParticipant = {
-                id: generateId(),
-                cargo,
-                nombre,
-                apellido,
-                email,
-                categoria,
-                fechaRegistro: new Date().toISOString()
-            };
-            
-            participants.push(newParticipant);
-            saveParticipants();
-            updateAvailableSlots();
-            updateRegistrationButton();
-            updateAdminDashboard();
-            updateAttendanceDashboard(); // Actualizar lista de asistencia
-            
-            alert('Participante registrado exitosamente.');
-            adminRegistrationForm.reset();
+            // Add participant to Supabase
+            try {
+                const { data, error } = await supabase
+                    .from('participants')
+                    .insert([
+                        {
+                            cargo,
+                            nombre,
+                            apellido,
+                            email,
+                            categoria,
+                            fecha_registro: new Date().toISOString()
+                        }
+                    ])
+                    .select();
+                
+                if (error) {
+                    console.error('Error al registrar participante:', error);
+                    alert('Error al registrar participante. Intente nuevamente.');
+                    return;
+                }
+                
+                // Add to local array
+                participants.push({
+                    id: data[0].id,
+                    cargo,
+                    nombre,
+                    apellido,
+                    email,
+                    categoria,
+                    fechaRegistro: data[0].fecha_registro
+                });
+                
+                updateAvailableSlots();
+                updateRegistrationButton();
+                updateAdminDashboard();
+                updateAttendanceDashboard(); // Actualizar lista de asistencia
+                
+                alert('Participante registrado exitosamente.');
+                adminRegistrationForm.reset();
+            } catch (error) {
+                console.error('Error al registrar participante:', error);
+                alert('Error al registrar participante. Intente nuevamente.');
+            }
         }
         
         function updateAdminDashboard() {
@@ -1603,7 +1669,7 @@
             editParticipantModal.style.display = 'flex';
         }
         
-        function handleEditParticipant(e) {
+        async function handleEditParticipant(e) {
             e.preventDefault();
             
             const id = document.getElementById('edit-participant-id').value;
@@ -1628,33 +1694,69 @@
                 return;
             }
             
-            participants[participantIndex] = {
-                ...participants[participantIndex],
-                cargo,
-                nombre,
-                apellido,
-                email,
-                categoria
-            };
-            
-            saveParticipants();
-            updateAvailableSlots();
-            updateRegistrationButton();
-            updateAdminDashboard();
-            updateAttendanceDashboard(); // Actualizar lista de asistencia
-            
-            editParticipantModal.style.display = 'none';
-            alert('Participante actualizado exitosamente.');
-        }
-        
-        function deleteParticipant(id) {
-            if (confirm('¿Está seguro de que desea eliminar este participante?')) {
-                participants = participants.filter(p => p.id !== id);
-                saveParticipants();
+            // Update participant in Supabase
+            try {
+                const { error } = await supabase
+                    .from('participants')
+                    .update({ cargo, nombre, apellido, email, categoria })
+                    .eq('id', id);
+                
+                if (error) {
+                    console.error('Error al actualizar participante:', error);
+                    alert('Error al actualizar participante. Intente nuevamente.');
+                    return;
+                }
+                
+                // Update local array
+                participants[participantIndex] = {
+                    ...participants[participantIndex],
+                    cargo,
+                    nombre,
+                    apellido,
+                    email,
+                    categoria
+                };
+                
                 updateAvailableSlots();
                 updateRegistrationButton();
                 updateAdminDashboard();
                 updateAttendanceDashboard(); // Actualizar lista de asistencia
+                
+                editParticipantModal.style.display = 'none';
+                alert('Participante actualizado exitosamente.');
+            } catch (error) {
+                console.error('Error al actualizar participante:', error);
+                alert('Error al actualizar participante. Intente nuevamente.');
+            }
+        }
+        
+        async function deleteParticipant(id) {
+            if (confirm('¿Está seguro de que desea eliminar este participante?')) {
+                try {
+                    const { error } = await supabase
+                        .from('participants')
+                        .delete()
+                        .eq('id', id);
+                    
+                    if (error) {
+                        console.error('Error al eliminar participante:', error);
+                        alert('Error al eliminar participante. Intente nuevamente.');
+                        return;
+                    }
+                    
+                    // Remove from local array
+                    participants = participants.filter(p => p.id !== id);
+                    
+                    updateAvailableSlots();
+                    updateRegistrationButton();
+                    updateAdminDashboard();
+                    updateAttendanceDashboard(); // Actualizar lista de asistencia
+                    
+                    alert('Participante eliminado exitosamente.');
+                } catch (error) {
+                    console.error('Error al eliminar participante:', error);
+                    alert('Error al eliminar participante. Intente nuevamente.');
+                }
             }
         }
         
@@ -1675,7 +1777,7 @@
         }
         
         // Form links management
-        function saveFormLink(day) {
+        async function saveFormLink(day) {
             const linkInput = document.getElementById(`form-link-${day}`);
             const link = linkInput.value.trim();
             
@@ -1692,14 +1794,29 @@
                 return;
             }
             
-            // Save form link
-            formLinks[day] = link;
-            localStorage.setItem('congresoFormLinks', JSON.stringify(formLinks));
-            
-            alert(`Enlace para el día ${day} guardado exitosamente.`);
+            // Save form link to Supabase
+            try {
+                const { error } = await supabase
+                    .from('form_links')
+                    .upsert({ day, link }, { onConflict: 'day' });
+                
+                if (error) {
+                    console.error('Error al guardar enlace:', error);
+                    alert('Error al guardar enlace. Intente nuevamente.');
+                    return;
+                }
+                
+                // Update local data
+                formLinks[day] = link;
+                
+                alert(`Enlace para el día ${day} guardado exitosamente.`);
+            } catch (error) {
+                console.error('Error al guardar enlace:', error);
+                alert('Error al guardar enlace. Intente nuevamente.');
+            }
         }
         
-        function syncAttendance(day) {
+        async function syncAttendance(day) {
             const link = formLinks[day];
             if (!link) {
                 alert('Primero debe guardar un enlace para este día.');
@@ -1710,53 +1827,109 @@
             alert(`Sincronizando asistencias para el día ${day} desde: ${link}`);
             
             // Simulate fetching data and updating attendance
-            if (!attendanceData[day]) {
-                attendanceData[day] = {};
-            }
-            
-            // Mark some random participants as attended
-            participants.forEach(p => {
-                if (Math.random() > 0.3) { // 70% chance of attendance
-                    attendanceData[day][p.id] = true;
+            try {
+                // For now, we'll just mark some random participants as attended
+                if (!attendanceData[day]) {
+                    attendanceData[day] = {};
                 }
-            });
-            
-            saveParticipants();
-            updateAttendanceDashboard();
-            alert(`Asistencias sincronizadas para el día ${day}.`);
-        }
-        
-        function loadFormLinks() {
-            const storedLinks = localStorage.getItem('congresoFormLinks');
-            if (storedLinks) {
-                formLinks = JSON.parse(storedLinks);
                 
-                // Populate form fields
-                Object.keys(formLinks).forEach(day => {
-                    const input = document.getElementById(`form-link-${day}`);
-                    if (input) {
-                        input.value = formLinks[day];
+                // Mark some random participants as attended
+                participants.forEach(p => {
+                    if (Math.random() > 0.3) { // 70% chance of attendance
+                        attendanceData[day][p.id] = true;
                     }
                 });
-            } else {
-                // Set default links
-                formLinks = {
-                    '23': 'https://docs.google.com/forms/d/1nihA_9JrKg1KOJCy4ypah4wtS5wXN3ETaKDgxNjTj70/edit#responses',
-                    '24': 'https://docs.google.com/forms/d/18n4OUSB3iGBlBTBH6k4d-Tvma1rSXSS0Yv_vdq7bLVY/edit#responses',
-                    '25': 'https://docs.google.com/forms/d/11PXiisbAVSnWc74sRQJntSvnbSFk53um0CQikR0QHww/edit?edit_requested=true#responses'
-                };
                 
-                // Populate form fields with default links
-                document.getElementById('form-link-23').value = formLinks['23'];
-                document.getElementById('form-link-24').value = formLinks['24'];
-                document.getElementById('form-link-25').value = formLinks['25'];
+                // Save attendance to Supabase
+                const attendanceRecords = [];
+                Object.keys(attendanceData[day]).forEach(participantId => {
+                    if (attendanceData[day][participantId]) {
+                        attendanceRecords.push({
+                            participant_id: participantId,
+                            day,
+                            attended: true
+                        });
+                    }
+                });
                 
-                localStorage.setItem('congresoFormLinks', JSON.stringify(formLinks));
+                if (attendanceRecords.length > 0) {
+                    const { error } = await supabase
+                        .from('attendance')
+                        .upsert(attendanceRecords, { onConflict: 'participant_id,day' });
+                    
+                    if (error) {
+                        console.error('Error al guardar asistencias:', error);
+                        alert('Error al guardar asistencias. Intente nuevamente.');
+                        return;
+                    }
+                }
+                
+                updateAttendanceDashboard();
+                alert(`Asistencias sincronizadas para el día ${day}.`);
+            } catch (error) {
+                console.error('Error al sincronizar asistencias:', error);
+                alert('Error al sincronizar asistencias. Intente nuevamente.');
+            }
+        }
+        
+        async function loadFormLinks() {
+            try {
+                const { data, error } = await supabase
+                    .from('form_links')
+                    .select('*');
+                
+                if (error) {
+                    console.error('Error al cargar enlaces:', error);
+                    return;
+                }
+                
+                if (data && data.length > 0) {
+                    formLinks = {};
+                    data.forEach(item => {
+                        formLinks[item.day] = item.link;
+                    });
+                    
+                    // Populate form fields
+                    Object.keys(formLinks).forEach(day => {
+                        const input = document.getElementById(`form-link-${day}`);
+                        if (input) {
+                            input.value = formLinks[day];
+                        }
+                    });
+                } else {
+                    // Set default links
+                    formLinks = {
+                        '23': 'https://docs.google.com/forms/d/1nihA_9JrKg1KOJCy4ypah4wtS5wXN3ETaKDgxNjTj70/edit#responses',
+                        '24': 'https://docs.google.com/forms/d/18n4OUSB3iGBlBTBH6k4d-Tvma1rSXSS0Yv_vdq7bLVY/edit#responses',
+                        '25': 'https://docs.google.com/forms/d/11PXiisbAVSnWc74sRQJntSvnbSFk53um0CQikR0QHww/edit?edit_requested=true#responses'
+                    };
+                    
+                    // Populate form fields with default links
+                    document.getElementById('form-link-23').value = formLinks['23'];
+                    document.getElementById('form-link-24').value = formLinks['24'];
+                    document.getElementById('form-link-25').value = formLinks['25'];
+                    
+                    // Save default links to Supabase
+                    const linksToInsert = Object.keys(formLinks).map(day => ({
+                        day,
+                        link: formLinks[day]
+                    }));
+                    
+                    const { error: insertError } = await supabase
+                        .from('form_links')
+                        .insert(linksToInsert);
+                    
+                    if (insertError) {
+                        console.error('Error al guardar enlaces por defecto:', insertError);
+                    }
+                }
+            } catch (error) {
+                console.error('Error al cargar enlaces:', error);
             }
         }
         
         // Certificate link management
-        function saveCertificateLink() {
+        async function saveCertificateLink() {
             const link = certificateLinkInput.value.trim();
             
             if (!link) {
@@ -1772,44 +1945,101 @@
                 return;
             }
             
-            // Save certificate link
-            certificateLink = link;
-            localStorage.setItem('congresoCertificateLink', certificateLink);
-            
-            certificateLinkStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Enlace guardado exitosamente.</p>`;
-            alert('Enlace de certificados guardado exitosamente.');
+            // Save certificate link to Supabase
+            try {
+                const { error } = await supabase
+                    .from('certificate_link')
+                    .upsert({ id: 1, link }, { onConflict: 'id' });
+                
+                if (error) {
+                    console.error('Error al guardar enlace de certificados:', error);
+                    alert('Error al guardar enlace. Intente nuevamente.');
+                    return;
+                }
+                
+                // Save certificate link locally
+                certificateLink = link;
+                
+                certificateLinkStatus.innerHTML = `<p style="color: var(--success-green);"><i class="fas fa-check-circle"></i> Enlace guardado exitosamente.</p>`;
+                alert('Enlace de certificados guardado exitosamente.');
+            } catch (error) {
+                console.error('Error al guardar enlace de certificados:', error);
+                alert('Error al guardar enlace. Intente nuevamente.');
+            }
         }
         
-        function loadCertificateLink() {
-            const storedLink = localStorage.getItem('congresoCertificateLink');
-            if (storedLink) {
-                certificateLink = storedLink;
-                certificateLinkInput.value = certificateLink;
+        async function loadCertificateLink() {
+            try {
+                const { data, error } = await supabase
+                    .from('certificate_link')
+                    .select('*')
+                    .eq('id', 1)
+                    .single();
+                
+                if (error) {
+                    console.error('Error al cargar enlace de certificados:', error);
+                    return;
+                }
+                
+                if (data) {
+                    certificateLink = data.link;
+                    certificateLinkInput.value = certificateLink;
+                }
+            } catch (error) {
+                console.error('Error al cargar enlace de certificados:', error);
             }
         }
         
         // Attendance management
-        function updateAttendanceDashboard() {
+        async function updateAttendanceDashboard() {
             // Calculate attendance statistics
             const total = participants.length;
             let approved = 0;
             let pending = 0;
             
-            participants.forEach(p => {
-                const daysAttended = getParticipantAttendances(p.id);
-                if (daysAttended >= 2) {
-                    approved++;
-                } else {
-                    pending++;
+            // Load attendance data from Supabase
+            try {
+                const { data, error } = await supabase
+                    .from('attendance')
+                    .select('*');
+                
+                if (error) {
+                    console.error('Error al cargar asistencias:', error);
+                    return;
                 }
-            });
-            
-            totalParticipantsElement.textContent = total;
-            approvedParticipantsElement.textContent = approved;
-            pendingParticipantsElement.textContent = pending;
-            
-            // Update attendance table
-            renderAttendanceTable();
+                
+                if (data) {
+                    // Reset attendance data
+                    attendanceData = {};
+                    
+                    // Organize attendance data by day
+                    data.forEach(record => {
+                        if (!attendanceData[record.day]) {
+                            attendanceData[record.day] = {};
+                        }
+                        attendanceData[record.day][record.participant_id] = record.attended;
+                    });
+                }
+                
+                // Calculate statistics
+                participants.forEach(p => {
+                    const daysAttended = getParticipantAttendances(p.id);
+                    if (daysAttended >= 2) {
+                        approved++;
+                    } else {
+                        pending++;
+                    }
+                });
+                
+                totalParticipantsElement.textContent = total;
+                approvedParticipantsElement.textContent = approved;
+                pendingParticipantsElement.textContent = pending;
+                
+                // Update attendance table
+                renderAttendanceTable();
+            } catch (error) {
+                console.error('Error al actualizar panel de asistencias:', error);
+            }
         }
         
         function renderAttendanceTable(filteredParticipants = null) {
@@ -1886,7 +2116,7 @@
             editAttendanceModal.style.display = 'flex';
         }
         
-        function handleEditAttendance(e) {
+        async function handleEditAttendance(e) {
             e.preventDefault();
             
             const participantId = document.getElementById('edit-attendance-participant-id').value;
@@ -1895,19 +2125,76 @@
             const day25 = document.getElementById('edit-attendance-25').checked;
             
             // Update attendance data
-            if (!attendanceData['23']) attendanceData['23'] = {};
-            if (!attendanceData['24']) attendanceData['24'] = {};
-            if (!attendanceData['25']) attendanceData['25'] = {};
-            
-            attendanceData['23'][participantId] = day23;
-            attendanceData['24'][participantId] = day24;
-            attendanceData['25'][participantId] = day25;
-            
-            saveParticipants();
-            updateAttendanceDashboard();
-            
-            editAttendanceModal.style.display = 'none';
-            alert('Asistencias actualizadas exitosamente.');
+            try {
+                const attendanceRecords = [];
+                
+                if (day23) {
+                    attendanceRecords.push({
+                        participant_id: participantId,
+                        day: '23',
+                        attended: true
+                    });
+                }
+                
+                if (day24) {
+                    attendanceRecords.push({
+                        participant_id: participantId,
+                        day: '24',
+                        attended: true
+                    });
+                }
+                
+                if (day25) {
+                    attendanceRecords.push({
+                        participant_id: participantId,
+                        day: '25',
+                        attended: true
+                    });
+                }
+                
+                // Delete existing records for this participant
+                const { error: deleteError } = await supabase
+                    .from('attendance')
+                    .delete()
+                    .eq('participant_id', participantId);
+                
+                if (deleteError) {
+                    console.error('Error al eliminar asistencias previas:', deleteError);
+                }
+                
+                // Insert new records
+                if (attendanceRecords.length > 0) {
+                    const { error: insertError } = await supabase
+                        .from('attendance')
+                        .insert(attendanceRecords);
+                    
+                    if (insertError) {
+                        console.error('Error al guardar asistencias:', insertError);
+                        alert('Error al guardar asistencias. Intente nuevamente.');
+                        return;
+                    }
+                }
+                
+                // Update local data
+                ['23', '24', '25'].forEach(day => {
+                    if (!attendanceData[day]) {
+                        attendanceData[day] = {};
+                    }
+                    attendanceData[day][participantId] = false;
+                });
+                
+                if (day23) attendanceData['23'][participantId] = true;
+                if (day24) attendanceData['24'][participantId] = true;
+                if (day25) attendanceData['25'][participantId] = true;
+                
+                updateAttendanceDashboard();
+                
+                editAttendanceModal.style.display = 'none';
+                alert('Asistencias actualizadas exitosamente.');
+            } catch (error) {
+                console.error('Error al actualizar asistencias:', error);
+                alert('Error al actualizar asistencias. Intente nuevamente.');
+            }
         }
         
         function exportAttendanceToCSV() {
@@ -1934,8 +2221,36 @@
         }
         
         // Utility functions
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        async function loadParticipants() {
+            try {
+                const { data, error } = await supabase
+                    .from('participants')
+                    .select('*')
+                    .order('fecha_registro', { ascending: false });
+                
+                if (error) {
+                    console.error('Error al cargar participantes:', error);
+                    return;
+                }
+                
+                if (data) {
+                    participants = data.map(p => ({
+                        id: p.id,
+                        cargo: p.cargo,
+                        nombre: p.nombre,
+                        apellido: p.apellido,
+                        email: p.email,
+                        categoria: p.categoria,
+                        fechaRegistro: p.fecha_registro
+                    }));
+                    console.log("Participantes cargados desde Supabase:", participants.length);
+                } else {
+                    console.log("No hay datos en Supabase, comenzando con lista vacía");
+                    participants = [];
+                }
+            } catch (error) {
+                console.error('Error al cargar participantes:', error);
+            }
         }
         
         function getParticipantAttendances(participantId) {
@@ -1946,33 +2261,6 @@
                 }
             });
             return count;
-        }
-        
-        function loadParticipants() {
-            const stored = localStorage.getItem('congresoParticipants');
-            
-            if (stored) {
-                participants = JSON.parse(stored);
-                console.log("Participantes cargados desde localStorage:", participants.length);
-            } else {
-                console.log("No hay datos en localStorage, comenzando con lista vacía");
-                participants = [];
-                saveParticipants();
-            }
-            
-            // Load attendance data
-            const storedAttendance = localStorage.getItem('congresoAttendance');
-            if (storedAttendance) {
-                attendanceData = JSON.parse(storedAttendance);
-            } else {
-                attendanceData = {};
-            }
-        }
-        
-        function saveParticipants() {
-            localStorage.setItem('congresoParticipants', JSON.stringify(participants));
-            localStorage.setItem('congresoAttendance', JSON.stringify(attendanceData));
-            console.log("Datos guardados en localStorage");
         }
         
         // Make functions available globally for onclick events
